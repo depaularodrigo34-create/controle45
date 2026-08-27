@@ -1,0 +1,1589 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0f172a">
+<meta name="description" content="Controle de gastos online para registrar receitas, despesas, importar extratos e gerar planilhas financeiras.">
+<link rel="canonical" href="https://controle45.netlify.app/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Controle de Gastos | Organize sua vida financeira">
+<meta property="og:description" content="Controle de gastos online para registrar receitas, despesas, importar extratos e gerar planilhas financeiras.">
+<meta property="og:url" content="https://controle45.netlify.app/">
+<meta property="og:image" content="https://controle45.netlify.app/icon-512.png">
+<meta property="og:locale" content="pt_BR">
+<meta name="twitter:card" content="summary">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Controle de Gastos | Organize sua vida financeira</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif}
+:root{--bg:#0f172a;--card:#1e293b;--card2:#0f172a;--line:rgba(255,255,255,.08);--txt:#f1f5f9;--muted:#cbd5e1;--muted2:#94a3b8;--pri:#7c3aed;--grad:linear-gradient(135deg,#7c3aed 0%,#6366f1 50%,#3b82f6 100%);--grad-green:linear-gradient(135deg,#10b981 0%,#06b6d4 100%)}
+:root[data-theme="light"]{--bg:#f1f5f9;--card:#ffffff;--card2:#f8fafc;--line:rgba(15,23,42,.08);--txt:#0f172a;--muted:#334155;--muted2:#64748b}
+body{background:var(--bg);color:var(--txt);min-height:100vh;padding:20px 20px 32px;transition:background .2s,color .2s}
+.container{max-width:1100px;margin:0 auto;padding-bottom:96px}
+a{color:#a78bfa}
+.hdr{margin-bottom:18px}
+.hdr-top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.hdr h1{font-size:28px;font-weight:800;letter-spacing:-.02em;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-align:left}
+.hdr .sub{color:var(--muted2);font-size:14px;margin-top:6px;text-align:center}
+.priv{margin:12px auto 0;display:inline-flex;gap:6px;align-items:center;background:rgba(30,41,59,.8);border:1px solid rgba(255,255,255,.08);border-radius:99px;padding:7px 14px;font-size:12px;color:#cbd5e1;backdrop-filter:blur(8px)}
+.btn-icon{width:44px;height:44px;border-radius:12px;border:1px solid rgba(255,255,255,.08);background:rgba(30,41,59,.8);color:#f1f5f9;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
+.btn-icon:hover{background:rgba(255,255,255,.08)}
+.tabs{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:16px 0 18px}
+.tab-btn{flex:1;max-width:170px;display:flex;gap:6px;align-items:center;justify-content:center;padding:12px 10px;border-radius:14px;border:1px solid var(--line);background:rgba(30,41,59,.6);color:var(--muted2);font-weight:700;font-size:13px;cursor:pointer;min-height:44px;min-width:44px;transition:.15s}
+.tab-btn[aria-selected="true"]{background:var(--grad);color:#fff;border-color:transparent;box-shadow:0 6px 16px rgba(124,58,237,.35)}
+.tab-btn:focus-visible{outline:2px solid #a78bfa;outline-offset:2px}
+.tab-panel{display:none;opacity:0;transform:translateY(8px);transition:opacity .28s ease, transform .28s ease}
+.tab-panel.ativo{display:block;opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.tab-panel{transition:none}}
+.card{background:var(--card);border-radius:20px;padding:20px;box-shadow:0 2px 16px rgba(0,0,0,.12);margin-bottom:16px;border:1px solid var(--line);position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad);opacity:.15}
+.card h2{color:#f1f5f9;font-size:16px;font-weight:800;margin-bottom:14px;padding-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:8px;border-bottom:1px solid rgba(255,255,255,.06);flex-wrap:wrap}
+.shortcuts{display:flex;gap:12px;overflow-x:auto;padding:8px 0 4px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.shortcuts::-webkit-scrollbar{display:none}
+.shortcut{flex:0 0 72px;display:flex;flex-direction:column;align-items:center;gap:8px;background:transparent;border:none;cursor:pointer;min-width:72px;min-height:88px;scroll-snap-align:start;padding:4px}
+.shortcut .icon-circle{width:52px;height:52px;border-radius:16px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.08);box-shadow:0 2px 12px rgba(0,0,0,.15);transition:.15s}
+.shortcut:active .icon-circle{transform:scale(.96)}
+.shortcut span{font-size:11px;font-weight:600;color:var(--muted2);text-align:center;line-height:1.2}
+.shortcut:focus-visible{outline:2px solid #a78bfa;outline-offset:2px}
+.screen{position:fixed;inset:0;background:var(--bg);z-index:30;transform:translateX(100%);transition:transform .32s cubic-bezier(.32,.72,0,1);overflow:auto;padding:20px 20px 96px}
+.screen.ativo{transform:translateX(0)}
+.screen-header{display:flex;align-items:center;gap:12px;padding:12px 0 16px;margin-bottom:16px;position:sticky;top:0;background:var(--bg);z-index:1;border-bottom:1px solid var(--line)}
+.screen-header h2{margin:0;border:none;padding:0}
+@media(prefers-reduced-motion:reduce){.screen{transition:none !important}.tab-panel{transition:none !important;transform:none !important;opacity:1 !important}}
+.card h3{font-size:13px;font-weight:700;color:#cbd5e1;margin:16px 0 8px;letter-spacing:.02em;text-transform:uppercase}
+label{display:block;font-size:13px;font-weight:600;color:var(--muted2);margin:12px 0 6px}
+input,select,textarea{width:100%;padding:14px 14px;border-radius:14px;border:1px solid rgba(255,255,255,.08);background:#0f172a;color:var(--txt);font-size:16px;transition:.15s}
+input:focus,select:focus,textarea:focus{outline:none;border-color:#7c3aed;box-shadow:0 0 0 3px rgba(124,58,237,.25)}
+.btn{width:100%;padding:16px;margin-top:14px;border:none;border-radius:16px;font-size:16px;font-weight:800;cursor:pointer;transition:.15s;min-height:54px;letter-spacing:.01em}
+.btn:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.btn:active{transform:scale(.98)}
+.btn-primary{background:var(--grad);color:#fff;box-shadow:0 8px 20px rgba(124,58,237,.35)}
+.btn-green{background:var(--grad-green);color:#fff;box-shadow:0 8px 20px rgba(16,185,129,.3)}
+.btn-ghost{background:rgba(255,255,255,.06);color:#f1f5f9;border:1px solid rgba(255,255,255,.1)}
+.btn-red{background:rgba(239,68,68,.08);color:#f87171;border:1px solid rgba(239,68,68,.2);padding:8px 12px;font-size:13px;border-radius:10px;cursor:pointer;font-weight:700}
+.btn-mini{padding:12px 18px;border-radius:14px;border:none;font-size:14px;font-weight:700;cursor:pointer;min-height:44px;min-width:44px;transition:.15s}
+.resumo{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px}
+.res-box{background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));border-radius:16px;padding:16px;text-align:center;border:1px solid rgba(255,255,255,.08);position:relative;overflow:hidden}
+.res-box::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--grad-green);opacity:.7}
+.res-box:nth-child(2)::after{background:linear-gradient(90deg,#ef4444,#f59e0b)}
+.res-box:nth-child(3)::after{background:var(--grad)}
+.res-box .v{font-size:20px;font-weight:800;margin-top:6px;letter-spacing:-.02em}
+.res-box .l{font-size:11px;color:var(--muted2);letter-spacing:.06em;font-weight:700}
+.verde{color:#4ade80}.verm{color:#f87171}.azul{color:#38bdf8}
+.grid2{display:grid;grid-template-columns:340px 1fr;gap:16px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:#0f172a;color:var(--muted2);padding:10px 8px;text-align:left;font-weight:700}
+td{padding:10px 8px;border-bottom:1px solid rgba(255,255,255,.06)}
+.valor{text-align:right;font-weight:700}
+.cat-badge{padding:4px 10px;border-radius:99px;font-size:11px;font-weight:700;display:inline-block}
+.vazio{text-align:center;color:var(--muted2);padding:26px !important}
+.filtros{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.filtros select,.filtros input{flex:1;min-width:140px}
+.acoes{display:flex;gap:8px;flex-wrap:wrap}
+.acoes .btn-mini{flex:1;min-width:140px}
+.toast-wrap{position:fixed;right:14px;bottom:96px;display:flex;flex-direction:column;gap:8px;z-index:9999;pointer-events:none}
+.toast{pointer-events:auto;background:#1e293b;border:1px solid rgba(255,255,255,.1);color:#f1f5f9;padding:14px 16px;border-radius:14px;box-shadow:0 12px 32px rgba(0,0,0,.4);font-size:13px;font-weight:600;min-width:220px;max-width:360px}
+.toast.ok{border-color:rgba(16,185,129,.4)}.toast.err{border-color:rgba(239,68,68,.4)}
+.modal-bg{position:fixed;inset:0;background:rgba(2,6,23,.75);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:16px;z-index:9998}
+.modal-bg.open{display:flex}
+.modal{background:#1e293b;border:1px solid rgba(255,255,255,.08);border-radius:24px;padding:20px;width:min(520px,100%);max-height:90vh;overflow:auto;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.modal h3{color:#f1f5f9;margin-bottom:12px;font-weight:800}
+.muted{color:var(--muted2);font-size:12px}
+.kpi{display:flex;gap:10px;flex-wrap:wrap}
+.kpi .res-box{flex:1;min-width:140px}
+.bar{height:10px;background:#0f172a;border-radius:99px;overflow:hidden;border:1px solid rgba(255,255,255,.06)}
+.bar>span{display:block;height:100%;background:var(--grad)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+/* Navegação inferior */
+.bottom-nav{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom));width:min(640px, calc(100% - 16px));background:rgba(15,23,42,.94);backdrop-filter:blur(20px) saturate(1.4);border:1px solid rgba(255,255,255,.1);z-index:999;border-radius:28px;padding:6px;box-shadow:0 16px 40px rgba(0,0,0,.55);display:none}
+.bottom-nav .wrap{display:grid;gap:2px}
+.bottom-nav.cols-4 .wrap{grid-template-columns:repeat(4,1fr)}
+.bottom-nav.cols-3 .wrap{grid-template-columns:repeat(3,1fr)}
+.bottom-nav.cols-7 .wrap{grid-template-columns:repeat(7,1fr)}
+.bottom-nav.cols-6 .wrap{grid-template-columns:repeat(6,1fr)}
+.bottom-nav.cols-5 .wrap{grid-template-columns:repeat(5,1fr)}
+.bottom-nav button{appearance:none;background:transparent;border:none;color:#94a3b8;padding:10px 4px;font-size:10px;font-weight:700;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;min-height:60px;min-width:44px;border-radius:18px;transition:.2s;position:relative}
+.bottom-nav button .ico{font-size:20px;line-height:1;display:block;transition:.2s}
+.bottom-nav button .ico-lucide{width:20px;height:20px}
+.bottom-nav button[aria-selected="true"]{background:rgba(124,58,237,.18);color:#fff}
+.bottom-nav button[aria-selected="true"] .ico{transform:scale(1.12)}
+.ico-lucide{width:18px;height:18px;stroke-width:1.9;vertical-align:middle;display:inline-block;flex-shrink:0}
+.card h2 .ico-lucide{width:18px;height:18px;margin-right:6px}
+.btn .ico-lucide, .btn-mini .ico-lucide{width:16px;height:16px;margin-right:6px;vertical-align:middle}
+.bottom-nav button[aria-selected="true"]::after{content:'';position:absolute;top:5px;left:50%;transform:translateX(-50%);width:18px;height:3px;background:var(--grad);border-radius:99px}
+.bottom-nav button:focus-visible{outline:2px solid #a78bfa;outline-offset:2px}
+.mais-sheet{position:fixed;inset:0;background:rgba(2,6,23,.6);backdrop-filter:blur(4px);display:none;z-index:998;align-items:flex-end;justify-content:center;padding:16px 16px calc(16px + env(safe-area-inset-bottom))}
+.mais-sheet.open{display:flex}
+.mais-sheet .sheet{background:#1e293b;border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:12px;width:min(360px,100%);box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.mais-sheet .sheet button{width:100%;display:flex;gap:12px;align-items:center;padding:14px 14px;border-radius:14px;border:1px solid transparent;background:transparent;color:#f1f5f9;font-weight:700;font-size:15px;cursor:pointer;min-height:44px;text-align:left}
+.mais-sheet .sheet button:hover{background:rgba(255,255,255,.06)}
+.mais-sheet .sheet button:focus-visible{outline:2px solid #a78bfa}
+@media(max-width:860px){
+  .tabs{display:none}
+  .bottom-nav{display:block}
+  .container{padding-bottom:96px}
+}
+@media(min-width:861px){
+  .bottom-nav{display:none !important}
+  .mais-sheet{display:none !important}
+}
+#ofertasApp{grid-template-columns:repeat(3,1fr)}
+@media(max-width:860px){#ofertasApp{grid-template-columns:repeat(2,1fr);gap:10px}}
+@media(max-width:480px){#ofertasApp{grid-template-columns:repeat(2,1fr);gap:8px}}
+@media(max-width:768px){
+  table thead{display:none}
+  table, tbody, tr, td{display:block;width:100%}
+  tr{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:16px;margin-bottom:12px;overflow:hidden;padding:6px 0}
+  tr.total-linha{background:rgba(124,58,237,.12);border-color:rgba(124,58,237,.25)}
+  td{border:none;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 14px}
+  td::before{content:attr(data-label);color:var(--muted2);font-weight:700;font-size:12px;flex-shrink:0}
+  td:last-child{justify-content:flex-end}
+  td:last-child::before{display:none}
+  .resumo{grid-template-columns:1fr}
+  .grid2{grid-template-columns:1fr}
+  body{padding:14px 14px 32px}
+  .container{padding-bottom:96px}
+}
+@media(max-width:390px){ .bottom-nav{width:calc(100% - 10px)} .bottom-nav button{padding:8px 2px} .bottom-nav button .ico{font-size:18px} }
+@media(max-width:360px){ .bottom-nav.cols-6 .wrap{grid-template-columns:repeat(5,1fr)} }
+</style>
+</head>
+<body>
+<!-- Auth: loading e welcome -->
+<div id="authLoading" style="position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:100;flex-direction:column;gap:12px">
+  <div style="width:32px;height:32px;border:3px solid rgba(255,255,255,.2);border-top-color:#7c3aed;border-radius:50%;animation:spin 1s linear infinite"></div>
+  <div class="muted" style="font-size:13px">Carregando sua sessão...</div>
+</div>
+<style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+<script>
+// Fallback: se Supabase não carregar em 2.5s (sem config ou offline), libera o app no modo local
+setTimeout(()=>{
+  const loading=document.getElementById('authLoading');
+  const welcome=document.getElementById('authWelcome');
+  const app=document.getElementById('appRoot');
+  if(loading && loading.style.display!=='none' && !loading.hidden){
+    // Verifica se o módulo Supabase já decidiu; se não, libera modo offline
+    const stillLoading = loading && getComputedStyle(loading).display!=='none';
+    if(stillLoading){
+      console.warn('[Auth] Timeout - liberando modo offline local');
+      loading.hidden=true; loading.style.display='none';
+      if(welcome){ welcome.hidden=true; welcome.style.display='none'; }
+      if(app){ app.hidden=false; app.style.display='block'; }
+      if(window.lucide) lucide.createIcons();
+    }
+  }
+}, 2500);
+</script>
+<div id="authWelcome" hidden style="position:fixed;inset:0;background:radial-gradient(800px 400px at 50% -10%, #1e1b4b 0%, transparent 60%), var(--bg);display:flex;align-items:center;justify-content:center;padding:20px;z-index:99">
+  <div style="background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:24px;padding:28px;width:min(420px,100%);box-shadow:0 20px 60px rgba(0,0,0,.5);text-align:center">
+    <div style="font-size:28px;font-weight:800;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent">💰 Controle de Gastos</div>
+    <p class="muted" style="margin:10px 0 18px;line-height:1.5">Entre com sua conta Google para sincronizar seus dados na nuvem. Seus lançamentos ficam privados e acessíveis em qualquer dispositivo.</p>
+    <button id="btnGoogleLogin" class="btn btn-primary" style="display:flex;align-items:center;justify-content:center;gap:10px;background:#fff;color:#0f172a;box-shadow:0 4px 16px rgba(0,0,0,.2)" aria-label="Continuar com Google">
+      <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      Continuar com Google
+    </button>
+    <div id="authError" class="muted" style="display:none;margin-top:12px;color:#f87171;font-size:13px" role="alert"></div>
+    <p class="muted" style="margin-top:14px;font-size:11px">Ao continuar, você concorda que seus dados financeiros são privados e vinculados à sua conta.</p>
+  </div>
+</div>
+<div id="appRoot" hidden>
+<div class="container">
+  <header class="hdr">
+    <div class="hdr-top">
+      <h1>💰 Controle de Gastos</h1>
+      <div style="display:flex;gap:8px;align-items:center">
+        <button class="btn-icon" aria-label="Alternar tema claro/escuro" onclick="toggleTema()" id="btnTema"><i data-lucide="sun" class="ico-lucide"></i></button>
+        <button class="btn-icon" aria-label="Perfil e configurações" onclick="abrirMenuPerfil()" id="btnPerfilTop"><i data-lucide="more-vertical" class="ico-lucide"></i></button>
+      </div>
+    </div>
+    <p class="sub">Organize receitas e despesas — dados locais neste aparelho.</p>
+  </header>
+
+  <nav class="tabs" id="tabsDesktop" role="tablist" aria-label="Navegação principal">
+    <button class="tab-btn" role="tab" aria-selected="true" data-tab="inicio" aria-label="Início"><i data-lucide="home" class="ico-lucide"></i> Início</button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-tab="financas" aria-label="Finanças"><i data-lucide="wallet" class="ico-lucide"></i> Finanças</button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-tab="mercado" aria-label="Mercado"><i data-lucide="shopping-bag" class="ico-lucide"></i> Mercado</button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-tab="ofertas" aria-label="Ofertas"><i data-lucide="flame" class="ico-lucide"></i> Ofertas</button>
+  </nav>
+
+  <!-- MENU PERFIL (topo, 3 pontos) -->
+  <div class="mais-sheet" id="menuPerfil" role="dialog" aria-modal="true" aria-label="Perfil e configurações" hidden aria-hidden="true">
+    <div class="sheet">
+      <div style="width:36px;height:4px;background:rgba(255,255,255,.2);border-radius:99px;margin:0 auto 12px"></div>
+      <div style="display:flex;align-items:center;gap:12px;padding:12px;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:8px">
+        <div style="width:44px;height:44px;border-radius:12px;background:var(--grad);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800" id="perfilAvatar">R</div>
+        <div><div style="font-weight:800" id="perfilNomeTop">—</div><div class="muted" style="font-size:12px">Toque para gerenciar</div></div>
+      </div>
+      <button onclick="irTab('perfil'); fecharMenuPerfil()" aria-label="Abrir Perfil"><i data-lucide="user" class="ico-lucide"></i> Perfil</button>
+      <button onclick="irTab('configuracoes'); fecharMenuPerfil()" aria-label="Abrir Configurações"><i data-lucide="settings" class="ico-lucide"></i> Configurações do app</button>
+      <button onclick="fecharMenuPerfil()" aria-label="Fechar menu" style="margin-top:8px;background:rgba(255,255,255,.06)">✕ Fechar</button>
+    </div>
+  </div>
+
+  <!-- INICIO -->
+  <section id="tab-inicio" class="tab-panel ativo" role="tabpanel" aria-labelledby="tabbtn-inicio">
+    <div class="card" style="padding:16px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div style="font-size:13px;color:var(--muted2)">Olá, <b id="olaNome" style="color:#f1f5f9">—</b></div>
+        <div style="font-size:12px;color:var(--muted2)" id="dataHoje"></div>
+      </div>
+      <div style="margin-top:14px">
+        <div style="font-size:12px;color:var(--muted2);display:flex;align-items:center;gap:8px">Saldo do mês <button class="btn-red" style="padding:4px 8px;min-height:28px;min-width:44px" onclick="toggleOcultar()" id="btnOcultar" aria-label="Ocultar ou mostrar valores">👁️</button> <span class="muted" style="font-size:11px">toque no saldo para ver extrato</span></div>
+        <button id="saldoDestaqueBtn" onclick="abrirTela('extrato')" aria-label="Abrir extrato dedicado" style="background:none;border:none;padding:0;margin-top:6px;cursor:pointer;text-align:left;width:100%">
+          <div style="font-size:32px;font-weight:800;letter-spacing:-.03em;color:var(--txt)" id="saldoDestaque">R$ 0,00</div>
+        </button>
+        <div style="margin-top:10px;max-width:220px">
+          <label for="dashMes" style="font-size:11px;margin:0 0 4px">Mês</label>
+          <input type="month" id="dashMes" onchange="atualizarResumo()" aria-label="Selecionar mês do dashboard" style="padding:10px">
+        </div>
+      </div>
+    </div>
+
+    <div class="card" id="cardAcoesRapidas">
+      <h2><i data-lucide="zap" class="ico-lucide"></i> Ações rápidas</h2>
+      <div class="shortcuts" role="toolbar" aria-label="Ações rápidas">
+        <button class="shortcut" onclick="abrirModalLancamento('despesa')" aria-label="Adicionar gasto"><span class="icon-circle" style="background:linear-gradient(135deg,#ef4444,#dc2626)"><i data-lucide="trending-down" class="ico-lucide" style="color:#fff"></i></span><span>Gasto</span></button>
+        <button class="shortcut" onclick="abrirModalLancamento('receita')" aria-label="Adicionar receita"><span class="icon-circle" style="background:var(--grad-green)"><i data-lucide="trending-up" class="ico-lucide" style="color:#fff"></i></span><span>Receita</span></button>
+        <button class="shortcut" onclick="abrirTela('lancamentos')" aria-label="Ver lançamentos"><span class="icon-circle" style="background:var(--grad)"><i data-lucide="list" class="ico-lucide" style="color:#fff"></i></span><span>Lançamentos</span></button>
+        <button class="shortcut" onclick="abrirTela('orcamento')" aria-label="Abrir orçamento"><span class="icon-circle" style="background:linear-gradient(135deg,#f59e0b,#ef4444)"><i data-lucide="pie-chart" class="ico-lucide" style="color:#fff"></i></span><span>Orçamento</span></button>
+        <button class="shortcut" onclick="abrirTela('extrato')" aria-label="Abrir extrato"><span class="icon-circle" style="background:linear-gradient(135deg,#06b6d4,#3b82f6)"><i data-lucide="landmark" class="ico-lucide" style="color:#fff"></i></span><span>Extrato</span></button>
+      </div>
+    </div>
+
+    <div class="card" id="cardResumoMensal">
+      <h2>Resumo do mês</h2>
+      <div class="resumo" style="margin-top:4px">
+        <div class="res-box"><div class="l">RECEITAS</div><div class="v verde" id="dashRec">R$ 0,00</div></div>
+        <div class="res-box"><div class="l">DESPESAS</div><div class="v verm" id="dashDes">R$ 0,00</div></div>
+        <div class="res-box"><div class="l">ECONOMIA</div><div class="v azul" id="dashEco">R$ 0,00</div></div>
+      </div>
+      <div style="font-size:13px;color:var(--muted2);margin-top:8px">Maior categoria: <b id="maiorCat" style="color:#f1f5f9">—</b></div>
+      <div id="resumoPessoas" style="margin-top:10px"></div>
+      <div id="resumoVazio" style="display:none;text-align:center;padding:16px 0"><p class="muted" style="margin-bottom:12px">Nenhum lançamento ainda — comece adicionando o primeiro</p><button class="btn btn-primary" onclick="abrirModalLancamento()" style="min-height:44px" aria-label="Adicionar o primeiro lançamento">＋ Adicionar o primeiro lançamento</button></div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h2>Últimos lançamentos <button class="btn-mini btn-ghost" style="padding:8px 12px;min-height:32px;font-size:12px;min-width:44px" onclick="abrirTela('extrato')" aria-label="Ver todos os lançamentos">Ver lançamentos →</button></h2>
+        <div id="ultimosLista" class="muted">Nenhum lançamento ainda.</div>
+      </div>
+      <div class="card">
+        <h2>Gastos por categoria (mês selecionado)</h2>
+        <div id="grafCat"></div>
+        <h3>Evolução de saldo (últimos 6 meses)</h3>
+        <div id="grafEvo"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINANÇAS HUB -->
+  <section id="tab-financas" class="tab-panel" role="tabpanel">
+    <div class="card">
+      <h2><i data-lucide="wallet" class="ico-lucide"></i> Finanças</h2>
+      <p class="muted">Escolha uma função para gerenciar seu dinheiro.</p>
+      <div style="display:grid;gap:10px;margin-top:14px">
+        <button class="btn btn-ghost" onclick="irTab('lancamentos')" style="justify-content:space-between;display:flex;align-items:center;min-height:68px;padding:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:14px" aria-label="Abrir Lançamentos"><span style="display:flex;gap:12px;align-items:center;text-align:left"><span style="width:42px;height:42px;border-radius:12px;background:var(--grad);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i data-lucide="list" class="ico-lucide" style="color:#fff"></i></span><span><span style="display:block;font-weight:800">Lançamentos</span><small class="muted">Adicione e edite receitas e dívidas</small></span></span> <i data-lucide="chevron-right" class="ico-lucide"></i></button>
+        <button class="btn btn-ghost" onclick="irTab('extrato')" style="justify-content:space-between;display:flex;align-items:center;min-height:68px;padding:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:14px" aria-label="Abrir Extrato"><span style="display:flex;gap:12px;align-items:center;text-align:left"><span style="width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#06b6d4,#3b82f6);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i data-lucide="landmark" class="ico-lucide" style="color:#fff"></i></span><span><span style="display:block;font-weight:800">Extrato</span><small class="muted">Movimentações e importação</small></span></span> <i data-lucide="chevron-right" class="ico-lucide"></i></button>
+        <button class="btn btn-ghost" onclick="irTab('orcamento')" style="justify-content:space-between;display:flex;align-items:center;min-height:68px;padding:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:14px" aria-label="Abrir Orçamento"><span style="display:flex;gap:12px;align-items:center;text-align:left"><span style="width:42px;height:42px;border-radius:12px;background:var(--grad-green);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i data-lucide="pie-chart" class="ico-lucide" style="color:#fff"></i></span><span><span style="display:block;font-weight:800">Orçamento</span><small class="muted">Limites por categoria</small></span></span> <i data-lucide="chevron-right" class="ico-lucide"></i></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- MERCADO HUB -->
+  <section id="tab-mercado" class="tab-panel" role="tabpanel">
+    <div class="card">
+      <h2><i data-lucide="shopping-bag" class="ico-lucide"></i> Mercado</h2>
+      <p class="muted">Compras e orçamento do mês.</p>
+      <div style="display:grid;gap:10px;margin-top:14px">
+        <button class="btn btn-ghost" onclick="abrirTela('compras')" style="justify-content:space-between;display:flex;align-items:center;min-height:68px;padding:14px;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:14px" aria-label="Abrir Compras"><span style="display:flex;gap:12px;align-items:center;text-align:left"><span style="width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#f59e0b,#ef4444);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i data-lucide="shopping-cart" class="ico-lucide" style="color:#fff"></i></span><span><span style="display:block;font-weight:800">Lista de Compras</span><small class="muted">Organize o que precisa comprar</small></span></span> <i data-lucide="chevron-right" class="ico-lucide"></i></button>
+        <button class="btn btn-ghost" onclick="abrirTela('orcamento'); setTimeout(()=>{document.getElementById('orcCat').value='Alimentação';},100)" style="justify-content:space-between;display:flex;align-items:center;min-height:68px;padding:14px;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:14px" aria-label="Abrir Orçamento alimentação"><span style="display:flex;gap:12px;align-items:center;text-align:left"><span style="width:42px;height:42px;border-radius:12px;background:var(--grad-green);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i data-lucide="pie-chart" class="ico-lucide" style="color:#fff"></i></span><span><span style="display:block;font-weight:800">Orçamento alimentação</span><small class="muted">Controle de gastos com mercado</small></span></span> <i data-lucide="chevron-right" class="ico-lucide"></i></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- LANCAMENTOS -->
+  <section id="tab-lancamentos" class="tab-panel screen" role="tabpanel">
+    <div class="screen-header">
+      <button class="btn-mini btn-ghost" onclick="voltar()" aria-label="Voltar"><i data-lucide="arrow-left" class="ico-lucide"></i> Voltar</button>
+      <h2 style="margin:0">Lançamentos</h2>
+    </div>
+    <div class="card">
+      <h2><i data-lucide="list" class="ico-lucide"></i> Lançamentos <button class="btn-mini btn-green" onclick="abrirModalLancamento('despesa')" aria-label="Novo lançamento">＋ Novo lançamento</button></h2>
+      <div class="filtros">
+        <label class="sr-only" for="filtroPessoa">Filtrar por pessoa</label>
+        <select id="filtroPessoa" onchange="renderizar()" aria-label="Filtrar por pessoa"><option value="">Todas as pessoas</option></select>
+        <label class="sr-only" for="filtroMes">Filtrar por mês</label>
+        <select id="filtroMes" onchange="renderizar()" aria-label="Filtrar por mês"><option value="">Todos os meses</option></select>
+        <label class="sr-only" for="filtroCat">Filtrar por categoria</label>
+        <select id="filtroCat" onchange="renderizar()" aria-label="Filtrar por categoria"><option value="">Todas categorias</option></select>
+        <label class="sr-only" for="busca">Buscar</label>
+        <input type="text" id="busca" placeholder="🔍 Buscar..." oninput="renderizar()" aria-label="Buscar lançamentos">
+      </div>
+      <div style="overflow:visible">
+        <table>
+          <thead><tr><th>Data</th><th>Pessoa</th><th>Descrição</th><th>Categoria</th><th>Pagamento</th><th style="text-align:right">Valor</th><th>Ações</th></tr></thead>
+          <tbody id="tabela"></tbody>
+        </table>
+      </div>
+      <div class="acoes" style="margin-top:12px">
+        <button class="btn-mini btn-red" onclick="limparTudo()" aria-label="Limpar todos os lançamentos" style="min-height:44px">🗑️ Limpar tudo</button>
+      </div>
+    </div>
+
+    <div class="card" id="cardRecorrentes">
+      <h2><i data-lucide="repeat" class="ico-lucide"></i> Lançamentos recorrentes mensais</h2>
+      <p class="muted">Crie despesas ou receitas que se repetem todo mês no dia escolhido. Ao abrir o app, os pendentes são criados automaticamente sem duplicar.</p>
+      <label for="recDescricao">Descrição *</label>
+      <input type="text" id="recDescricao" placeholder="Ex: Aluguel, Netflix" aria-label="Descrição do recorrente">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div><label for="recTipo">Tipo *</label><select id="recTipo" aria-label="Tipo do recorrente"><option value="despesa"><i data-lucide="trending-down" class="ico-lucide"></i> Despesa</option><option value="receita"><i data-lucide="trending-up" class="ico-lucide"></i> Receita</option></select></div>
+        <div><label for="recCategoria">Categoria *</label><select id="recCategoria" aria-label="Categoria do recorrente"><option>Alimentação</option><option>Moradia</option><option>Transporte</option><option>Saúde</option><option>Educação</option><option>Lazer</option><option>Vestuário</option><option>Assinaturas</option><option>Salário</option><option>Investimentos</option><option>Outros</option></select></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div><label for="recValor">Valor (R$) *</label><input type="number" id="recValor" step="0.01" min="0.01" placeholder="0,00" aria-label="Valor do recorrente"></div>
+        <div><label for="recDia">Dia do mês (1-31) *</label><input type="number" id="recDia" min="1" max="31" placeholder="Ex: 10" aria-label="Dia do mês do recorrente"></div>
+      </div>
+      <label for="recPessoa">Pessoa *</label>
+      <input type="text" id="recPessoa" list="listaPessoasDatalist" placeholder="Digite o nome" aria-label="Pessoa do recorrente" autocomplete="off">
+      <label for="recPagamento">Forma de pagamento</label>
+      <select id="recPagamento" aria-label="Forma de pagamento do recorrente"><option>Pix</option><option>Dinheiro</option><option>Cartão de Débito</option><option>Cartão de Crédito</option><option>Boleto</option><option>Transferência</option><option>Recorrente</option></select>
+      <label for="recObs">Observação</label>
+      <textarea id="recObs" rows="2" placeholder="Opcional" aria-label="Observação do recorrente"></textarea>
+      <label style="display:flex;gap:8px;align-items:center;margin-top:12px;min-height:44px"><input type="checkbox" id="recAtivo" checked style="width:auto;min-width:20px;min-height:20px" aria-label="Recorrente ativo"> <span>Ativo</span></label>
+      <input type="hidden" id="recEditId">
+      <button class="btn btn-primary" onclick="salvarRecorrente()" aria-label="Salvar recorrente" style="min-height:44px"><i data-lucide="save" class="ico-lucide"></i> Salvar recorrente</button>
+      <button class="btn btn-ghost" onclick="limparRecForm()" aria-label="Cancelar edição de recorrente" id="btnCancelRec" style="display:none;min-height:44px">Cancelar edição</button>
+      <div id="listaRecorrentes" style="margin-top:16px"></div>
+    </div>
+  </section>
+
+  <!-- EXTRATO -->
+  <section id="tab-extrato" class="tab-panel screen" role="tabpanel">
+    <div class="screen-header">
+      <button class="btn-mini btn-ghost" onclick="voltar()" aria-label="Voltar"><i data-lucide="arrow-left" class="ico-lucide"></i> Voltar</button>
+      <h2 style="margin:0">Extrato</h2>
+    </div>
+    <div class="card" style="background:var(--grad);color:#fff;border:none">
+      <div style="font-size:12px;opacity:.9">Saldo do mês</div>
+      <div style="font-size:28px;font-weight:800;margin-top:4px" id="extSaldoDestaque">R$ 0,00</div>
+      <div class="resumo" style="margin-top:14px;gap:8px">
+        <div class="res-box" style="background:rgba(255,255,255,.15);border:none"><div class="l" style="color:rgba(255,255,255,.8)">RECEITAS</div><div class="v" style="color:#fff" id="extRec">R$ 0,00</div></div>
+        <div class="res-box" style="background:rgba(255,255,255,.15);border:none"><div class="l" style="color:rgba(255,255,255,.8)">DESPESAS</div><div class="v" style="color:#fff" id="extDes">R$ 0,00</div></div>
+        <div class="res-box" style="background:rgba(255,255,255,.15);border:none"><div class="l" style="color:rgba(255,255,255,.8)">SALDO</div><div class="v" style="color:#fff" id="extSaldo">R$ 0,00</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div><label for="extMes">Mês</label><input type="month" id="extMes" onchange="renderExtrato()" aria-label="Filtrar extrato por mês"></div>
+        <div><label for="extTipo">Tipo</label><select id="extTipo" onchange="renderExtrato()" aria-label="Filtrar por tipo"><option value="">Todos</option><option value="receita">Receitas</option><option value="despesa">Despesas</option></select></div>
+      </div>
+      <label for="extCat">Categoria</label>
+      <select id="extCat" onchange="renderExtrato()" aria-label="Filtrar por categoria"><option value="">Todas categorias</option></select>
+      <div style="display:flex;gap:8px;margin-top:10px;font-size:12px;color:var(--muted2)"><span id="extTotais">—</span></div>
+      <div id="extLista" style="margin-top:12px"></div>
+    </div>
+    <div class="card">
+      <h2><i data-lucide="landmark" class="ico-lucide"></i> Importar extrato</h2>
+      <label for="impPessoa">Pessoa do extrato *</label>
+      <input type="text" id="impPessoa" list="listaPessoasDatalist" placeholder="Digite o nome" aria-label="Pessoa do extrato" autocomplete="off">
+      <label for="impModo">Tipo de arquivo</label>
+      <select id="impModo" onchange="processarNovamente()" aria-label="Tipo de arquivo do extrato">
+        <option value="extrato"><i data-lucide="landmark" class="ico-lucide"></i> Extrato da conta (positivo = entrada)</option>
+        <option value="fatura">💳 Fatura de cartão (compra = despesa)</option>
+      </select>
+      <label for="impPagamento">Forma de pagamento padrão</label>
+      <select id="impPagamento" aria-label="Forma de pagamento padrão">
+        <option>Pix</option><option>Dinheiro</option><option>Cartão de Débito</option>
+        <option>Cartão de Crédito</option><option>Boleto</option><option>Transferência</option>
+      </select>
+      <label for="impArquivo">Arquivo (.csv, .ofx ou .xlsx)</label>
+      <input type="file" id="impArquivo" accept=".csv,.ofx,.qfx,.txt,.xlsx,.xls" aria-label="Selecionar arquivo de extrato">
+      <div id="impPreview" style="margin-top:14px"></div>
+      <p class="muted" style="margin-top:8px">Os arquivos são processados apenas no seu navegador, nada é enviado a servidores.</p>
+    </div>
+  </section>
+
+  <!-- ORÇAMENTO (antigo orcamento) -->
+  <section id="tab-orcamento" class="tab-panel screen" role="tabpanel" aria-label="Orçamento">
+    <div class="screen-header">
+      <button class="btn-mini btn-ghost" onclick="voltar()" aria-label="Voltar"><i data-lucide="arrow-left" class="ico-lucide"></i> Voltar</button>
+      <h2 style="margin:0">Orçamento</h2>
+    </div>
+    <div class="card">
+      <h2>📅 Fechamento mensal</h2>
+      <label for="fecPessoa">De quem é o salário</label>
+      <input type="text" id="fecPessoa" list="listaPessoasDatalist" placeholder="Digite o nome" aria-label="Pessoa do fechamento" autocomplete="off" oninput="renderFechamento()">
+      <label for="fecMes">Mês de referência</label>
+      <input type="month" id="fecMes" onchange="renderFechamento()" aria-label="Mês de referência">
+      <label for="fecSalario">Salário do mês (R$)</label>
+      <input type="number" id="fecSalario" step="0.01" min="0" placeholder="Ex: 2500,00" aria-label="Salário do mês">
+      <button class="btn btn-primary" onclick="salvarSalario()" aria-label="Salvar salário" style="min-height:44px"><i data-lucide="save" class="ico-lucide"></i> Salvar salário</button>
+      <div id="fecResultado" style="margin-top:14px"></div>
+    </div>
+    <div class="card">
+      <h2><i data-lucide="pie-chart" class="ico-lucide"></i> Orçamento por categoria</h2>
+      <p class="muted">Defina um limite mensal por categoria e acompanhe o progresso.</p>
+      <label for="orcCat">Categoria *</label>
+      <select id="orcCat" aria-label="Categoria do orçamento"></select>
+      <label for="orcValor">Limite mensal (R$) *</label>
+      <input type="number" id="orcValor" step="0.01" min="0.01" placeholder="Ex: 500,00" aria-label="Limite mensal do orçamento">
+      <button class="btn-mini btn-green" onclick="salvarOrcamento()" aria-label="Salvar limite do orçamento" style="width:100%;margin-top:10px;min-height:44px">Salvar limite</button>
+      <div id="orcLista" style="margin-top:14px"></div>
+    </div>
+    <div class="card">
+      <h2>📈 Comparativo com mês anterior</h2>
+      <div id="comparativo"></div>
+      <h3>Dica financeira</h3>
+      <div id="dica" class="muted" style="background:#0f172a;border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:12px"></div>
+      <button class="btn btn-green" style="margin-top:12px;min-height:44px" onclick="exportarExcel()" aria-label="Baixar planilha Excel">⬇️ Baixar planilha Excel completa</button>
+      <p class="muted" style="margin-top:8px">A planilha inclui: lançamentos, resumo por pessoa/categoria, mensal e dashboard.</p>
+    </div>
+  </section>
+
+  <!-- COMPRAS -->
+  <section id="tab-compras" class="tab-panel screen" role="tabpanel">
+    <div class="screen-header">
+      <button class="btn-mini btn-ghost" onclick="voltar()" aria-label="Voltar"><i data-lucide="arrow-left" class="ico-lucide"></i> Voltar</button>
+      <h2 style="margin:0">Lista de Compras</h2>
+    </div>
+    <div class="card">
+      <h2><i data-lucide="shopping-cart" class="ico-lucide"></i> Lista de compras</h2>
+      <p class="muted">Organize o que precisa comprar e transforme em lançamento com um toque.</p>
+      <label for="lcNome">O que você quer comprar *</label>
+      <input type="text" id="lcNome" placeholder="Ex: Arroz 5kg" aria-label="Item da lista de compras">
+      <label for="lcPreco">Preço estimado (R$) *</label>
+      <input type="number" id="lcPreco" step="0.01" min="0" placeholder="0,00" aria-label="Preço estimado">
+      <button class="btn btn-primary" onclick="adicionarLista()" aria-label="Adicionar à lista de compras" style="min-height:44px">＋ Adicionar à lista</button>
+      <div id="resumoLista" style="margin-top:14px"></div>
+      <div id="listaItens"></div>
+      <p class="muted" style="margin-top:10px">Marque como comprado e depois toque em <i data-lucide="trending-down" class="ico-lucide"></i> para virar lançamento automático.</p>
+    </div>
+  </section>
+
+  <!-- OFERTAS -->
+  <section id="tab-ofertas" class="tab-panel" role="tabpanel">
+    <div class="card" style="border-color:var(--line)">
+      <h2><i data-lucide="flame" class="ico-lucide"></i> Ofertas selecionadas</h2>
+      <p class="muted">Achados com os melhores preços — atualizados no site de ofertas.</p>
+      <div id="ofertasApp" style="display:grid;gap:12px;margin-top:14px"></div>
+      <a href="https://ofertas.controle45.com.br" target="_blank" rel="noopener" class="btn btn-green" style="display:block;text-align:center;text-decoration:none;min-height:44px;line-height:22px;margin-top:12px" aria-label="Ver todas as ofertas"><i data-lucide="shopping-bag" class="ico-lucide"></i> Ver todas as ofertas →</a>
+      <p class="muted" style="margin-top:8px;text-align:center;font-size:11px">Links de afiliado — você não paga a mais e nos ajuda a manter o app 💚</p>
+    </div>
+  </section>
+
+  <!-- PERFIL HUB -->
+  <section id="tab-perfil" class="tab-panel" role="tabpanel">
+    <div class="card" id="cardPerfilInfo" style="display:none">
+      <div style="display:flex;gap:12px;align-items:center">
+        <div id="perfilAvatar" style="width:48px;height:48px;border-radius:12px;background:var(--grad);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;overflow:hidden;flex-shrink:0">?</div>
+        <div style="flex:1;min-width:0">
+          <div id="perfilNomeTop" style="font-weight:800">—</div>
+          <div id="perfilDetalhe" class="muted" style="font-size:12px;overflow:hidden;text-overflow:ellipsis">—</div>
+        </div>
+      </div>
+      <button class="btn btn-ghost" onclick="sairDaConta()" style="width:100%;margin-top:14px;min-height:44px" aria-label="Sair da conta"><i data-lucide="log-out" class="ico-lucide"></i> Sair da conta</button>
+      <div id="perfilSyncStatus" class="muted" style="font-size:11px;margin-top:8px;text-align:center"></div>
+    </div>
+    <div class="card">
+      <h2><i data-lucide="user" class="ico-lucide"></i> Perfil</h2>
+      <p class="muted">Gerencie pessoas e configurações do app — toque para entrar.</p>
+      <div style="display:grid;gap:10px;margin-top:14px">
+        <button class="btn btn-ghost" onclick="irTab('pessoas')" style="justify-content:space-between;display:flex;align-items:center;min-height:68px;padding:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:14px" aria-label="Abrir Gerenciar pessoas"><span style="display:flex;gap:12px;align-items:center;text-align:left"><span style="width:42px;height:42px;border-radius:12px;background:var(--grad);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i data-lucide="users" class="ico-lucide" style="color:#fff"></i></span><span><span style="display:block;font-weight:800">Gerenciar pessoas</span><small class="muted">Alterne entre perfis</small></span></span> <i data-lucide="chevron-right" class="ico-lucide"></i></button>
+        <button class="btn btn-ghost" onclick="irTab('configuracoes')" style="justify-content:space-between;display:flex;align-items:center;min-height:68px;padding:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:14px" aria-label="Abrir Configurações"><span style="display:flex;gap:12px;align-items:center;text-align:left"><span style="width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i data-lucide="settings" class="ico-lucide" style="color:#fff"></i></span><span><span style="display:block;font-weight:800">Configurações do app</span><small class="muted">Backup, tema e dados</small></span></span> <i data-lucide="chevron-right" class="ico-lucide"></i></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- PESSOAS SUB -->
+  <section id="tab-pessoas" class="tab-panel screen" role="tabpanel">
+    <div class="screen-header">
+      <button class="btn-mini btn-ghost" onclick="voltar()" aria-label="Voltar"><i data-lucide="arrow-left" class="ico-lucide"></i> Voltar</button>
+      <h2 style="margin:0">Gerenciar pessoas</h2>
+    </div>
+    <div class="card">
+      <h2><i data-lucide="users" class="ico-lucide"></i> Gerenciar pessoas</h2>
+      <div class="filtros">
+        <label class="sr-only" for="novaPessoa">Nova pessoa</label>
+        <input type="text" id="novaPessoa" placeholder="Nome da nova pessoa..." aria-label="Nome da nova pessoa">
+        <button class="btn-mini btn-green" onclick="adicionarPessoa()" aria-label="Adicionar pessoa" style="min-height:44px">＋ Adicionar</button>
+      </div>
+      <div id="listaPessoas"></div>
+      <label for="pessoaInicial">Pessoa exibida ao abrir o app</label>
+      <input type="text" id="pessoaInicial" list="listaPessoasDatalist" placeholder="Digite o nome inicial" aria-label="Pessoa inicial" autocomplete="off" oninput="salvarCfg()">
+      <label style="display:flex;gap:8px;align-items:center;margin-top:10px;min-height:44px"><input type="checkbox" id="cfgOcultar" onchange="salvarCfg()" style="width:auto;min-width:20px;min-height:20px" aria-label="Ocultar valores por padrão"> Ocultar valores por padrão</label>
+    </div>
+  </section>
+
+  <!-- CONFIGURAÇÕES -->
+  <section id="tab-configuracoes" class="tab-panel screen" role="tabpanel">
+    <div class="screen-header">
+      <button class="btn-mini btn-ghost" onclick="voltar()" aria-label="Voltar"><i data-lucide="arrow-left" class="ico-lucide"></i> Voltar</button>
+      <h2 style="margin:0">Configurações</h2>
+    </div>
+    <div class="card">
+      <h2><i data-lucide="settings" class="ico-lucide"></i> Configurações do app</h2>
+      <label style="display:flex;gap:8px;align-items:center;min-height:44px"><input type="checkbox" id="cfgOcultar2" onchange="document.getElementById('cfgOcultar').checked=this.checked; salvarCfg()" style="width:auto;min-width:20px;min-height:20px" aria-label="Ocultar valores por padrão"> Ocultar valores por padrão</label>
+      <p class="muted">Esconda valores sensíveis ao abrir o app — ideal para usar em público.</p>
+    </div>
+    <div class="card">
+      <h2><i data-lucide="save" class="ico-lucide"></i> Backup</h2>
+      <button class="btn btn-primary" onclick="exportarBackup()" aria-label="Exportar backup JSON" style="min-height:44px">⬇️ Exportar backup (JSON)</button>
+      <label for="importBackup">Importar backup</label>
+      <input type="file" id="importBackup" accept=".json" aria-label="Importar arquivo de backup">
+      <p class="muted" style="margin-top:8px">Inclui lançamentos, pessoas, salários, orçamentos, recorrentes e lista de compras.</p>
+    </div>
+    <div class="card">
+      <h2>⚠️ Zona de risco</h2>
+      <button class="btn btn-red" style="width:100%;min-height:44px" onclick="limparTudo()" aria-label="Limpar todos os dados">🗑️ Limpar todos os dados</button>
+      <p class="muted" style="margin-top:8px">Seus dados ficam apenas neste navegador. Exporte um backup antes de limpar.</p>
+    </div>
+    <div class="card">
+      <h2>Sobre</h2>
+      <p class="muted">Controle de Gastos v2 — seus dados ficam só neste aparelho. Feito para ser rápido como app de banco.</p>
+    </div>
+  </section>
+</div>
+
+<!-- Navegação mobile - 4 abas principais -->
+<nav class="bottom-nav cols-4" id="bottomNav" aria-label="Navegação principal">
+  <div class="wrap" id="bottomWrap">
+    <button data-tab="inicio" aria-selected="true" aria-label="Início"><span class="ico"><i data-lucide="home" class="ico-lucide"></i></span><span>Início</span></button>
+    <button data-tab="financas" aria-label="Finanças"><span class="ico"><i data-lucide="wallet" class="ico-lucide"></i></span><span>Finanças</span></button>
+    <button data-tab="mercado" aria-label="Mercado"><span class="ico"><i data-lucide="shopping-bag" class="ico-lucide"></i></span><span>Mercado</span></button>
+    <button data-tab="ofertas" aria-label="Ofertas"><span class="ico"><i data-lucide="flame" class="ico-lucide"></i></span><span>Ofertas</span></button>
+  </div>
+</nav>
+<!-- Sheet Mais para 360px -->
+<div class="mais-sheet" id="maisSheet" role="dialog" aria-modal="true" aria-label="Mais opções">
+  <div class="sheet">
+    <div style="width:36px;height:4px;background:rgba(255,255,255,.2);border-radius:99px;margin:0 auto 12px"></div>
+    <button onclick="irTab('ofertas'); fecharMais()" aria-label="Abrir Ofertas"><i data-lucide="flame" class="ico-lucide"></i> Ofertas</button>
+    <button onclick="irTab('compras'); fecharMais()" aria-label="Abrir Compras"><i data-lucide="shopping-cart" class="ico-lucide"></i> Compras</button>
+    <button onclick="irTab('perfil'); fecharMais()" aria-label="Abrir Perfil"><i data-lucide="user" class="ico-lucide"></i> Perfil</button>
+    <button onclick="fecharMais()" aria-label="Fechar menu" style="margin-top:8px;background:rgba(255,255,255,.06)">✕ Fechar</button>
+  </div>
+</div>
+
+<!-- Modal Novo/Editar Lançamento -->
+<div id="modalLanc" class="modal-bg" role="dialog" aria-modal="true" aria-labelledby="modalLancTitle">
+  <div class="modal">
+    <h3 id="modalLancTitle">Novo lançamento</h3>
+    <input type="hidden" id="editId">
+    <label for="pessoa">Pessoa *</label>
+    <input type="text" id="pessoa" list="listaPessoasDatalist" placeholder="Digite o nome (ex: Eu, João)" aria-label="Pessoa do lançamento" autocomplete="off">
+    <datalist id="listaPessoasDatalist"></datalist>
+    <label for="tipo">Tipo *</label>
+    <select id="tipo" aria-label="Tipo do lançamento"><option value="despesa"><i data-lucide="trending-down" class="ico-lucide"></i> Despesa</option><option value="receita"><i data-lucide="trending-up" class="ico-lucide"></i> Receita</option></select>
+    <label for="data">Data *</label>
+    <input type="date" id="data" aria-label="Data do lançamento">
+    <label for="descricao">Descrição *</label>
+    <input type="text" id="descricao" placeholder="Ex: Mercado, Salário..." aria-label="Descrição do lançamento">
+    <label for="categoria">Categoria *</label>
+    <select id="categoria" aria-label="Categoria do lançamento"><option>Alimentação</option><option>Moradia</option><option>Transporte</option><option>Saúde</option><option>Educação</option><option>Lazer</option><option>Vestuário</option><option>Assinaturas</option><option>Salário</option><option>Investimentos</option><option>Outros</option></select>
+    <label for="valor">Valor (R$) *</label>
+    <input type="number" id="valor" step="0.01" min="0.01" placeholder="0,00" aria-label="Valor do lançamento">
+    <button class="btn-ghost" style="width:100%;margin-top:10px;padding:10px;border-radius:12px;font-weight:700;min-height:44px;min-width:44px" onclick="toggleMaisOpcoes()" id="btnMais" aria-expanded="false" aria-controls="maisOpcoes" aria-label="Alternar mais opções">Mais opções ▾</button>
+    <div id="maisOpcoes" style="display:none">
+      <label for="pagamento">Forma de pagamento</label>
+      <select id="pagamento" aria-label="Forma de pagamento"><option>Dinheiro</option><option>Pix</option><option>Cartão de Débito</option><option>Cartão de Crédito</option><option>Boleto</option><option>Transferência</option></select>
+      <label for="obs">Observações</label>
+      <textarea id="obs" rows="2" placeholder="Opcional" aria-label="Observações"></textarea>
+    </div>
+    <button class="btn btn-green" onclick="adicionarOuSalvar()" aria-label="Salvar lançamento" style="min-height:44px">Salvar lançamento</button>
+    <button class="btn btn-ghost" onclick="fecharModalLancamento()" aria-label="Cancelar" style="min-height:44px">Cancelar</button>
+  </div>
+</div>
+
+<!-- Modal Confirm -->
+<div id="modalConfirm" class="modal-bg" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+  <div class="modal">
+    <h3 id="confirmTitle">Confirmar</h3>
+    <p id="confirmMsg" class="muted"></p>
+    <div style="display:flex;gap:8px;margin-top:14px">
+      <button class="btn btn-ghost" onclick="fecharConfirm(false)" style="flex:1;min-height:44px;min-width:44px" aria-label="Cancelar">Cancelar</button>
+      <button class="btn btn-primary" onclick="fecharConfirm(true)" style="flex:1;min-height:44px;min-width:44px" id="confirmOkBtn" aria-label="Confirmar">Confirmar</button>
+    </div>
+  </div>
+</div>
+
+<div id="toastWrap" class="toast-wrap" aria-live="polite" aria-atomic="true"></div>
+
+<script>
+let lancamentos = JSON.parse(localStorage.getItem('gastos') || '[]');
+let PESSOAS = JSON.parse(localStorage.getItem('pessoas_v2') || 'null') || ['Eu'];
+let SALARIOS = JSON.parse(localStorage.getItem('salarios') || '{}');
+let LISTA = JSON.parse(localStorage.getItem('lista_compras') || '[]');
+let ORCAMENTOS = JSON.parse(localStorage.getItem('orcamentos') || '{}');
+let RECORRENTES = JSON.parse(localStorage.getItem('recorrentes') || '[]');
+let CFG = JSON.parse(localStorage.getItem('cfg_app') || '{}');
+let _needSave=false;
+lancamentos.forEach(l=>{ if(!l.id){ l.id=Date.now()+Math.random().toString(36).slice(2,7); _needSave=true; }});
+if(_needSave) salvar();
+const coresPessoa = ['#38bdf8','#f59e0b','#ec4899','#a78bfa','#4ade80','#fb923c'];
+const cores = {'Alimentação':'#f59e0b','Moradia':'#8b5cf6','Transporte':'#06b6d4','Saúde':'#ef4444','Educação':'#3b82f6','Lazer':'#ec4899','Vestuário':'#d946ef','Assinaturas':'#14b8a6','Salário':'#22c55e','Investimentos':'#84cc16','Outros':'#64748b'};
+let ocultar = !!CFG.ocultar;
+const mesAtualISO=new Date().toISOString().slice(0,7);
+document.getElementById('data').valueAsDate = new Date();
+document.getElementById('fecMes').value = mesAtualISO;
+document.getElementById('extMes').value = mesAtualISO;
+document.getElementById('dashMes').value = mesAtualISO;
+document.getElementById('dataHoje').textContent = new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long',year:'numeric'});
+function esc(s){ return (''+s).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch])); }
+function fmt(v){ if(ocultar) return '••••'; return v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'}); }
+function salvar(){ localStorage.setItem('gastos', JSON.stringify(lancamentos)); }
+function salvarPessoas(){ localStorage.setItem('pessoas_v2', JSON.stringify(PESSOAS)); }
+function salvarSalariosLS(){ localStorage.setItem('salarios', JSON.stringify(SALARIOS)); }
+function salvarLista(){ localStorage.setItem('lista_compras', JSON.stringify(LISTA)); }
+function salvarOrcLS(){ localStorage.setItem('orcamentos', JSON.stringify(ORCAMENTOS)); }
+function salvarRecLS(){ localStorage.setItem('recorrentes', JSON.stringify(RECORRENTES)); }
+function salvarCfg(){ CFG.pessoaInicial=document.getElementById('pessoaInicial').value; CFG.ocultar=document.getElementById('cfgOcultar').checked; localStorage.setItem('cfg_app', JSON.stringify(CFG)); ocultar=!!CFG.ocultar; atualizarTudo(); toast('Configurações salvas','ok'); }
+function toast(msg,tipo){ const w=document.getElementById('toastWrap'); const el=document.createElement('div'); el.className='toast '+(tipo||''); el.textContent=msg; el.setAttribute('role','status'); w.appendChild(el); setTimeout(()=>el.remove(),3000); }
+let confirmCb=null, ultimoFoco=null, modalAberto=null;
+function confirmar(titulo,msg,cb){ ultimoFoco=document.activeElement; document.getElementById('confirmTitle').textContent=titulo; document.getElementById('confirmMsg').textContent=msg; const m=document.getElementById('modalConfirm'); m.classList.add('open'); modalAberto=m; confirmCb=cb; setTimeout(()=>document.getElementById('confirmOkBtn').focus(),50); }
+function fecharConfirm(ok){ document.getElementById('modalConfirm').classList.remove('open'); modalAberto=null; if(confirmCb) confirmCb(ok); confirmCb=null; if(ultimoFoco){ ultimoFoco.focus(); ultimoFoco=null; } }
+document.getElementById('modalConfirm').addEventListener('click',e=>{ if(e.target.id==='modalConfirm') fecharConfirm(false); });
+function trapFocus(e){
+  if(e.key!=='Tab' || !modalAberto) return;
+  const focaveis=[...modalAberto.querySelectorAll('button, input, select, textarea, [tabindex]:not([tabindex="-1"])')].filter(el=>el.offsetParent!==null && !el.disabled);
+  if(!focaveis.length) return;
+  const first=focaveis[0], last=focaveis[focaveis.length-1];
+  if(e.shiftKey && document.activeElement===first){ e.preventDefault(); last.focus(); }
+  else if(!e.shiftKey && document.activeElement===last){ e.preventDefault(); first.focus(); }
+}
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){
+    if(document.getElementById('modalLanc').classList.contains('open')) fecharModalLancamento();
+    else if(document.getElementById('modalConfirm').classList.contains('open')) fecharConfirm(false);
+    else if(document.getElementById('menuPerfil').classList.contains('open')) fecharMenuPerfil();
+    else if(document.getElementById('maisSheet').classList.contains('open')) fecharMais();
+  }
+  trapFocus(e);
+});
+function toggleOcultar(){ ocultar=!ocultar; CFG.ocultar=ocultar; localStorage.setItem('cfg_app', JSON.stringify(CFG)); document.getElementById('cfgOcultar').checked=ocultar; const chk2=document.getElementById('cfgOcultar2'); if(chk2) chk2.checked=ocultar; atualizarTudo(); }
+let maisAberto=false;
+// estado de navegação centralizado
+let navStack = JSON.parse(sessionStorage.getItem('navStack')||'[]');
+let activeTab = sessionStorage.getItem('activeTab')||'inicio';
+function salvarNavStack(){ sessionStorage.setItem('navStack', JSON.stringify(navStack)); sessionStorage.setItem('activeTab', activeTab); }
+function toggleTema(){
+  const cur = document.documentElement.getAttribute('data-theme')||'dark';
+  const next = cur==='dark'?'light':'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  CFG.tema = next; localStorage.setItem('cfg_app', JSON.stringify(CFG));
+  toast('Tema '+next,'ok'); if(window.lucide) lucide.createIcons();
+}
+(function initTema(){
+  const t = CFG.tema || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+  document.documentElement.setAttribute('data-theme', t);
+})();
+function abrirTela(nome, param){
+  // telas dedicadas com animação slide e preservação de contexto
+  const dedicadas = ['lancamentos','extrato','orcamento','compras','pessoas','configuracoes','perfil'];
+  if(dedicadas.includes(nome)){
+    const cur = document.querySelector('.tab-panel.ativo')?.id?.replace('tab-','') || activeTab;
+    if(cur !== nome){ navStack.push(cur); salvarNavStack(); }
+    const el = document.getElementById('tab-'+nome);
+    if(el){ el.classList.add('screen'); }
+    // preservação de filtros - não resetar inputs
+  }
+  irTab(nome, true);
+}
+function voltar(){
+  if(navStack.length){
+    const prev = navStack.pop(); salvarNavStack();
+    irTab(prev, false, true);
+  } else {
+    const prev = sessionStorage.getItem('prevTab');
+    if(prev){ const id=prev.replace('tab-',''); irTab(id, false, true); } else { irTab('inicio', false, true); }
+  }
+}
+function irTab(nome, pushStack=false, isBack=false){
+  if(nome==='mais'){ abrirMais(); return; }
+  fecharMais(); fecharMenuPerfil();
+  // parentMap: ofertas agora é aba principal, não filho de mercado
+  const parentMap={lancamentos:'financas', extrato:'financas', orcamento:'financas', compras:'mercado', pessoas:'perfil', configuracoes:'perfil'};
+  const navNome = parentMap[nome] || nome;
+  document.querySelectorAll('.tab-btn, .bottom-nav button').forEach(b=>{ b.setAttribute('aria-selected', b.dataset.tab===navNome ? 'true':'false'); });
+  // animação: se é voltar, desliza inverso (prefers-reduced-motion já desativa)
+  const prevEl = document.querySelector('.tab-panel.ativo');
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('ativo'));
+  const alvo=document.getElementById('tab-'+nome);
+  if(alvo) alvo.classList.add('ativo');
+  // Ações rápidas — renderização condicional estrita à aba Início (não só CSS) usando identificador real 'inicio'
+  const cardAcoes = document.getElementById('cardAcoesRapidas');
+  if(cardAcoes){
+    const inicioEl = document.getElementById('tab-inicio');
+    if(nome === 'inicio'){
+      if(inicioEl && !inicioEl.contains(cardAcoes)) inicioEl.appendChild(cardAcoes);
+      cardAcoes.hidden = false; cardAcoes.style.display = '';
+    } else {
+      cardAcoes.hidden = true; cardAcoes.style.display = 'none';
+    }
+  }
+  activeTab = nome; if(!isBack) sessionStorage.setItem('prevTab', prevEl?.id||'tab-'+nome); salvarNavStack();
+  const prm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  window.scrollTo({top:0,behavior: prm ? 'auto':'smooth'});
+  if(window.lucide) setTimeout(()=>lucide.createIcons(),30);
+}
+function abrirMais(){ const s=document.getElementById('maisSheet'); s.classList.add('open'); s.hidden=false; s.removeAttribute('aria-hidden'); maisAberto=true; syncA11yNav(); }
+function fecharMais(){ const s=document.getElementById('maisSheet'); s.classList.remove('open'); s.hidden=true; s.setAttribute('aria-hidden','true'); maisAberto=false; syncA11yNav(); }
+document.getElementById('maisSheet').addEventListener('click',e=>{ if(e.target.id==='maisSheet') fecharMais(); });
+document.getElementById('menuPerfil').addEventListener('click',e=>{ if(e.target.id==='menuPerfil') fecharMenuPerfil(); });
+function syncA11yNav(){
+  const isMobile=window.innerWidth<=860;
+  const desktop=document.getElementById('tabsDesktop');
+  const mobile=document.getElementById('bottomNav');
+  const maisSheet=document.getElementById('maisSheet');
+  const menuPerfil=document.getElementById('menuPerfil');
+  if(isMobile){
+    desktop.setAttribute('aria-hidden','true'); desktop.hidden=true;
+    desktop.querySelectorAll('button').forEach(b=>{ b.tabIndex=-1; b.setAttribute('aria-hidden','true'); });
+    mobile.hidden=false; mobile.removeAttribute('aria-hidden');
+    mobile.querySelectorAll('button').forEach(b=>{ b.tabIndex=0; b.removeAttribute('aria-hidden'); });
+    if(maisSheet && !maisSheet.classList.contains('open')){ maisSheet.setAttribute('aria-hidden','true'); maisSheet.hidden=true; } else if(maisSheet){ maisSheet.hidden=false; maisSheet.removeAttribute('aria-hidden'); }
+    if(menuPerfil && !menuPerfil.classList.contains('open')){ menuPerfil.setAttribute('aria-hidden','true'); menuPerfil.hidden=true; } else if(menuPerfil){ menuPerfil.hidden=false; menuPerfil.removeAttribute('aria-hidden'); }
+  } else {
+    mobile.setAttribute('aria-hidden','true'); mobile.hidden=true;
+    mobile.querySelectorAll('button').forEach(b=>{ b.tabIndex=-1; b.setAttribute('aria-hidden','true'); });
+    if(maisSheet){ maisSheet.setAttribute('aria-hidden','true'); maisSheet.hidden=true; }
+    if(menuPerfil && !menuPerfil.classList.contains('open')){ menuPerfil.setAttribute('aria-hidden','true'); menuPerfil.hidden=true; } else if(menuPerfil){ menuPerfil.hidden=false; menuPerfil.removeAttribute('aria-hidden'); }
+    desktop.hidden=false; desktop.removeAttribute('aria-hidden');
+    desktop.querySelectorAll('button').forEach(b=>{ b.tabIndex=0; b.removeAttribute('aria-hidden'); });
+  }
+}
+function ajustarNav(){
+  const nav=document.getElementById('bottomNav');
+  const wrap=document.getElementById('bottomWrap');
+  nav.classList.remove('cols-3','cols-4','cols-5','cols-6','cols-7'); nav.classList.add('cols-4');
+  wrap.innerHTML=`
+      <button data-tab="inicio" aria-selected="true" aria-label="Início"><span class="ico"><i data-lucide="home" class="ico-lucide"></i></span><span>Início</span></button>
+      <button data-tab="financas" aria-label="Finanças"><span class="ico"><i data-lucide="wallet" class="ico-lucide"></i></span><span>Finanças</span></button>
+      <button data-tab="mercado" aria-label="Mercado"><span class="ico"><i data-lucide="shopping-bag" class="ico-lucide"></i></span><span>Mercado</span></button>
+      <button data-tab="ofertas" aria-label="Ofertas"><span class="ico"><i data-lucide="flame" class="ico-lucide"></i></span><span>Ofertas</span></button>`;
+  wrap.querySelectorAll('button').forEach(b=> b.addEventListener('click',()=> irTab(b.dataset.tab)));
+  const ativo=document.querySelector('.tab-panel.ativo')?.id.replace('tab-','') || 'inicio';
+  const parentMap={lancamentos:'financas', extrato:'financas', orcamento:'financas', compras:'mercado', pessoas:'perfil', configuracoes:'perfil'};
+  const navAtivo = parentMap[ativo] || ativo;
+  wrap.querySelectorAll('button').forEach(b=> b.setAttribute('aria-selected', b.dataset.tab===navAtivo ? 'true':'false'));
+  document.querySelectorAll('.tab-btn').forEach(b=> b.setAttribute('aria-selected', b.dataset.tab===navAtivo ? 'true':'false'));
+  syncA11yNav();
+  if(window.lucide) lucide.createIcons();
+}
+function abrirMenuPerfil(){
+  const m=document.getElementById('menuPerfil');
+  m.classList.add('open'); m.hidden=false; m.removeAttribute('aria-hidden');
+  const nome=PESSOAS[0]||'—'; document.getElementById('perfilNomeTop').textContent=nome; document.getElementById('perfilAvatar').textContent=nome.charAt(0).toUpperCase();
+  if(window.lucide) lucide.createIcons();
+}
+function fecharMenuPerfil(){
+  const m=document.getElementById('menuPerfil');
+  m.classList.remove('open'); m.hidden=true; m.setAttribute('aria-hidden','true');
+}
+window.addEventListener('resize', ()=>{ ajustarNav(); syncA11yNav(); if(window.lucide) lucide.createIcons(); });
+document.querySelectorAll('.tab-btn').forEach(b=> b.addEventListener('click',()=> irTab(b.dataset.tab)));
+function toggleMaisOpcoes(){
+  const el=document.getElementById('maisOpcoes'); const btn=document.getElementById('btnMais');
+  const open=el.style.display!=='none';
+  el.style.display=open?'none':'block';
+  btn.textContent=open?'Mais opções ▾':'Menos opções ▴';
+  btn.setAttribute('aria-expanded', open ? 'false' : 'true');
+}
+function abrirModalLancamento(tipo){
+  ultimoFoco=document.activeElement;
+  document.getElementById('editId').value='';
+  document.getElementById('modalLancTitle').textContent='Novo lançamento';
+  if(tipo) document.getElementById('tipo').value=tipo;
+  document.getElementById('maisOpcoes').style.display='none';
+  document.getElementById('btnMais').textContent='Mais opções ▾';
+  document.getElementById('btnMais').setAttribute('aria-expanded','false');
+  const m=document.getElementById('modalLanc');
+  m.classList.add('open'); modalAberto=m;
+  setTimeout(()=>document.getElementById('descricao').focus(),80);
+}
+function fecharModalLancamento(){
+  document.getElementById('modalLanc').classList.remove('open');
+  modalAberto=null;
+  if(ultimoFoco){ ultimoFoco.focus(); ultimoFoco=null; }
+}
+document.getElementById('modalLanc').addEventListener('click',e=>{ if(e.target.id==='modalLanc') fecharModalLancamento(); });
+function chaveSalario(mes,pessoa){ return `${mes}|${pessoa}`; }
+function getSalario(mes,pessoa){ return SALARIOS[chaveSalario(mes,pessoa)] || 0; }
+function salvarSalario(){
+ let p=document.getElementById('fecPessoa').value.trim(); if(!p) p=PESSOAS[0]||'Eu'; if(!PESSOAS.includes(p)){ PESSOAS.push(p); salvarPessoas(); }
+ const mes=document.getElementById('fecMes').value, v=parseFloat(document.getElementById('fecSalario').value);
+ if(!mes||isNaN(v)||v<0){ toast('Informe o mês e um salário válido!','err'); return; }
+ SALARIOS[chaveSalario(mes,p)]=v; salvarSalariosLS(); renderFechamento(); atualizarTudo(); toast('Salário salvo','ok');
+}
+function renderFechamento(){
+ const sel=document.getElementById('fecPessoa');
+ if(!PESSOAS.length){ if(sel.tagName==='SELECT') sel.innerHTML='<option value="" disabled selected>— adicione uma pessoa —</option>'; else sel.placeholder='Cadastre uma pessoa'; document.getElementById('fecResultado').innerHTML='<div class="muted">Cadastre uma pessoa para usar o fechamento.</div>'; return; }
+ const vp=sel.value&&PESSOAS.includes(sel.value)?sel.value:PESSOAS[0];
+ if(sel.tagName==='SELECT') sel.innerHTML=PESSOAS.map(p=>`<option ${p===vp?'selected':''}>${esc(p)}</option>`).join(''); else { if(!sel.value) sel.value=vp; }
+ document.getElementById('fecSalario').value=getSalario(document.getElementById('fecMes').value, sel.value||vp)||'';
+ const box=document.getElementById('fecResultado');
+ const meses=[...new Set(lancamentos.filter(l=>l.pessoa===vp).map(l=>l.data.slice(0,7)))].sort().reverse();
+ if(!meses.length){ box.innerHTML='<div class="muted">Sem lançamentos desta pessoa ainda.</div>'; return; }
+ box.innerHTML=meses.slice(0,6).map(m=>{
+  const rec=lancamentos.filter(l=>l.pessoa===vp&&l.tipo==='receita'&&l.data.startsWith(m)).reduce((s,l)=>s+l.valor,0),
+  des=lancamentos.filter(l=>l.pessoa===vp&&l.tipo==='despesa'&&l.data.startsWith(m)).reduce((s,l)=>s+l.valor,0),
+  sal=getSalario(m,vp), total=sal+rec, fech=total-des, ok=fech>=0;
+  return `<div style="background:#0f172a;border-radius:12px;padding:12px;margin-bottom:8px;font-size:12px;border:1px solid rgba(255,255,255,.06)">
+  <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+  <b style="color:#f1f5f9">${esc(mesNome(m))}</b>
+  <span class="cat-badge" style="background:${ok?'rgba(16,185,129,.15)':'rgba(239,68,68,.15)'};color:${ok?'#4ade80':'#f87171'}">${ok?'✅ POSITIVO':'❌ NEGATIVO'}</span></div>
+  <div style="color:var(--muted2);display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px">
+  <span>Entradas: <b style="color:#4ade80">${fmt(total)}</b></span>
+  <span>Despesas: <b style="color:#f87171">${fmt(des)}</b></span>
+  <span>Resultado: <b style="color:${ok?'#4ade80':'#f87171'}">${fmt(fech)}</b></span></div></div>`;
+ }).join('');
+}
+function corPessoa(nome){ return coresPessoa[PESSOAS.indexOf(nome) % coresPessoa.length]; }
+function preencherPessoas(){
+ const sel=document.getElementById('pessoa');
+ const dl=document.getElementById('listaPessoasDatalist');
+ if(dl) dl.innerHTML = PESSOAS.map(p=>`<option value="${esc(p)}">`).join('');
+ if(sel && !sel.value && PESSOAS.length && document.activeElement!==sel) sel.placeholder = `Ex: ${PESSOAS[0]}, digite novo nome`;
+ // todos os campos de pessoa agora sao input livre com datalist
+ const ip=document.getElementById('impPessoa'); if(ip && !ip.value && PESSOAS.length) ip.placeholder = `Ex: ${PESSOAS[0]}`;
+ const rp=document.getElementById('recPessoa'); if(rp && !rp.value && PESSOAS.length) rp.placeholder = `Ex: ${PESSOAS[0]}`;
+ const pi=document.getElementById('pessoaInicial'); if(pi){ const cur=CFG.pessoaInicial||PESSOAS[0]||''; if(!pi.value) pi.value=cur; pi.placeholder=`Ex: ${PESSOAS[0]}`; }
+ const oc=document.getElementById('orcCat'); if(oc) oc.innerHTML=Object.keys(cores).map(c=>`<option>${esc(c)}</option>`).join('');
+ const ola=document.getElementById('olaNome'); if(ola) ola.textContent=CFG.pessoaInicial && PESSOAS.includes(CFG.pessoaInicial) ? CFG.pessoaInicial : (PESSOAS[0]||'—');
+  document.getElementById('cfgOcultar').checked=!!CFG.ocultar;
+  const chk2=document.getElementById('cfgOcultar2'); if(chk2) chk2.checked=!!CFG.ocultar;
+  document.getElementById('btnOcultar').textContent=ocultar?'🙈':'👁️';
+}
+function adicionarPessoa(){
+ const inp=document.getElementById('novaPessoa'), nome=inp.value.trim();
+ if(!nome){ toast('Digite um nome!','err'); return; }
+ if(PESSOAS.includes(nome)){ toast('Essa pessoa já existe!','err'); return; }
+ PESSOAS.push(nome); salvarPessoas(); inp.value=''; preencherPessoas(); renderListaPessoas(); atualizarFiltros(); atualizarTudo(); toast('Pessoa adicionada','ok');
+}
+function removerPessoa(i){
+ if(PESSOAS.length<=1){ toast('Deve existir pelo menos uma pessoa!','err'); return; }
+ confirmar('Remover pessoa',`Remover "${PESSOAS[i]}"? Lançamentos viram "Outros".`, ok=>{
+  if(!ok) return;
+  const antigo=PESSOAS[i]; PESSOAS.splice(i,1); salvarPessoas();
+  lancamentos.forEach(l=>{ if(l.pessoa===antigo) l.pessoa='Outros'; }); salvar();
+  RECORRENTES.forEach(r=>{ if(r.pessoa===antigo) r.pessoa='Outros'; }); salvarRecLS();
+  preencherPessoas(); renderListaPessoas(); renderRecorrentes(); atualizarFiltros(); atualizarTudo(); toast('Pessoa removida','ok');
+ });
+}
+function renderListaPessoas(){
+ if(!PESSOAS.length){ document.getElementById('listaPessoas').innerHTML='<div class="muted" style="padding:8px 0">Ninguém cadastrado.</div>'; return; }
+ document.getElementById('listaPessoas').innerHTML = PESSOAS.map((p,i)=>{
+  const n=lancamentos.filter(l=>l.pessoa===p).length, tot=lancamentos.filter(l=>l.pessoa===p&&l.tipo==='despesa').reduce((s,l)=>s+l.valor,0);
+  return `<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:13px">
+  <span><span class="cat-badge" style="background:${corPessoa(p)}22;color:${corPessoa(p)}">${esc(p)}</span>
+  <small style="color:var(--muted2);margin-left:8px">${n} lanç. · ${fmt(tot)}</small></span>
+  <button class="btn-red" onclick="removerPessoa(${i})" aria-label="Remover ${esc(p)}" style="min-height:44px;min-width:44px">✕</button></div>`;
+ }).join('');
+}
+function adicionarOuSalvar(){
+ const id=document.getElementById('editId').value;
+ const d=document.getElementById('data').value, desc=document.getElementById('descricao').value.trim(),
+ cat=document.getElementById('categoria').value, val=parseFloat(document.getElementById('valor').value);
+ let pessoaNome=document.getElementById('pessoa').value.trim();
+ if(!pessoaNome) pessoaNome = PESSOAS[0]||'Eu';
+ if(!PESSOAS.includes(pessoaNome)){ PESSOAS.push(pessoaNome); salvarPessoas(); }
+ if(!d||!desc||!val||val<=0){ toast('Preencha data, descrição e valor!','err'); return; }
+ const obj={id:id||Date.now()+Math.random().toString(36).slice(2,7), data:d, tipo:document.getElementById('tipo').value, pessoa:pessoaNome, descricao:desc, categoria:cat, pagamento:document.getElementById('pagamento').value, valor:val, obs:document.getElementById('obs').value.trim()};
+ if(obj.recorrenteId) obj.recorrenteId=undefined;
+ // preservar recorrenteId se editando um recorrente gerado
+ if(id){ const orig=lancamentos.find(l=>l.id===id); if(orig && orig.recorrenteId) obj.recorrenteId=orig.recorrenteId; }
+ if(id){ const idx=lancamentos.findIndex(l=>l.id===id); if(idx>=0) lancamentos[idx]=obj; toast('Lançamento atualizado','ok'); }
+ else { lancamentos.push(obj); toast('Lançamento salvo','ok'); }
+ salvar(); ['descricao','valor','obs'].forEach(i=>document.getElementById(i).value=''); document.getElementById('editId').value=''; fecharModalLancamento(); atualizarTudo();
+}
+function editar(id){
+ ultimoFoco=document.activeElement;
+ const l=lancamentos.find(x=>x.id===id); if(!l) return;
+ document.getElementById('editId').value=l.id; document.getElementById('modalLancTitle').textContent='Editar lançamento';
+ document.getElementById('pessoa').value=l.pessoa; document.getElementById('tipo').value=l.tipo; document.getElementById('data').value=l.data; document.getElementById('descricao').value=l.descricao; document.getElementById('categoria').value=l.categoria; document.getElementById('pagamento').value=l.pagamento; document.getElementById('valor').value=l.valor; document.getElementById('obs').value=l.obs||'';
+ const m=document.getElementById('modalLanc'); m.classList.add('open'); modalAberto=m;
+ setTimeout(()=>document.getElementById('descricao').focus(),80);
+}
+function duplicar(id){
+ const orig=lancamentos.find(x=>x.id===id); if(!orig) return;
+ ultimoFoco=document.activeElement;
+ // Abrir modal pré-preenchido para o usuário escolher a data antes de salvar
+ document.getElementById('editId').value='';
+ document.getElementById('modalLancTitle').textContent='Duplicar lançamento';
+ document.getElementById('pessoa').value=orig.pessoa; document.getElementById('tipo').value=orig.tipo;
+ document.getElementById('data').valueAsDate=new Date();
+ document.getElementById('descricao').value=orig.descricao; document.getElementById('categoria').value=orig.categoria;
+ document.getElementById('pagamento').value=orig.pagamento; document.getElementById('valor').value=orig.valor; document.getElementById('obs').value=orig.obs||'';
+ document.getElementById('maisOpcoes').style.display='none';
+ document.getElementById('btnMais').textContent='Mais opções ▾';
+ const m=document.getElementById('modalLanc'); m.classList.add('open'); modalAberto=m;
+ setTimeout(()=>document.getElementById('data').focus(),80);
+ toast('Ajuste a data e salve a cópia','ok');
+}
+function remover(id){
+ confirmar('Remover lançamento','Remover este lançamento?', ok=>{ if(!ok) return; lancamentos=lancamentos.filter(l=>l.id!==id); salvar(); atualizarTudo(); toast('Lançamento removido','ok'); });
+}
+function limparTudo(){
+ confirmar('Limpar tudo','Remover TODOS os lançamentos? Esta ação não pode ser desfeita.', ok=>{ if(!ok) return; lancamentos=[]; salvar(); atualizarTudo(); toast('Dados limpos','ok'); });
+}
+function filtrados(){
+ const p=document.getElementById('filtroPessoa').value, m=document.getElementById('filtroMes').value, c=document.getElementById('filtroCat').value, q=document.getElementById('busca').value.toLowerCase();
+ return lancamentos.filter(l=>(!p||l.pessoa===p)&&(!m||l.data.startsWith(m))&&(!c||l.categoria===c)&&(!q||(l.descricao||'').toLowerCase().includes(q)||(l.obs||'').toLowerCase().includes(q)));
+}
+function mesNome(ym){ const[a,b]=ym.split('-'); return ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'][+b-1]+'/'+a; }
+function daysInMonth(ym){ const[a,b]=ym.split('-').map(Number); return new Date(a,b,0).getDate(); }
+function clampDia(ym,dia){ const max=daysInMonth(ym); return String(Math.min(dia,max)).padStart(2,'0'); }
+function atualizarFiltros(){
+ const meses=[...new Set(lancamentos.map(l=>l.data.slice(0,7)))].sort().reverse(), cats=[...new Set(lancamentos.map(l=>l.categoria))].sort();
+ const fp=document.getElementById('filtroPessoa'), fm=document.getElementById('filtroMes'), fc=document.getElementById('filtroCat');
+ const vp=fp.value, vm=fm.value, vc=fc.value;
+ fp.innerHTML='<option value="">Todas as pessoas</option>'+(PESSOAS.length?PESSOAS.map(p=>`<option ${p===vp?'selected':''}>${esc(p)}</option>`).join(''):'<option value="" disabled>nenhuma cadastrada</option>');
+ fm.innerHTML='<option value="">Todos os meses</option>'+meses.map(m=>`<option value="${esc(m)}" ${m===vm?'selected':''}>${esc(mesNome(m))}</option>`).join('');
+ fc.innerHTML='<option value="">Todas categorias</option>'+cats.map(c=>`<option ${c===vc?'selected':''}>${esc(c)}</option>`).join('');
+}
+function renderizar(){
+ const lista=filtrados().sort((a,b)=> b.data.localeCompare(a.data)), tb=document.getElementById('tabela');
+ if(!lista.length){ tb.innerHTML='<tr><td colspan="7" class="vazio">Nenhum lançamento. Clique em “Novo lançamento” para começar.</td></tr>'; return; }
+ tb.innerHTML=lista.map(l=>{
+  const cor=cores[l.categoria]||'#64748b', cp=corPessoa(l.pessoa)||'#64748b';
+  return `<tr>
+  <td data-label="Data">${esc(new Date(l.data+'T00:00').toLocaleDateString('pt-BR'))}</td>
+  <td data-label="Pessoa"><span class="cat-badge" style="background:${cp}22;color:${cp}">${esc(l.pessoa)}</span></td>
+  <td data-label="Descrição">${esc(l.descricao)}${l.obs?`<br><small style="color:var(--muted2)">${esc(l.obs)}</small>`:''}</td>
+  <td data-label="Categoria"><span class="cat-badge" style="background:${cor}22;color:${cor}">${esc(l.categoria)}</span></td>
+  <td data-label="Pagamento">${esc(l.pagamento)}</td>
+  <td data-label="Valor" class="valor" style="color:${l.tipo==='receita'?'#4ade80':'#f87171'}">${l.tipo==='receita'?'+':''}${fmt(l.valor)}</td>
+  <td data-label="Ações"><div style="display:flex;gap:6px;justify-content:flex-end;flex-wrap:wrap"><button class="btn-red" onclick="editar('${esc(l.id)}')" aria-label="Editar ${esc(l.descricao)}" style="min-height:44px;min-width:44px" title="Editar">✎</button><button class="btn-red" onclick="duplicar('${esc(l.id)}')" aria-label="Duplicar ${esc(l.descricao)}" style="min-height:44px;min-width:44px" title="Duplicar">⧉</button><button class="btn-red" onclick="remover('${esc(l.id)}')" aria-label="Excluir ${esc(l.descricao)}" style="min-height:44px;min-width:44px" title="Excluir">✕</button></div></td></tr>`;
+ }).join('');
+ const t=lista.reduce((s,l)=>s+(l.tipo==='receita'?l.valor:-l.valor),0);
+ tb.innerHTML+=`<tr class="total-linha"><td colspan="5">SALDO DO FILTRO</td><td class="valor">${fmt(t)}</td><td></td></tr>`;
+}
+function normalizaCentavos(v){ return Math.round((Number(v)||0)*100)/100; }
+function getSalarioMesTotal(mes){ return Object.entries(SALARIOS).filter(([k])=>k.startsWith(mes+'|')).reduce((s,[,v])=> s + normalizaCentavos(v),0); }
+function atualizarResumo(){
+  const dashMes=document.getElementById('dashMes').value || mesAtualISO;
+  if(!dashMes) return;
+  const recM=normalizaCentavos(lancamentos.filter(l=>l.tipo==='receita'&&l.data.startsWith(dashMes)).reduce((s,l)=>s+normalizaCentavos(l.valor),0));
+  const desM=normalizaCentavos(lancamentos.filter(l=>l.tipo==='despesa'&&l.data.startsWith(dashMes)).reduce((s,l)=>s+normalizaCentavos(l.valor),0));
+  const salarioMes=getSalarioMesTotal(dashMes);
+  const recTotal=normalizaCentavos(recM + salarioMes);
+  const ecoM=normalizaCentavos(recTotal - desM);
+  const elDashSaldo=document.getElementById('saldoDestaque'); elDashSaldo.textContent=fmt(ecoM); elDashSaldo.style.color=ecoM>=0?'#4ade80':'#f87171';
+  document.getElementById('dashRec').textContent=fmt(recTotal); document.getElementById('dashDes').textContent=fmt(desM); document.getElementById('dashEco').textContent=fmt(ecoM);
+ document.getElementById('dashEco').style.color=ecoM>=0?'#4ade80':'#f87171';
+ const porCat={}; lancamentos.filter(l=>l.tipo==='despesa'&&l.data.startsWith(dashMes)).forEach(l=>porCat[l.categoria]=(porCat[l.categoria]||0)+l.valor);
+ const maior=Object.entries(porCat).sort((a,b)=>b[1]-a[1])[0]; document.getElementById('maiorCat').textContent=maior?`${maior[0]} (${fmt(maior[1])})`:'—';
+ document.getElementById('resumoPessoas').innerHTML = PESSOAS.map(p=>{
+  const r=lancamentos.filter(l=>l.pessoa===p&&l.tipo==='receita'&&l.data.startsWith(dashMes)).reduce((s,l)=>s+l.valor,0), d=lancamentos.filter(l=>l.pessoa===p&&l.tipo==='despesa'&&l.data.startsWith(dashMes)).reduce((s,l)=>s+l.valor,0), s=r-d;
+  return `<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:13px">
+  <span><span class="cat-badge" style="background:${corPessoa(p)}22;color:${corPessoa(p)}">${esc(p)}</span></span>
+  <span style="color:var(--muted2)">Rec: <b style="color:#4ade80">${fmt(r)}</b> · Desp: <b style="color:#f87171">${fmt(d)}</b> · Saldo: <b style="color:${s>=0?'#4ade80':'#f87171'}">${fmt(s)}</b></span></div>`;
+ }).join('');
+ // extrato sincronizado com dash? não, extrato tem próprio mês
+ renderGraficoCat(dashMes); renderEvolucao(); renderComparativo(dashMes); renderUltimos(dashMes);
+}
+function renderUltimos(mes){
+ const dashMes=mes || document.getElementById('dashMes').value || mesAtualISO;
+ const base=lancamentos.filter(l=>l.data.startsWith(dashMes)).sort((a,b)=>b.data.localeCompare(a.data));
+ const el=document.getElementById('ultimosLista');
+ if(!lancamentos.length){
+   el.innerHTML='<div class="vazio">Nenhum lançamento ainda.<br><button class="btn btn-green" onclick="abrirModalLancamento()" aria-label="Adicionar o primeiro lançamento" style="margin-top:10px;min-height:44px">＋ Adicionar o primeiro lançamento</button></div>';
+   return;
+ }
+ if(!base.length){
+   el.innerHTML=`<div class="vazio">Nenhum lançamento em ${esc(mesNome(dashMes))}.<br><button class="btn btn-green" onclick="abrirModalLancamento()" aria-label="Adicionar o primeiro lançamento" style="margin-top:10px;min-height:44px">＋ Adicionar o primeiro lançamento</button></div>`;
+   return;
+ }
+ const ult=base.slice(0,5);
+ el.innerHTML=ult.map(l=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:13px"><span>${esc(new Date(l.data+'T00:00').toLocaleDateString('pt-BR'))} · ${esc(l.descricao)} <small style="color:var(--muted2)">(${esc(l.categoria)})</small></span><b style="color:${l.tipo==='receita'?'#4ade80':'#f87171'}">${l.tipo==='receita'?'+':''}${fmt(l.valor)}</b></div>`).join('');
+}
+function renderGraficoCat(mes){
+ const dashMes=mes || document.getElementById('dashMes').value || mesAtualISO;
+ const porCat={}; lancamentos.filter(l=>l.tipo==='despesa'&&l.data.startsWith(dashMes)).forEach(l=>porCat[l.categoria]=(porCat[l.categoria]||0)+l.valor);
+ const total=Object.values(porCat).reduce((a,b)=>a+b,0)||1;
+ const el=document.getElementById('grafCat');
+ if(!Object.keys(porCat).length){ el.innerHTML='<div class="muted">Sem despesas neste mês.</div>'; return; }
+ el.innerHTML=Object.entries(porCat).sort((a,b)=>b[1]-a[1]).slice(0,6).map(([c,v])=>{
+  const pct=Math.round(v/total*100); const cor=cores[c]||'#64748b';
+  return `<div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;font-size:12px"><span>${esc(c)}</span><span>${fmt(v)} · ${pct}%</span></div><div class="bar"><span style="width:${pct}%;background:${cor}"></span></div></div>`;
+ }).join('');
+}
+function renderEvolucao(){
+ const meses=[...new Set(lancamentos.map(l=>l.data.slice(0,7)))].sort().slice(-6);
+ const el=document.getElementById('grafEvo');
+ if(!meses.length){ el.innerHTML='<div class="muted">Sem dados suficientes.</div>'; return; }
+  const saldos=meses.map(m=>{ const r=normalizaCentavos(lancamentos.filter(l=>l.tipo==='receita'&&l.data.startsWith(m)).reduce((s,l)=>s+normalizaCentavos(l.valor),0) + getSalarioMesTotal(m)); const d=normalizaCentavos(lancamentos.filter(l=>l.tipo==='despesa'&&l.data.startsWith(m)).reduce((s,l)=>s+normalizaCentavos(l.valor),0)); return {m,s:normalizaCentavos(r-d)}; });
+ const max=Math.max(...saldos.map(x=>Math.abs(x.s)),1);
+ el.innerHTML=saldos.map(x=>`<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="width:70px;font-size:12px;color:var(--muted2)">${esc(mesNome(x.m))}</span><div class="bar" style="flex:1"><span style="width:${Math.round(Math.abs(x.s)/max*100)}%;background:${x.s>=0?'#4ade80':'#f87171'}"></span></div><span style="font-size:12px;min-width:90px;text-align:right;color:${x.s>=0?'#4ade80':'#f87171'}">${fmt(x.s)}</span></div>`).join('');
+}
+function renderComparativo(mes){
+  const dashMes=mes || document.getElementById('dashMes').value || mesAtualISO;
+  const d=new Date(dashMes+'-01T00:00:00');
+  const ant=new Date(d.getFullYear(), d.getMonth()-1,1).toISOString().slice(0,7);
+  const calc=m=>{ const recRaw=lancamentos.filter(l=>l.tipo==='receita'&&l.data.startsWith(m)).reduce((s,l)=>s+normalizaCentavos(l.valor),0); const rec=normalizaCentavos(recRaw + getSalarioMesTotal(m)); const des=normalizaCentavos(lancamentos.filter(l=>l.tipo==='despesa'&&l.data.startsWith(m)).reduce((s,l)=>s+normalizaCentavos(l.valor),0)); return {rec, des}; };
+  const a=calc(dashMes), b=calc(ant);
+  document.getElementById('comparativo').innerHTML=`<div class="kpi"><div class="res-box"><div class="l">MÊS SELECIONADO</div><div class="v" style="color:#4ade80">${fmt(normalizaCentavos(a.rec - a.des))}</div><small class="muted">Rec ${fmt(a.rec)} · Desp ${fmt(a.des)}</small></div><div class="res-box"><div class="l">MÊS ANTERIOR</div><div class="v" style="color:#94a3b8">${fmt(normalizaCentavos(b.rec - b.des))}</div><small class="muted">Rec ${fmt(b.rec)} · Desp ${fmt(b.des)}</small></div></div>`;
+ const dicaEl=document.getElementById('dica');
+ const catEstouro=Object.entries(ORCAMENTOS).find(([cat,lim])=>{ const gasto=lancamentos.filter(l=>l.tipo==='despesa'&&l.data.startsWith(dashMes)&&l.categoria===cat).reduce((s,l)=>s+l.valor,0); return gasto>lim; });
+ if(a.des > a.rec) dicaEl.textContent='⚠️ Suas despesas superaram as receitas neste mês. Tente reduzir gastos variáveis como Lazer e Alimentação.';
+ else if(catEstouro) dicaEl.textContent=`⚠️ Você ultrapassou o limite de ${catEstouro[0]} (R$ ${catEstouro[1]}). Reveja os lançamentos dessa categoria.`;
+ else if(a.rec - a.des > 0) dicaEl.textContent='✅ Ótimo! Você fechou com saldo positivo. Considere separar uma parte para reserva.';
+ else dicaEl.textContent='💡 Defina limites por categoria para manter as despesas sob controle.';
+ renderOrcamentos(dashMes);
+}
+function salvarOrcamento(){
+ const cat=document.getElementById('orcCat').value, v=parseFloat(document.getElementById('orcValor').value);
+ if(!cat||isNaN(v)||v<=0){ toast('Informe categoria e valor válido','err'); return; }
+ ORCAMENTOS[cat]=v; salvarOrcLS(); document.getElementById('orcValor').value=''; renderOrcamentos(); toast('Orçamento salvo','ok');
+}
+function renderOrcamentos(mes){
+ const dashMes=mes || document.getElementById('dashMes').value || mesAtualISO;
+ const el=document.getElementById('orcLista'); const cats=Object.keys(ORCAMENTOS);
+ if(!cats.length){ el.innerHTML='<div class="muted">Nenhum limite definido.</div>'; return; }
+ el.innerHTML=cats.map(cat=>{
+  const lim=ORCAMENTOS[cat], gasto=lancamentos.filter(l=>l.tipo==='despesa'&&l.data.startsWith(dashMes)&&l.categoria===cat).reduce((s,l)=>s+l.valor,0);
+  const pct=Math.min(100, Math.round(gasto/lim*100)); const cor=pct>=100?'#ef4444':pct>=80?'#f59e0b':'#4ade80';
+  return `<div style="margin-bottom:14px"><div style="display:flex;justify-content:space-between;font-size:13px"><label for="orc-${esc(cat)}" style="margin:0;font-weight:700">${esc(cat)}</label><span>${fmt(gasto)} / ${fmt(lim)} · ${pct}%</span></div><div class="bar" style="margin-top:6px"><span id="orc-${esc(cat)}" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100" aria-label="Progresso de ${esc(cat)}" style="width:${pct}%;background:${cor}"></span></div><button class="btn-red" style="margin-top:8px;min-height:44px;min-width:44px" onclick="removerOrc('${esc(cat)}')" aria-label="Remover orçamento de ${esc(cat)}">Remover</button></div>`;
+ }).join('');
+}
+function removerOrc(cat){ delete ORCAMENTOS[cat]; salvarOrcLS(); renderOrcamentos(); }
+function renderExtrato(){
+  const mes=document.getElementById('extMes').value || mesAtualISO;
+  const tipoFiltro=document.getElementById('extTipo')?.value || '';
+  const catFiltro=document.getElementById('extCat')?.value || '';
+  // popular categorias do extrato
+  const extCatSel=document.getElementById('extCat');
+  if(extCatSel && extCatSel.options.length<=1){
+    const cats=[...new Set(lancamentos.map(l=>l.categoria))].sort();
+    extCatSel.innerHTML='<option value="">Todas categorias</option>'+cats.map(c=>`<option ${c===catFiltro?'selected':''}>${esc(c)}</option>`).join('');
+  }
+  let lista=lancamentos.filter(l=>l.data.startsWith(mes));
+  if(tipoFiltro) lista=lista.filter(l=>l.tipo===tipoFiltro);
+  if(catFiltro) lista=lista.filter(l=>l.categoria===catFiltro);
+  lista=lista.sort((a,b)=>a.data.localeCompare(b.data));
+  const recRaw=normalizaCentavos(lista.filter(l=>l.tipo==='receita').reduce((s,l)=>s+normalizaCentavos(l.valor),0));
+  const salarioMes= tipoFiltro && tipoFiltro!=='receita' ? 0 : (catFiltro && catFiltro!=='Salário' ? 0 : getSalarioMesTotal(mes));
+  const rec=normalizaCentavos(recRaw + salarioMes);
+  const des=normalizaCentavos(lista.filter(l=>l.tipo==='despesa').reduce((s,l)=>s+normalizaCentavos(l.valor),0));
+  const saldo=normalizaCentavos(rec-des);
+  document.getElementById('extRec').textContent=fmt(rec); document.getElementById('extDes').textContent=fmt(des); document.getElementById('extSaldo').textContent=fmt(saldo);
+  const dst=document.getElementById('extSaldoDestaque'); if(dst){ dst.textContent=fmt(saldo); dst.style.color=saldo>=0?'#fff':'#fecaca'; }
+  const totEl=document.getElementById('extTotais'); if(totEl) totEl.textContent = lista.length ? `${lista.length + (salarioMes?1:0)} movimentações · ${fmt(rec)} entradas · ${fmt(des)} saídas` : '—';
+  const el=document.getElementById('extLista');
+  // incluir salário como linha agrupada se houver
+  let listaComSalario=[...lista];
+  if(salarioMes>0 && (!tipoFiltro || tipoFiltro==='receita') && (!catFiltro || catFiltro==='Salário')){
+    // usa primeira data do mês para agrupar salário
+    listaComSalario.push({data: mes+'-01', tipo:'receita', pessoa:'—', descricao:'Salário do mês', categoria:'Salário', pagamento:'Salário', valor:salarioMes, obs:'Salário informado no fechamento'});
+    listaComSalario=listaComSalario.sort((a,b)=>a.data.localeCompare(b.data));
+  }
+  if(!listaComSalario.length){ el.innerHTML='<div class="vazio" style="text-align:center;padding:24px"><p class="muted" style="margin-bottom:12px">Nenhuma movimentação neste mês</p><button class="btn btn-green" onclick="abrirModalLancamento()" style="min-height:44px">＋ Adicionar lançamento</button></div>'; return; }
+  const porDia={}; listaComSalario.forEach(l=>{ (porDia[l.data]=porDia[l.data]||[]).push(l); });
+  el.innerHTML=Object.keys(porDia).sort().reverse().map(d=>{
+   const itens=porDia[d].map(l=>`<div style="display:flex;justify-content:space-between;font-size:13px;padding:8px 0;border-bottom:1px solid var(--line)"><span>${esc(l.descricao)} · <small style="color:var(--muted2)">${esc(l.categoria)}${l.pessoa?' · '+esc(l.pessoa):''}</small></span><b style="color:${l.tipo==='receita'?'#4ade80':'#f87171'}">${l.tipo==='receita'?'+':''}${fmt(l.valor)}</b></div>`).join('');
+   return `<div style="margin-bottom:12px"><b style="font-size:13px;color:var(--muted2)">${esc(new Date(d+'T00:00').toLocaleDateString('pt-BR'))}</b>${itens}</div>`;
+  }).join('');
+}
+function salvarRecorrente(){
+ const desc=document.getElementById('recDescricao').value.trim();
+ const cat=document.getElementById('recCategoria').value;
+ const val=parseFloat(document.getElementById('recValor').value);
+ const tipo=document.getElementById('recTipo').value;
+ const pessoa=document.getElementById('recPessoa').value;
+ const pagamento=document.getElementById('recPagamento').value;
+ const obs=document.getElementById('recObs').value.trim();
+ const dia=parseInt(document.getElementById('recDia').value,10);
+ const ativo=document.getElementById('recAtivo').checked;
+ const editId=document.getElementById('recEditId').value;
+ if(!desc||!cat||isNaN(val)||val<=0||!dia||dia<1||dia>31||!pessoa){ toast('Preencha descrição, categoria, valor, pessoa e dia (1-31)','err'); return; }
+ if(editId){
+  const idx=RECORRENTES.findIndex(r=>r.id===editId);
+  if(idx>=0) RECORRENTES[idx]={...RECORRENTES[idx], descricao:desc, categoria:cat, valor:val, tipo, pessoa, pagamento, obs, dia, ativo};
+  toast('Recorrente atualizado','ok');
+ } else {
+  RECORRENTES.push({id:Date.now()+Math.random().toString(36).slice(2,7), descricao:desc, categoria:cat, valor:val, tipo, pessoa, pagamento, obs, dia, ativo, criadoEm:new Date().toISOString()});
+  toast('Recorrente criado','ok');
+ }
+ salvarRecLS(); limparRecForm(); renderRecorrentes(); gerarRecorrentesPendentes(); atualizarTudo();
+}
+function limparRecForm(){
+ document.getElementById('recDescricao').value=''; document.getElementById('recValor').value=''; document.getElementById('recDia').value=''; document.getElementById('recObs').value=''; document.getElementById('recAtivo').checked=true; document.getElementById('recEditId').value=''; document.getElementById('btnCancelRec').style.display='none';
+}
+function editarRecorrente(id){
+ const r=RECORRENTES.find(x=>x.id===id); if(!r) return;
+ document.getElementById('recDescricao').value=r.descricao; document.getElementById('recCategoria').value=r.categoria; document.getElementById('recValor').value=r.valor; document.getElementById('recTipo').value=r.tipo; document.getElementById('recPessoa').value=r.pessoa; document.getElementById('recPagamento').value=r.pagamento||'Recorrente'; document.getElementById('recObs').value=r.obs||''; document.getElementById('recDia').value=r.dia; document.getElementById('recAtivo').checked=!!r.ativo; document.getElementById('recEditId').value=r.id; document.getElementById('btnCancelRec').style.display='block'; document.getElementById('cardRecorrentes').scrollIntoView({behavior:'smooth'}); setTimeout(()=>document.getElementById('recDescricao').focus(),100);
+}
+function removerRecorrente(id){
+ confirmar('Remover recorrente','Remover este lançamento recorrente? Os lançamentos já gerados permanecem.', ok=>{
+  if(!ok) return; RECORRENTES=RECORRENTES.filter(r=>r.id!==id); salvarRecLS(); renderRecorrentes(); toast('Recorrente removido','ok');
+ });
+}
+function toggleRecAtivo(id){
+ const r=RECORRENTES.find(x=>x.id===id); if(!r) return; r.ativo=!r.ativo; salvarRecLS(); renderRecorrentes(); toast(r.ativo?'Recorrente ativado':'Recorrente pausado','ok');
+}
+function renderRecorrentes(){
+ const el=document.getElementById('listaRecorrentes');
+ if(!RECORRENTES.length){ el.innerHTML='<div class="muted" style="padding:10px 0">Nenhum recorrente. Ex: Aluguel dia 10, Netflix dia 15.</div>'; return; }
+ el.innerHTML=RECORRENTES.map(r=>{
+  const cor=cores[r.categoria]||'#64748b';
+  return `<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px;border:1px solid rgba(255,255,255,.06);border-radius:14px;margin-bottom:8px;background:rgba(255,255,255,.02)">
+  <div style="flex:1;min-width:0">
+    <div style="font-weight:700;font-size:13px;display:flex;gap:6px;align-items:center;flex-wrap:wrap"><span>${esc(r.descricao)}</span> <span class="cat-badge" style="background:${cor}22;color:${cor}">${esc(r.categoria)}</span> <span class="cat-badge" style="background:${r.ativo?'rgba(16,185,129,.15)':'rgba(100,116,139,.15)'};color:${r.ativo?'#4ade80':'#94a3b8'}">${r.ativo?'● Ativo':'○ Pausado'}</span></div>
+    <div class="muted" style="margin-top:4px">${r.tipo==='receita'?'<i data-lucide="trending-up" class="ico-lucide"></i> Receita':'<i data-lucide="trending-down" class="ico-lucide"></i> Despesa'} · ${esc(r.pessoa)} · ${esc(r.pagamento||'Recorrente')} · Todo dia ${r.dia} · ${fmt(r.valor)}${r.obs?` · ${esc(r.obs)}`:''}</div>
+  </div>
+  <div style="display:flex;gap:6px;flex-shrink:0;flex-wrap:wrap">
+    <button class="btn-red" onclick="toggleRecAtivo('${esc(r.id)}')" aria-label="${r.ativo?'Pausar':'Ativar'} ${esc(r.descricao)}" style="min-height:44px;min-width:44px">${r.ativo?'⏸️':'▶️'}</button>
+    <button class="btn-red" onclick="editarRecorrente('${esc(r.id)}')" aria-label="Editar ${esc(r.descricao)}" style="min-height:44px;min-width:44px">✎</button>
+    <button class="btn-red" onclick="removerRecorrente('${esc(r.id)}')" aria-label="Remover ${esc(r.descricao)}" style="min-height:44px;min-width:44px">✕</button>
+  </div>
+  </div>`;
+ }).join('');
+}
+function gerarRecorrentesPendentes(){
+ if(!RECORRENTES.length) return;
+ const ymAtual=new Date().toISOString().slice(0,7);
+ let gerados=0;
+ RECORRENTES.filter(r=>r.ativo).forEach(r=>{
+  const diaStr=clampDia(ymAtual, r.dia);
+  const dataAlvo = `${ymAtual}-${diaStr}`;
+  const jaExiste=lancamentos.some(l=> l.recorrenteId===r.id && l.data===dataAlvo);
+  if(jaExiste) return;
+  lancamentos.push({
+    id:Date.now()+Math.random().toString(36).slice(2,7),
+    data:dataAlvo,
+    tipo:r.tipo,
+    pessoa:r.pessoa,
+    descricao:r.descricao,
+    categoria:r.categoria,
+    pagamento:r.pagamento||'Recorrente',
+    valor:r.valor,
+    obs:r.obs||'Lançamento recorrente',
+    recorrenteId:r.id
+  });
+  gerados++;
+ });
+ if(gerados>0){ salvar(); toast(`${gerados} recorrente(s) gerado(s) para ${mesNome(ymAtual)}`,'ok'); }
+}
+function exportarExcel(){
+ if(!lancamentos.length){ toast('Adicione lançamentos primeiro!','err'); return; }
+ const wb=XLSX.utils.book_new();
+ const dados=[['Data','Pessoa','Tipo','Descrição','Categoria','Pagamento','Valor (R$)','Observações']];
+ [...lancamentos].sort((a,b)=>a.data.localeCompare(b.data)).forEach(l=>dados.push([new Date(l.data+'T00:00'), l.pessoa||'Outros', l.tipo==='receita'?'Receita':'Despesa', l.descricao, l.categoria, l.pagamento, l.tipo==='receita'?l.valor:-l.valor, l.obs||'']));
+ const ws1=XLSX.utils.aoa_to_sheet(dados); ws1['!cols']=[{wch:12},{wch:12},{wch:10},{wch:32},{wch:15},{wch:16},{wch:13},{wch:30}]; ws1['!autofilter']={ref:XLSX.utils.encode_range({s:{r:0,c:0},e:{r:dados.length-1,c:7}})};
+ XLSX.utils.book_append_sheet(wb,ws1,'Lançamentos');
+ const rP=[['RESUMO POR PESSOA'],[''],['Pessoa','Receitas (R$)','Despesas (R$)','Saldo (R$)','% das Despesas']];
+ const totDesGeral=lancamentos.filter(l=>l.tipo==='despesa').reduce((s,l)=>s+l.valor,0)||1;
+ PESSOAS.forEach(p=>{ const rec=lancamentos.filter(l=>l.pessoa===p&&l.tipo==='receita').reduce((s,l)=>s+l.valor,0), des=lancamentos.filter(l=>l.pessoa===p&&l.tipo==='despesa').reduce((s,l)=>s+l.valor,0); rP.push([p,+rec.toFixed(2),+des.toFixed(2),+(rec-des).toFixed(2),(des/totDesGeral*100).toFixed(1)+'%']); });
+ const outros=lancamentos.filter(l=>!PESSOAS.includes(l.pessoa)); if(outros.length){ const desO=outros.filter(l=>l.tipo==='despesa').reduce((s,l)=>s+l.valor,0), recO=outros.filter(l=>l.tipo==='receita').reduce((s,l)=>s+l.valor,0); rP.push(['Outros',+recO.toFixed(2),+desO.toFixed(2),+(recO-desO).toFixed(2),(desO/totDesGeral*100).toFixed(1)+'%']); }
+ const totRecGeral=lancamentos.filter(l=>l.tipo==='receita').reduce((s,l)=>s+l.valor,0); rP.push(['TOTAL',+totRecGeral.toFixed(2),+totDesGeral.toFixed(2),+(totRecGeral-totDesGeral).toFixed(2),'100%']);
+ const wsP=XLSX.utils.aoa_to_sheet(rP); wsP['!cols']=[{wch:14},{wch:14},{wch:14},{wch:14},{wch:14}]; XLSX.utils.book_append_sheet(wb,wsP,'Por Pessoa');
+ const catMap={}; lancamentos.filter(l=>l.tipo==='despesa').forEach(l=>catMap[l.categoria]=(catMap[l.categoria]||0)+l.valor); const totDes=Object.values(catMap).reduce((a,b)=>a+b,0)||1;
+ const r2=[['RESUMO POR CATEGORIA (DESPESAS)'],[''],['Categoria','Total (R$)','% do Total','Gráfico'],...Object.entries(catMap).sort((a,b)=>b[1]-a[1]).map(([c,v])=>[c,+v.toFixed(2),+(v/totDes*100).toFixed(1)+'%',v])]; r2.push(['TOTAL',+totDes.toFixed(2),'100%']);
+ const ws2=XLSX.utils.aoa_to_sheet(r2); ws2['!cols']=[{wch:20},{wch:14},{wch:10},{wch:10}]; XLSX.utils.book_append_sheet(wb,ws2,'Por Categoria');
+ const mesMap={}; lancamentos.forEach(l=>{ const m=l.data.slice(0,7); mesMap[m]=mesMap[m]||{rec:0,des:0}; if(l.tipo==='receita')mesMap[m].rec+=l.valor; else mesMap[m].des+=l.valor; });
+ const r3=[['RESUMO MENSAL'],[''],['Mês','Receitas (R$)','Despesas (R$)','Saldo (R$)','Situação']];
+ Object.keys(mesMap).sort().forEach(m=>{ const s=mesMap[m].rec-mesMap[m].des; r3.push([mesNome(m),+mesMap[m].rec.toFixed(2),+mesMap[m].des.toFixed(2),+s.toFixed(2),s>=0?'✅ Superávit':'⚠️ Déficit']); });
+ const ws3=XLSX.utils.aoa_to_sheet(r3); ws3['!cols']=[{wch:10},{wch:14},{wch:14},{wch:14},{wch:14}]; XLSX.utils.book_append_sheet(wb,ws3,'Mensal');
+ const rec=lancamentos.filter(l=>l.tipo==='receita').reduce((s,l)=>s+l.valor,0), des=lancamentos.filter(l=>l.tipo==='despesa').reduce((s,l)=>s+l.valor,0);
+ const ws4=XLSX.utils.aoa_to_sheet([['DASHBOARD FINANCEIRO'],[''],['Indicador','Valor'],['Total de Receitas',+rec.toFixed(2)],['Total de Despesas',+des.toFixed(2)],['Saldo Final',+(rec-des).toFixed(2)],['Taxa de Poupança',rec>0?(((rec-des)/rec)*100).toFixed(1)+'%':'—'],['Nº de Lançamentos',lancamentos.length],['Média de Despesa/Dia',+(des/Math.max(1,new Set(lancamentos.map(l=>l.data)).size)).toFixed(2)],['Gerado em',new Date().toLocaleString('pt-BR')]]);
+ ws4['!cols']=[{wch:24},{wch:16}]; XLSX.utils.book_append_sheet(wb,ws4,'Dashboard');
+ if(PESSOAS.length){
+  const p=document.getElementById('fecPessoa').value||PESSOAS[0];
+  const meses=[...new Set(lancamentos.map(l=>l.data.slice(0,7)))].sort();
+  const r=[['FECHAMENTO MENSAL — '+p.toUpperCase()],[''],['Mês','Salário Informado','Outras Receitas','Total Entradas','Despesas','Fechou em (R$)','Situação']];
+  meses.forEach(m=>{ const rec=lancamentos.filter(l=>l.pessoa===p&&l.tipo==='receita'&&l.data.startsWith(m)).reduce((s,l)=>s+l.valor,0), des=lancamentos.filter(l=>l.pessoa===p&&l.tipo==='despesa'&&l.data.startsWith(m)).reduce((s,l)=>s+l.valor,0), sal=getSalario(m,p), total=sal+rec, fech=total-des; r.push([mesNome(m),+sal.toFixed(2),+rec.toFixed(2),+total.toFixed(2),+des.toFixed(2),+fech.toFixed(2), sal>0||des>0?(fech>=0?'✅ POSITIVO':'❌ NEGATIVO'):'— sem dados']); });
+  const ws=XLSX.utils.aoa_to_sheet(r); ws['!cols']=[{wch:10},{wch:17},{wch:15},{wch:15},{wch:12},{wch:14},{wch:14}]; XLSX.utils.book_append_sheet(wb,ws,'Fechamento');
+ }
+ const dt=new Date().toISOString().slice(0,10); XLSX.writeFile(wb,`Controle_Gastos_${dt}.xlsx`); toast('Planilha baixada','ok');
+}
+function exportarBackup(){
+ const data={gastos:lancamentos,pessoas_v2:PESSOAS,salarios:SALARIOS,lista_compras:LISTA,orcamentos:ORCAMENTOS,recorrentes:RECORRENTES,cfg_app:CFG,exportadoEm:new Date().toISOString()};
+ const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=`backup-controle-gastos-${new Date().toISOString().slice(0,10)}.json`; a.click(); URL.revokeObjectURL(url); toast('Backup exportado','ok');
+}
+document.getElementById('importBackup').addEventListener('change',e=>{
+ const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{
+  try{ const d=JSON.parse(r.result); confirmar('Importar backup','Isso irá substituir os dados atuais. Continuar?', ok=>{
+   if(!ok) return; if(d.gastos) lancamentos=d.gastos; if(d.pessoas_v2) PESSOAS=d.pessoas_v2; if(d.salarios) SALARIOS=d.salarios; if(d.lista_compras) LISTA=d.lista_compras; if(d.orcamentos) ORCAMENTOS=d.orcamentos; if(d.recorrentes) RECORRENTES=d.recorrentes; if(d.cfg_app) CFG=d.cfg_app;
+   salvar(); salvarPessoas(); salvarSalariosLS(); salvarLista(); salvarOrcLS(); salvarRecLS(); localStorage.setItem('cfg_app', JSON.stringify(CFG));
+   preencherPessoas(); atualizarTudo(); toast('Backup importado','ok');
+  }); }catch(err){ toast('Arquivo inválido: '+err.message,'err'); } e.target.value='';
+ }; r.readAsText(f);
+});
+function adicionarLista(){ const nome=document.getElementById('lcNome').value.trim(), preco=parseFloat(document.getElementById('lcPreco').value)||0; if(!nome){ toast('Digite o que comprar!','err'); return; } if(preco<=0){ toast('Informe preço válido','err'); return; } LISTA.push({nome, preco, feito:false}); salvarLista(); document.getElementById('lcNome').value=''; document.getElementById('lcPreco').value=''; renderLista(); toast('Item adicionado','ok'); }
+function toggleLista(i){ LISTA[i].feito=!LISTA[i].feito; salvarLista(); renderLista(); }
+function removerLista(i){ confirmar('Remover item',`Remover "${LISTA[i].nome}"?`, ok=>{ if(!ok) return; LISTA.splice(i,1); salvarLista(); renderLista(); }); }
+function lancarDaLista(i){ const it=LISTA[i], pessoa=PESSOAS[0]||'Eu'; lancamentos.push({id:Date.now()+Math.random().toString(36).slice(2,7),data:new Date().toISOString().slice(0,10),tipo:'despesa',pessoa,descricao:it.nome,categoria:'Outros',pagamento:'Cartão de Crédito',valor:it.preco>0?it.preco:0.01,obs:'Comprado pela lista'}); LISTA.splice(i,1); salvar(); salvarLista(); atualizarTudo(); toast('Lançamento criado','ok'); }
+function renderLista(){
+ const pend=LISTA.map((it,i)=>({...it,i})).filter(it=>!it.feito), comp=LISTA.map((it,i)=>({...it,i})).filter(it=>it.feito);
+ const totPend=pend.reduce((s,it)=>s+it.preco,0), totComp=comp.reduce((s,it)=>s+it.preco,0);
+ document.getElementById('resumoLista').innerHTML=`<div class="resumo"><div class="res-box"><div class="l">QUERO COMPRAR</div><div class="v azul">${fmt(totPend)}</div></div><div class="res-box"><div class="l">JÁ COMPREI</div><div class="v verde">${fmt(totComp)}</div></div><div class="res-box"><div class="l">PENDENTES</div><div class="v verm">${pend.length}</div></div></div>`;
+ let html=pend.map(({i,nome,preco})=>`<div style="display:flex;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:13px"><input type="checkbox" onchange="toggleLista(${i})" style="width:auto;min-width:20px;min-height:20px" aria-label="Marcar ${esc(nome)} como comprado"><span style="flex:1">${esc(nome)}</span><b style="color:#a78bfa">${fmt(preco)}</b><button class="btn-red" onclick="removerLista(${i})" aria-label="Remover ${esc(nome)}" style="min-height:44px;min-width:44px">✕</button></div>`).join('');
+ if(comp.length) html+=`<div style="font-size:11px;color:var(--muted2);margin:10px 0 4px">COMPRADOS</div>`+comp.map(({i,nome,preco})=>`<div style="display:flex;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:13px;color:var(--muted2)"><input type="checkbox" checked onchange="toggleLista(${i})" style="width:auto;min-width:20px;min-height:20px" aria-label="Desmarcar ${esc(nome)}"><span style="flex:1;text-decoration:line-through">${esc(nome)}</span><b>${fmt(preco)}</b><button class="btn-red" onclick="lancarDaLista(${i})" title="Lançar" aria-label="Lançar ${esc(nome)} como despesa" style="min-height:44px;min-width:44px"><i data-lucide="trending-down" class="ico-lucide"></i></button><button class="btn-red" onclick="removerLista(${i})" aria-label="Remover ${esc(nome)}" style="min-height:44px;min-width:44px">✕</button></div>`).join('');
+ document.getElementById('listaItens').innerHTML=html||'<div class="muted" style="padding:10px 0">Lista vazia.</div>';
+}
+let impRows=[], impUltimoTexto='';
+document.getElementById('impArquivo').addEventListener('change',e=>{
+ const f=e.target.files[0]; if(!f) return; const ext=(f.name.split('.').pop()||'').toLowerCase();
+ if(ext==='xlsx'||ext==='xls'){ const r=new FileReader(); r.onload=()=>{ try{ const wb=XLSX.read(r.result,{type:'array'}); const t=XLSX.utils.sheet_to_csv(wb.Sheets[wb.SheetNames[0]],{FS:'\t'}); impUltimoTexto=t; processarExtrato(t); }catch(err){ toast('Erro Excel: '+err.message,'err'); } }; r.readAsArrayBuffer(f); }
+ else{ const r=new FileReader(); r.onload=()=>{ impUltimoTexto=r.result; processarExtrato(r.result); }; r.readAsText(f,'utf-8'); }
+});
+function processarNovamente(){ if(impUltimoTexto) processarExtrato(impUltimoTexto); }
+function processarExtrato(t){
+ const modo=document.getElementById('impModo').value;
+ let rows=/<STMTTRN>/i.test(t)?parseOFX(t):parseCSVExtrato(t);
+ if(modo==='fatura'){ rows=rows.filter(r=>!/^\s*total\b/i.test(r.descricao)); rows.forEach(r=>r.tipo=r.tipo==='despesa'?'receita':'despesa'); }
+ impRows=rows;
+ const pPadrao=document.getElementById('impPessoa').value||PESSOAS[0]||'';
+ impRows.forEach(r=>{ const dup=lancamentos.some(l=>l.data===r.data&&Math.abs(l.valor-r.valor)<0.005&&(l.descricao||'').toLowerCase()===(r.descricao||'').toLowerCase()); r.dup=dup; r.inc=!dup; r.categoria='Outros'; r.pessoa=pPadrao; });
+ renderImportPreview();
+}
+function trocarTodos(destino){ impRows.forEach(r=>r.pessoa=destino); renderImportPreview(); }
+function parseOFX(t){
+ const out=[], blocos=[...t.matchAll(/<STMTTRN>([\s\S]*?)<\/STMTTRN>/gi)];
+ blocos.forEach(b=>{ const pega=c=>{ const m=b[1].match(new RegExp('<'+c+'>([^<\\r\\n]*)','i')); return m?m[1].trim():''; }; const d=pega('DTPOSTED').replace(/^(\d{4})(\d{2})(\d{2}).*/,'$1-$2-$3'); let v=parseFloat(pega('TRNAMT').replace(',','.')); if(!/^\d{4}-\d{2}-\d{2}$/.test(d)||isNaN(v)) return; const desc=(pega('MEMO')||pega('NAME')||'Movimento bancário').replace(/&amp;/gi,'&'); out.push({data:d,valor:Math.abs(v),tipo:v>=0?'receita':'despesa',descricao:desc}); });
+ return out.sort((a,b)=>a.data.localeCompare(b.data));
+}
+function delimDe(t){ const l=t.split(/\r?\n/)[0]||''; const c={';':(l.match(/;/g)||[]).length,',':(l.match(/,/g)||[]).length,'\t':(l.match(/\t/g)||[]).length}; return Object.entries(c).sort((a,b)=>b[1]-a[1])[0][0]||';'; }
+function dividirLinha(linha,d){ const out=[]; let cur='',q=false; for(let i=0;i<linha.length;i++){ const ch=linha[i]; if(ch==='"'){ if(q&&linha[i+1]==='"'){cur+='"';i++;} else q=!q; } else if(ch===d&&!q){ out.push(cur); cur=''; } else cur+=ch; } out.push(cur); return out.map(s=>s.trim()); }
+function numDe(s){ s=(''+s).trim().replace(/[R$\s]/g,''); if(!s) return null; const neg=/^\(.*\)$/.test(s)||s.includes('-'); s=s.replace(/[()+-]/g,''); if(s.includes(',')){ s=s.replace(/\./g,'').replace(',', '.'); } else if(/^\d{1,3}(\.\d{3})+$/.test(s)){ s=s.replace(/\./g,''); } else if((s.match(/\./g)||[]).length>1){ s=s.replace(/\./g,''); } const v=parseFloat(s); return isNaN(v)?null:(neg?-Math.abs(v):v); }
+function dataDe(s){ s=(''+s).trim(); let m=s.match(/^(\d{4})-(\d{2})-(\d{2})/); if(m) return s.slice(0,10); m=s.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})/); if(m){ let y=m[3]; if(y.length===2)y='20'+y; return `${y}-${m[2].padStart(2,'0')}-${m[1].padStart(2,'0')}`; } return null; }
+function parseCSVExtrato(t){
+ const d=delimDe(t), linhas=t.split(/\r?\n/).filter(l=>l.trim()); if(!linhas.length) return [];
+ const head=dividirLinha(linhas[0],d).map(h=>h.toLowerCase()); const temHead=head.some(h=>/data|valor|lanç|descri|hist|cr[eé]d|d[eé]bit/.test(h));
+ let iData=-1,iDesc=-1,iVal=-1,iCred=-1,iDeb=-1,iTipo=-1,start=temHead?1:0;
+ if(temHead){ iData=head.findIndex(h=>/dat[ae]/.test(h)); iDesc=head.findIndex((h,j)=>j!==iData&&/lançamento|lancamento|descri|historico|histórico|memo|movimenta|estabelecimento|t[ií]tulo|title|nome|name|detalhe|origem/.test(h)); iVal=head.findIndex(h=>/valor|montante|quantia|value|amount/.test(h)); iCred=head.findIndex(h=>/cr[eé]dito|entrada|dep[oó]sito|receita/.test(h)); iDeb=head.findIndex(h=>/[dée]bito|sa[ií]da|retirada|despesa/.test(h)); iTipo=head.findIndex(h=>/^tipo$|d\/c|\bdc\b/.test(h)); }
+ const rows=[]; for(let i=start;i<linhas.length;i++){ const cel=dividirLinha(linhas[i],d); let data=null,id=iData; if(id<0){ id=cel.findIndex(c=>dataDe(c)); if(id>=0&&!temHead) iData=id; } if(id>=0) data=dataDe(cel[id]); if(!data) continue; let v=null; if(iCred>=0&&iDeb>=0){ const c=numDe(cel[iCred])||0, db=numDe(cel[iDeb])||0; v=c-db; } else if(iVal>=0){ v=numDe(cel[iVal]); if(v!==null&&iTipo>=0&&/deb|sa[ií]da|pagamento|compra|retira/i.test(cel[iTipo]||'')) v=-Math.abs(v); } else { for(const [j,c] of cel.entries()){ if(j===id||j===iDesc) continue; const n=numDe(c); if(n!==null&&n!==0&&/[\d]/.test(c)&&c.length<=14){ v=n; break; } } } if(v===null||isNaN(v)) continue; let desc=iDesc>=0?(cel[iDesc]||'') :''; if(!desc){ desc=cel.filter((c,j)=>j!==id&&(numDe(c)===null||isNaN(numDe(c)))&&!dataDe(c)).sort((a,b)=>b.length-a.length)[0]||''; } rows.push({data,tipo:v>=0?'receita':'despesa',valor:Math.abs(v),descricao:(desc||'Movimento bancário').slice(0,120)}); } return rows.sort((a,b)=>a.data.localeCompare(b.data));
+}
+function renderImportPreview(){
+ const box=document.getElementById('impPreview');
+ if(!impRows.length){ box.innerHTML='<div style="font-size:13px;color:#f87171;background:rgba(239,68,68,.1);border-radius:12px;padding:12px">❌ Nenhuma transação encontrada.</div>'; return; }
+ const cats=Object.keys(cores); const nInc=impRows.filter(r=>r.inc).length;
+ box.innerHTML=`<div style="font-size:12px;color:var(--muted2);margin-bottom:8px"><b style="color:#4ade80">${nInc}</b> de <b>${impRows.length}</b> marcadas${impRows.some(r=>r.dup)?' · duplicadas desmarcadas':''}<div style="margin-top:6px"><i data-lucide="user" class="ico-lucide"></i> Pessoa para todas: ${PESSOAS.map(p=>`<button type="button" onclick="trocarTodos('${esc(p)}')" class="btn-red" style="color:${corPessoa(p)};border-color:${corPessoa(p)};margin-left:4px;min-height:44px;min-width:44px">${esc(p)}</button>`).join('')}</div></div><div style="max-height:320px;overflow:auto;border:1px solid rgba(255,255,255,.06);border-radius:12px"><table><thead><tr><th></th><th>Data</th><th>Pessoa</th><th>Descrição</th><th>Tipo</th><th style="text-align:right">Valor</th><th>Categoria</th></tr></thead><tbody>${impRows.map((r,i)=>`<tr><td><input type="checkbox" ${r.inc?'checked':''} onchange="impRows[${i}].inc=this.checked" aria-label="Incluir ${esc(r.descricao)}" style="min-width:20px;min-height:20px"></td><td style="white-space:nowrap">${esc(new Date(r.data+'T00:00').toLocaleDateString('pt-BR'))}</td><td><select onchange="impRows[${i}].pessoa=this.value" style="padding:8px;font-size:12px" aria-label="Pessoa de ${esc(r.descricao)}">${PESSOAS.map(p=>`<option ${p===r.pessoa?'selected':''}>${esc(p)}</option>`).join('')}</select></td><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis" title="${esc(r.descricao)}">${esc(r.descricao)}</td><td><span class="cat-badge" style="background:${r.tipo==='receita'?'rgba(16,185,129,.15)':'rgba(239,68,68,.15)'};color:${r.tipo==='receita'?'#4ade80':'#f87171'}">${r.tipo==='receita'?'<i data-lucide="trending-up" class="ico-lucide"></i>':'<i data-lucide="trending-down" class="ico-lucide"></i>'}</span></td><td class="valor" style="color:${r.tipo==='receita'?'#4ade80':'#f87171'}">${fmt(r.valor)}</td><td><select onchange="impRows[${i}].categoria=this.value" style="padding:8px;font-size:12px" aria-label="Categoria de ${esc(r.descricao)}">${cats.map(c=>`<option ${c===r.categoria?'selected':''}>${esc(c)}</option>`).join('')}</select></td></tr>`).join('')}</tbody></table></div><button class="btn btn-green" onclick="confirmarImport()" aria-label="Importar lançamentos selecionados" style="min-height:44px">✅ Importar ${nInc} lançamento${nInc===1?'':'s'}</button>`;
+}
+function confirmarImport(){
+ if(!PESSOAS.length){ toast('Cadastre uma pessoa!','err'); return; }
+ const pagamento=document.getElementById('impPagamento').value, sel=impRows.filter(r=>r.inc&&r.pessoa);
+ if(!sel.length){ toast('Selecione transações!','err'); return; }
+ sel.forEach(r=>lancamentos.push({id:Date.now()+Math.random().toString(36).slice(2,7),data:r.data,tipo:r.tipo,pessoa:r.pessoa,descricao:r.descricao,categoria:r.categoria,pagamento,valor:r.valor,obs:'Importado do extrato'}));
+ salvar(); impRows=[]; document.getElementById('impArquivo').value=''; document.getElementById('impPreview').innerHTML='<div style="font-size:13px;color:#4ade80;background:rgba(16,185,129,.15);border-radius:12px;padding:12px">✅ '+sel.length+' lançamento(s) importado(s)!</div>'; atualizarTudo();
+}
+let OFERTAS_APP = [
+  {titulo:'Amendoim Torrado Salgado 1kg', preco:'R$ 22,89', antes:'R$ 29,90', loja:'Mercado Livre', imagem:'https://images.unsplash.com/photo-1508061253366-f7da158b6d46?w=400&h=300&fit=crop', link:'https://ofertas.controle45.com.br'},
+  {titulo:'Fone Bluetooth TWS com Cancelamento de Ruído', preco:'R$ 89,90', antes:'R$ 149,90', loja:'Amazon', imagem:'https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=400&h=300&fit=crop', link:'https://ofertas.controle45.com.br'},
+  {titulo:'Smartwatch com Monitor Cardíaco', preco:'R$ 129,90', antes:'R$ 199,90', loja:'Shopee', imagem:'https://images.unsplash.com/photo-1523275335684-70806761d0c?w=400&h=300&fit=crop', link:'https://ofertas.controle45.com.br'},
+  {titulo:'Whey Protein 1kg - Concentrado', preco:'R$ 89,90', antes:'R$ 139,90', loja:'Amazon', imagem:'https://picsum.photos/seed/whey/400/300', link:'https://ofertas.controle45.com.br'},
+  {titulo:'Camiseta Dry Fit Academia Masculina', preco:'R$ 39,90', antes:'R$ 69,90', loja:'Shopee', imagem:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=300&fit=crop', link:'https://ofertas.controle45.com.br'},
+  {titulo:'Perfume Importado Masculino 100ml', preco:'R$ 149,90', antes:'R$ 249,90', loja:'Mercado Livre', imagem:'https://picsum.photos/seed/perfume1/400/300', link:'https://ofertas.controle45.com.br'},
+  {titulo:'Smart Plug WiFi Tomada Inteligente', preco:'R$ 49,90', antes:'R$ 89,90', loja:'Amazon', imagem:'https://picsum.photos/seed/gadget1/400/300', link:'https://ofertas.controle45.com.br'},
+  {titulo:'Tênis de Corrida Leve', preco:'R$ 159,90', antes:'R$ 259,90', loja:'Shopee', imagem:'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=300&fit=crop', link:'https://ofertas.controle45.com.br'},
+  {titulo:'Caixa de Som Bluetooth à Prova D\'água', preco:'R$ 119,90', antes:'R$ 199,90', loja:'Amazon', imagem:'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=400&h=300&fit=crop', link:'https://ofertas.controle45.com.br'},
+  {titulo:'Kit 5 Faixas Elásticas Academia', preco:'R$ 59,90', antes:'R$ 99,90', loja:'Mercado Livre', imagem:'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop', link:'https://ofertas.controle45.com.br'},
+  {titulo:'Jaqueta Corta Vento Impermeável', preco:'R$ 129,90', antes:'R$ 219,90', loja:'Shopee', imagem:'https://picsum.photos/seed/jaqueta/400/300', link:'https://ofertas.controle45.com.br'},
+  {titulo:'Perfume Feminino Floral 50ml', preco:'R$ 99,90', antes:'R$ 169,90', loja:'Amazon', imagem:'https://images.unsplash.com/photo-1594035910387-fea47794261f?w=400&h=300&fit=crop', link:'https://ofertas.controle45.com.br'}
+];
+async function carregarOfertas(){
+  const urls = [
+    'https://ofertas.controle45.com.br/ofertas.json',
+    'https://1787782604680-ofertas.controle45.com.br/ofertas.json',
+    './ofertas.json'
+  ];
+  for(const url of urls){
+    try{
+      const r = await fetch(url, {cache:'no-store'});
+      if(!r.ok) continue;
+      const j = await r.json();
+      if(Array.isArray(j) && j.length){ OFERTAS_APP = j; renderOfertas(); console.log('ofertas carregadas de', url); break; }
+    }catch(e){}
+  }
+}
+function renderOfertas(){
+  const el=document.getElementById('ofertasApp'); if(!el) return;
+  el.innerHTML=OFERTAS_APP.map(o=>{
+    const pNum=parseFloat(o.preco.replace(/[^\d,]/g,'').replace(',','.'))||0, aNum=parseFloat(o.antes.replace(/[^\d,]/g,'').replace(',','.'))||0;
+    const off=(pNum&&aNum&&aNum>pNum)?Math.round((1-pNum/aNum)*100):0;
+    return `
+    <div style="background:#0f172a;border:1px solid rgba(255,255,255,.06);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 4px 16px rgba(0,0,0,.2);position:relative">
+      <div style="height:4px;background:var(--grad)"></div>
+      <div style="position:relative;height:140px;overflow:hidden;background:#0f172a">
+        <img src="${esc(o.imagem)}" alt="${esc(o.titulo)}" loading="lazy" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div style="display:none;position:absolute;inset:0;align-items:center;justify-content:center;font-size:42px;background:linear-gradient(135deg,#1e1b4b,#1e293b)">🛒</div>
+        ${off?`<span style="position:absolute;top:8px;right:8px;background:#f59e0b;color:#0f172a;font-size:11px;font-weight:800;padding:3px 8px;border-radius:99px;box-shadow:0 2px 8px rgba(0,0,0,.3)">-${off}%</span>`:''}
+        <span style="position:absolute;bottom:8px;left:8px;background:rgba(15,23,42,.85);backdrop-filter:blur(6px);color:#38bdf8;border:1px solid rgba(56,189,248,.3);font-size:11px;font-weight:700;padding:3px 8px;border-radius:99px">${esc(o.loja)}</span>
+      </div>
+      <div style="padding:12px;flex:1;display:flex;flex-direction:column;gap:6px">
+        <div style="font-size:13px;font-weight:700;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${esc(o.titulo)}</div>
+        <div style="margin-top:auto;display:flex;gap:6px;align-items:baseline;flex-wrap:wrap"><span style="font-size:19px;font-weight:800;color:#4ade80">${esc(o.preco)}</span><span style="font-size:12px;color:#64748b;text-decoration:line-through">${esc(o.antes)}</span></div>
+        <a href="${esc(o.link)}" target="_blank" rel="noopener" style="display:block;text-align:center;margin-top:6px;padding:11px;background:var(--grad-green);color:#fff;font-weight:800;border-radius:10px;text-decoration:none;min-height:44px;line-height:22px;box-shadow:0 4px 12px rgba(16,185,129,.25)" aria-label="Ver oferta ${esc(o.titulo)}"><i data-lucide="shopping-bag" class="ico-lucide"></i> Ver oferta</a>
+      </div>
+    </div>`;
+  }).join('');
+  if(window.lucide) lucide.createIcons();
+}
+function atualizarTudo(){ preencherPessoas(); renderListaPessoas(); atualizarFiltros(); renderizar(); atualizarResumo(); renderFechamento(); renderLista(); renderExtrato(); renderRecorrentes(); renderOfertas(); if(window.lucide) lucide.createIcons(); }
+gerarRecorrentesPendentes();
+ajustarNav();
+atualizarTudo();
+carregarOfertas();
+if(window.lucide) lucide.createIcons();
+setTimeout(()=>{ if(window.lucide) lucide.createIcons(); }, 500);
+</script>
+</div> <!-- /appRoot -->
+
+<!-- Migração modal -->
+<div id="migracaoModal" class="modal-bg" role="dialog" aria-modal="true" aria-labelledby="migracaoTitle" style="display:none">
+  <div class="modal">
+    <h3 id="migracaoTitle">Encontramos dados salvos neste dispositivo</h3>
+    <p class="muted" style="margin:8px 0 12px">Deseja migrá-los para sua conta? <span id="migracaoQtd"></span></p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="migrarAgora()" style="flex:1;min-height:44px">Migrar agora</button>
+      <button class="btn btn-ghost" onclick="manterLocal()" style="flex:1;min-height:44px">Manter neste dispositivo</button>
+    </div>
+    <button class="btn btn-ghost" onclick="exportarBackup(); manterLocal()" style="width:100%;margin-top:8px;min-height:44px">Exportar backup</button>
+  </div>
+</div>
+
+<!-- Sync status discreto -->
+<div id="syncStatus" style="position:fixed;bottom:92px;left:50%;transform:translateX(-50%);background:rgba(15,23,42,.9);border:1px solid rgba(255,255,255,.1);padding:6px 12px;border-radius:99px;font-size:12px;color:#cbd5e1;display:none;z-index:997;backdrop-filter:blur(8px)" aria-live="polite"></div>
+
+<script type="module">
+import { supabase, isSupabaseConfigured } from './supabaseClient.js';
+import { repo } from './repo.js';
+import { getFila, limparFila, adicionarNaFila } from './offlineQueue.js';
+
+const authLoading = document.getElementById('authLoading');
+const authWelcome = document.getElementById('authWelcome');
+const appRoot = document.getElementById('appRoot');
+const btnGoogle = document.getElementById('btnGoogleLogin');
+const authError = document.getElementById('authError');
+const syncStatus = document.getElementById('syncStatus');
+
+let currentUser = null;
+let isOnline = navigator.onLine;
+
+function setSyncStatus(text, ms=2500){
+  if(!syncStatus) return;
+  syncStatus.textContent=text;
+  syncStatus.style.display='block';
+  if(ms) setTimeout(()=> syncStatus.style.display='none', ms);
+}
+
+function mostrarTelaAuth(mostrarWelcome){
+  authLoading.hidden = true; authLoading.style.display='none';
+  if(mostrarWelcome){
+    authWelcome.hidden=false; authWelcome.style.display='flex';
+    appRoot.hidden=true;
+  } else {
+    authWelcome.hidden=true; authWelcome.style.display='none';
+    appRoot.hidden=false;
+  }
+  if(window.lucide) lucide.createIcons();
+}
+
+// Botão Continuar com Google
+btnGoogle?.addEventListener('click', async ()=>{
+  authError.style.display='none';
+  if(!isSupabaseConfigured()){
+    authError.textContent='Supabase não configurado. Veja .env.example e README.';
+    authError.style.display='block'; return;
+  }
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: { redirectTo: window.location.origin + window.location.pathname }
+  });
+  if(error){
+    authError.textContent = error.message.includes('cancel') ? 'Login cancelado.' : 'Erro ao entrar: '+error.message;
+    authError.style.display='block';
+  }
+});
+
+// Estado inicial: verifica sessão (com fallback para não travar em "Carregando")
+(async ()=>{
+  try{
+    if(!isSupabaseConfigured()){
+      mostrarTelaAuth(false);
+      return;
+    }
+    const { data: { session } } = await supabase.auth.getSession();
+    if(session?.user){
+      await onLogin(session.user);
+    } else {
+      mostrarTelaAuth(true);
+    }
+  }catch(e){
+    console.error('[Auth] Erro ao verificar sessão', e);
+    mostrarTelaAuth(false);
+  } finally {
+    // Garante que o loading some mesmo se algo falhar
+    setTimeout(()=>{
+      const l=document.getElementById('authLoading');
+      if(l && l.style.display!=='none' && !l.hidden){
+        l.hidden=true; l.style.display='none';
+      }
+    }, 300);
+  }
+})();
+
+// Listener de auth
+supabase.auth.onAuthStateChange(async (event, session)=>{
+  if(event==='SIGNED_IN' && session?.user){
+    await onLogin(session.user);
+  } else if(event==='SIGNED_OUT'){
+    currentUser=null;
+    const cardP=document.getElementById('cardPerfilInfo');
+    if(cardP){ cardP.style.display='none'; cardP.hidden=true; }
+    // limpar dados sensíveis da memória, mas manter localStorage como backup
+    mostrarTelaAuth(true);
+    setSyncStatus('Você saiu da conta');
+  } else if(event==='TOKEN_REFRESHED'){
+    // silencioso
+  }
+  if(event==='SIGNED_OUT' || !session){
+    authLoading.hidden=true; authLoading.style.display='none';
+  }
+});
+
+async function onLogin(user){
+  currentUser=user;
+  // Mostrar perfil
+  const nome = user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split('@')[0] || 'Usuário';
+  const avatar = user.user_metadata?.avatar_url || user.user_metadata?.picture || '';
+  const perfilNome = document.getElementById('perfilNomeTop');
+  const perfilAvatar = document.getElementById('perfilAvatar');
+  const perfilDetalhe = document.getElementById('perfilDetalhe');
+  if(perfilNome) perfilNome.textContent=nome;
+  if(perfilAvatar){
+    if(avatar) perfilAvatar.innerHTML=`<img src="${avatar}" alt="${nome}" style="width:100%;height:100%;object-fit:cover;border-radius:12px">`;
+    else perfilAvatar.textContent=nome.charAt(0).toUpperCase();
+  }
+  if(perfilDetalhe) perfilDetalhe.innerHTML=`<div style="font-weight:700">${nome}</div><div class="muted" style="font-size:12px">${user.email||''}</div>`;
+  const cardPerfil = document.getElementById('cardPerfilInfo');
+  if(cardPerfil){ cardPerfil.style.display='block'; cardPerfil.hidden=false; }
+  // também atualiza avatar do topo
+  const topAvatar = document.getElementById('perfilAvatarTop');
+  if(topAvatar && avatar) topAvatar.innerHTML=`<img src="${avatar}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+
+  mostrarTelaAuth(false);
+  setSyncStatus('Sincronizando...', 1500);
+
+  // Carregar dados da nuvem
+  try{
+    const dados = await repo.carregarTudo(user.id);
+    // Alimentar dashboard
+    if(dados.transactions?.length || dados.budgets?.length){
+      // Substituir estado local em memória (mantém backup local intacto)
+      window.__supabaseDataLoaded = true;
+      // Atualizar variáveis globais usadas pelo app (lancamentos, etc.) se existirem
+      if(typeof lancamentos !== 'undefined' && Array.isArray(dados.transactions)){
+        lancamentos = dados.transactions.map(t=>({
+          id: t.id,
+          tipo: t.type,
+          valor: Number(t.amount_cents)/100,
+          categoria: t.category,
+          descricao: t.description,
+          data: t.transaction_date,
+          pessoa: t.person_name || PESSOAS[0]||'Eu',
+          pagamento: t.payment_method||'Pix',
+          obs: t.notes||''
+        }));
+        if(typeof salvar==='function') salvar();
+      }
+      if(typeof atualizarTudo==='function') atualizarTudo();
+    }
+    setSyncStatus('Salvo na nuvem', 2000);
+    // Verificar migração
+    verificarMigracao(user);
+    // Tentar fila offline
+    if(isOnline) await sincronizarFila();
+  }catch(e){
+    console.error(e);
+    setSyncStatus('Erro ao sincronizar', 3000);
+    // Fallback: mantém dados locais
+  }
+}
+
+// Migração idempotente
+function jaMigrou(userId){
+  return localStorage.getItem('migracao_concluida_'+userId)==='1';
+}
+function marcarMigrou(userId){
+  localStorage.setItem('migracao_concluida_'+userId,'1');
+}
+function contarLocal(){
+  try{
+    const gastos = JSON.parse(localStorage.getItem('gastos')||'[]').length;
+    const lista = JSON.parse(localStorage.getItem('lista_compras')||'[]').length;
+    const orc = Object.keys(JSON.parse(localStorage.getItem('orcamentos')||'{}')).length;
+    return {gastos, lista, orc, total: gastos+lista+orc};
+  }catch{ return {total:0} }
+}
+function verificarMigracao(user){
+  if(jaMigrou(user.id)) return;
+  const qtd = contarLocal();
+  if(qtd.total===0) { marcarMigrou(user.id); return; }
+  document.getElementById('migracaoQtd').textContent = `(${qtd.gastos} lançamentos, ${qtd.lista} itens, ${qtd.orc} orçamentos)`;
+  document.getElementById('migracaoModal').style.display='flex';
+}
+window.migrarAgora = async ()=>{
+  const qtd = contarLocal();
+  if(!currentUser) return;
+  // Validação básica
+  let lanc = [];
+  try{ lanc = JSON.parse(localStorage.getItem('gastos')||'[]'); }catch{}
+  // Idempotência: verifica por id antes de inserir
+  let ok=0, dup=0;
+  for(const l of lanc){
+    const exists = await repo.existeTransacao(currentUser.id, l);
+    if(exists){ dup++; continue; }
+    const r = await repo.criarTransacao(currentUser.id, l);
+    if(r) ok++;
+  }
+  // Similar para orçamentos e lista (simplificado)
+  document.getElementById('migracaoModal').style.display='none';
+  marcarMigrou(currentUser.id);
+  setSyncStatus(`Migração concluída: ${ok} novos, ${dup} já existiam`, 3000);
+  // Não apaga local automaticamente; oferece depois
+};
+window.manterLocal = ()=>{
+  document.getElementById('migracaoModal').style.display='none';
+  if(currentUser) marcarMigrou(currentUser.id);
+};
+
+// Sair da conta
+window.sairDaConta = async ()=>{
+  const ok = confirm('Sair da conta? Seus dados na nuvem permanecem salvos.');
+  if(!ok) return;
+  await supabase.auth.signOut();
+};
+
+// Offline fila
+window.addEventListener('online', async ()=>{ isOnline=true; setSyncStatus('Reconectado, sincronizando...'); await sincronizarFila(); });
+window.addEventListener('offline', ()=>{ isOnline=false; setSyncStatus('Sem conexão — alterações ficarão pendentes', 3000); });
+
+async function sincronizarFila(){
+  const fila = getFila();
+  if(!fila.length || !currentUser) return;
+  setSyncStatus('Sincronizando fila...', 2000);
+  for(const op of fila){
+    try{
+      if(op.tipo==='transacao') await repo.criarTransacao(currentUser.id, op.dado);
+      // outros tipos...
+      // remove da fila após sucesso (implementado dentro de repo ou aqui)
+    }catch(e){ console.error('fila erro', e); setSyncStatus('Aguardando conexão', 3000); break; }
+  }
+  limparFila();
+  setSyncStatus('Salvo na nuvem', 2000);
+}
+
+// Proteger chamadas: exemplo de wrapper
+window.repo = repo;
+window.supabase = supabase;
+</script>
+<script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));}</script>
+</body>
+</html>

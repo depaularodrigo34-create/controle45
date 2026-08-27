@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Achados & Ofertas — Melhores Preços da Internet</title>
+<meta name="description" content="As melhores ofertas da internet selecionadas para você. Entre no nosso grupo do WhatsApp e não perca nenhum desconto!">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',Arial,sans-serif; }
+body { background:#0f172a; color:#e2e8f0; min-height:100vh; }
+.container { max-width:1100px; margin:0 auto; padding:20px; }
+
+header { text-align:center; padding:40px 20px 24px;
+background:linear-gradient(180deg,#14532d22,#00000000); }
+.logo { font-size:34px; font-weight:800; color:#4ade80; letter-spacing:-1px; }
+.slogan { color:#94a3b8; margin-top:6px; font-size:15px; }
+
+.btn-wa-hero {
+display:inline-flex; align-items:center; gap:10px; margin-top:20px;
+background:#25D366; color:#062b17; font-weight:800; font-size:17px;
+padding:14px 28px; border-radius:99px; text-decoration:none; transition:.2s;
+box-shadow:0 6px 24px #25d36644; }
+.btn-wa-hero:hover { transform:translateY(-2px); box-shadow:0 10px 30px #25d36666; }
+
+.buscawrap { max-width:520px; margin:26px auto 0; display:flex; gap:8px; }
+.buscawrap input { flex:1; padding:13px 16px; border-radius:12px; border:1px solid #334155;
+background:#1e293b; color:#e2e8f0; font-size:14px; }
+.chips { display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin:16px 0 8px; }
+.chip { background:#1e293b; border:1px solid #334155; color:#94a3b8; border-radius:99px;
+padding:7px 16px; font-size:13px; cursor:pointer; }
+.chip.on { background:#16a34a33; border-color:#16a34a; color:#4ade80; }
+
+h2.tit { margin:30px 0 16px; font-size:20px; color:#e2e8f0; }
+.grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:16px; }
+
+.card { background:#1e293b; border-radius:14px; overflow:hidden; border:1px solid #33415588;
+display:flex; flex-direction:column; transition:.2s; position:relative; }
+.card:hover { transform:translateY(-3px); border-color:#16a34a88; box-shadow:0 12px 28px #00000066; }
+.foto { height:150px; display:flex; align-items:center; justify-content:center; font-size:56px;
+background:linear-gradient(135deg,#134e4a33,#1e293b); }
+.foto img { width:100%; height:100%; object-fit:cover; }
+.corpo { padding:14px; flex:1; display:flex; flex-direction:column; gap:6px; }
+.loja-tag { align-self:flex-start; font-size:11px; font-weight:700; color:#38bdf8;
+background:#38bdf822; padding:2px 10px; border-radius:99px; }
+.card h3 { font-size:14.5px; line-height:1.35; color:#e2e8f0; }
+.precos { display:flex; align-items:baseline; gap:8px; margin-top:auto; padding-top:6px; }
+.preco { font-size:21px; font-weight:800; color:#4ade80; }
+.antes { font-size:13px; color:#64748b; text-decoration:line-through; }
+.off { font-size:11px; font-weight:800; color:#fbbf24; background:#fbbf2422; padding:2px 8px; border-radius:99px; }
+.btn-comprar { display:block; text-align:center; margin:10px 14px 14px; padding:11px;
+background:#16a34a; color:#fff; font-weight:700; font-size:14px; border-radius:9px;
+text-decoration:none; transition:.2s; }
+.btn-comprar:hover { background:#15803d; }
+
+.vazio-ofertas { text-align:center; color:#64748b; padding:50px 20px; }
+
+footer { text-align:center; padding:36px 20px 90px; color:#64748b; font-size:12.5px; line-height:1.7; }
+
+.btn-wa-flutuante {
+position:fixed; right:18px; bottom:18px; z-index:60;
+display:flex; align-items:center; gap:8px;
+background:#25D366; color:#062b17; font-weight:800; font-size:14px;
+padding:13px 20px; border-radius:99px; text-decoration:none;
+box-shadow:0 8px 24px #25d36655; animation:pulsar 2.5s infinite; }
+@keyframes pulsar { 0%,100%{transform:scale(1)} 50%{transform:scale(1.05)} }
+@media(max-width:600px){ .btn-wa-flutuante span{display:none} .btn-wa-flutuante{padding:15px} }
+</style>
+</head>
+<body>
+
+<header>
+<div class="logo">🔥 ACHADOS DO DIA</div>
+<p class="slogan">As melhores ofertas da internet, selecionadas a dedo pra você economizar!</p>
+<a class="btn-wa-hero" href="#" target="_blank" rel="noopener">📲 Entrar no grupo do WhatsApp</a>
+<div class="buscawrap">
+<input type="text" id="busca" placeholder="🔍 Buscar oferta..." oninput="renderizar()">
+</div>
+<div class="chips" id="chips"></div>
+</header>
+
+<main class="container">
+<h2 class="tit">💰 Ofertas de hoje</h2>
+<div class="grid" id="grid"></div>
+</main>
+
+<footer>
+Este site contém <b>links de afiliado</b>. Isso significa que podemos receber uma pequena
+comissão pelas compras realizadas — <b>sem custo adicional para você</b>.<br>
+Isso nos ajuda a continuar trazendo as melhores ofertas. 💚
+</footer>
+
+<a class="btn-wa-flutuante" href="#" target="_blank" rel="noopener">💬<span>Grupo no WhatsApp</span></a>
+
+<script>
+/* ================================================================
+   ✏️ EDITE APENAS ESTE BLOCO PARA ATUALIZAR O SITE
+================================================================ */
+const CONFIG = {
+  whatsapp: 'https://chat.whatsapp.com/XXXXXXX',   // ← cole aqui o link do seu grupo
+};
+
+const OFERTAS = [
+  // Exemplo — copie um bloco, troque os dados e o link de afiliado:
+  {
+    titulo: 'Amendoim Torrado Salgado 1kg',
+    preco: 'R$ 22,89',
+    antes: 'R$ 29,90',
+    loja: 'Mercado Livre',
+    categoria: 'Mercado',
+    imagem: '',                       // opcional: URL de uma foto
+    emoji: '🥜',                      // aparece se não tiver foto
+    link: 'https://www.mercadolivre.com.br/SEU-LINK-AFILIADO'
+  },
+  {
+    titulo: 'Fone Bluetooth TWS com Cancelamento de Ruído',
+    preco: 'R$ 89,90',
+    antes: 'R$ 149,90',
+    loja: 'Amazon',
+    categoria: 'Eletrônicos',
+    imagem: '',
+    emoji: '🎧',
+    link: 'https://www.amazon.com.br/dp/XXXXX/?tag=SEUTAG'
+  },
+];
+
+/* ================================================================
+   ⚠️ NÃO PRECISA MEXER DAQUI PRA BAIXO
+================================================================ */
+document.querySelectorAll('a[href="#"]').forEach(a=>a.href=CONFIG.whatsapp);
+
+let catAtual='';
+function esc(s){ return (''+s).replace(/[&<>"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch])); }
+
+function valorNum(p){ const n=parseFloat((''+p).replace(/[^\d,]/g,'').replace(',','.')); return isNaN(n)?0:n; }
+
+function renderChips(){
+const cats=[...new Set(OFERTAS.map(o=>o.categoria||'Outros'))];
+document.getElementById('chips').innerHTML=
+`<button class="chip ${!catAtual?'on':''}" onclick="selecionarCat('')">Todas</button>`+
+cats.map(c=>`<button class="chip ${c===catAtual?'on':''}" onclick="selecionarCat('${esc(c)}')">${esc(c)}</button>`).join('');
+}
+
+function selecionarCat(c){ catAtual=(catAtual===c)?'':c; renderizar(); }
+
+function renderizar(){
+renderChips();
+const q=document.getElementById('busca').value.toLowerCase();
+const lista=OFERTAS.filter(o=>{
+const cat=o.categoria||'Outros';
+if(catAtual&&cat!==catAtual) return false;
+return !q||o.titulo.toLowerCase().includes(q)||(o.loja||'').toLowerCase().includes(q);
+});
+const grid=document.getElementById('grid');
+if(!lista.length){ grid.innerHTML='<div class="vazio-ofertas">Nenhuma oferta encontrada 😕<br><small>Nova oferta em breve, entre no grupo do WhatsApp!</small></div>'; return; }
+grid.innerHTML=lista.map(o=>{
+const p=valorNum(o.preco), a=valorNum(o.antes);
+const off=(p&&a&&a>p)?Math.round((1-p/a)*100):0;
+const midia=o.imagem?`<img src="${esc(o.imagem)}" alt="${esc(o.titulo)}" loading="lazy">`:esc(o.emoji||'🛒');
+return `<div class="card">
+${off>=5?`<span style="position:absolute;top:10px;right:10px;background:#dc2626;color:#fff;font-size:11px;font-weight:800;padding:3px 9px;border-radius:99px;z-index:2">-${off}%</span>`:''}
+<div class="foto">${midia}</div>
+<div class="corpo">
+<span class="loja-tag">${esc(o.loja||'Oferta')}</span>
+<h3>${esc(o.titulo)}</h3>
+<div class="precos">
+<span class="preco">${esc(o.preco)}</span>
+${a>p?`<span class="antes">${esc(o.antes)}</span>`:''}
+${off>=5?`<span class="off">-${off}%</span>`:''}
+</div>
+</div>
+<a class="btn-comprar" href="${esc(o.link)}" target="_blank" rel="nofollow sponsored noopener">🛍️ Ver oferta</a>
+</div>`;
+}).join('');
+}
+
+renderizar();
+</script>
+</body>
+</html>

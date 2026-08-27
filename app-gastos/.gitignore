@@ -1,0 +1,7 @@
+# Local Netlify folder
+.netlify
+# Supabase / env - nunca commitar chaves reais
+.env
+.env.local
+.env.*.local
+.supabase

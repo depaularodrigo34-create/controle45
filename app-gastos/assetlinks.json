@@ -1,0 +1,10 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.controle45.gastos",
+    "sha256_cert_fingerprints": [
+      "15:97:16:A7:5E:0D:73:95:74:F1:BE:F8:B9:4C:21:DB:0D:1E:4B:AC:3B:AB:B3:FF:C8:F5:DD:53:1C:46:3C:45"
+    ]
+  }
+}]
