@@ -24,13 +24,17 @@ jobs:
         env:
           SURGE_LOGIN: ${{ secrets.SURGE_LOGIN }}
           SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}
+        continue-on-error: true
       - name: Commit ofertas.json
+        if: always()
         run: |
           git config user.name "robo-ofertas"
           git config user.email "robo@controle45.com.br"
           git add site-ofertas/ofertas.json app-gastos/index.html || true
           git diff --cached --quiet || (git commit -m "chore: atualiza ofertas em alta [skip ci]" && git push)
       - name: Deploy site-ofertas
+        if: always()
         run: surge site-ofertas ofertas.controle45.com.br --token ${{ secrets.SURGE_TOKEN }}
       - name: Deploy app
+        if: always()
         run: surge app-gastos controle45-2025.surge.sh --token ${{ secrets.SURGE_TOKEN }}
