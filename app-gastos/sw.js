@@ -1,6 +1,6 @@
-const CACHE = 'gastos-v15-offline100';
+const CACHE = 'gastos-v16-logo-icone';
 const CORE = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png'];
-const CDN_CACHE = 'gastos-cdn-v15';
+const CDN_CACHE = 'gastos-cdn-v16';
 // CDNs para cache opcional (não bloqueia install se falhar)
 const CDN_URLS = [
   'https://unpkg.com/lucide@latest/dist/umd/lucide.min.js',

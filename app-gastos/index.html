@@ -205,7 +205,7 @@ body.privacidade .valor-blur:hover, body.privacidade .v:hover{filter:blur(4px); 
 <!-- LANDING HERO (antes do login) -->
 <section id="landing" class="fixed inset-0 z-[90] flex flex-col bg-[radial-gradient(900px_520px_at_50%_-8%,rgba(124,58,237,.18)_0%,transparent_62%),var(--bg)] overflow-auto" aria-label="Apresentação">
   <header class="w-full max-w-6xl mx-auto flex justify-between items-center p-4 md:p-6">
-    <div class="flex items-center gap-2 font-extrabold text-xl tracking-tight"><span class="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white font-black text-[18px] leading-none shadow-lg shadow-emerald-600/20" aria-hidden="true">$</span> Controle 45</div>
+    <div class="flex items-center gap-2 font-extrabold text-xl tracking-tight"><img src="icon-192.png" alt="Controle 45" class="w-9 h-9 rounded-full shadow-lg shadow-emerald-600/20 object-cover" width="36" height="36" decoding="async"> Controle 45</div>
     <button onclick="toggleTema()" class="w-10 h-10 rounded-xl border border-white/10 bg-white/5 flex items-center justify-center" aria-label="Tema"><i data-lucide="sun" class="w-5 h-5"></i></button>
   </header>
   <div class="flex-1 max-w-6xl mx-auto w-full grid md:grid-cols-2 gap-8 items-center p-6 md:p-10">
@@ -314,7 +314,7 @@ setTimeout(()=>{
 <div id="authWelcome" hidden style="position:fixed;inset:0;background:radial-gradient(900px 500px at 50% -10%, #1e1b4b 0%, transparent 60%), rgba(2,6,23,.85);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;padding:20px;z-index:99">
   <div style="background:var(--card);border:1px solid rgba(255,255,255,.1);border-radius:28px;padding:28px;width:min(440px,100%);box-shadow:0 24px 64px rgba(0,0,0,.6);text-align:center;position:relative">
     <button onclick="document.getElementById('authWelcome').hidden=true;document.getElementById('authWelcome').style.display='none';document.getElementById('appRoot').hidden=false;document.getElementById('appRoot').style.display='block';localStorage.setItem('skip_auth','1')" style="position:absolute;top:12px;right:12px;width:36px;height:36px;border-radius:99px;border:1px solid var(--line);background:var(--card2);color:var(--muted2);cursor:pointer;display:flex;align-items:center;justify-content:center" aria-label="Fechar">✕</button>
-    <div style="width:56px;height:56px;margin:0 auto 12px;border-radius:16px;background:linear-gradient(135deg,#10b981 0%,#0d9488 100%);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:900;color:#fff;box-shadow:0 8px 20px rgba(16,185,129,.4)" aria-hidden="true">$</div>
+    <img src="icon-192.png" alt="Controle 45" style="width:56px;height:56px;margin:0 auto 12px;border-radius:50%;box-shadow:0 8px 20px rgba(16,185,129,.4);object-fit:cover" width="56" height="56" decoding="async">
     <div style="font-size:22px;font-weight:800;letter-spacing:-.02em;color:var(--txt)">Bem-vindo ao Controle de Gastos</div>
     <p class="muted" style="margin:8px 0 6px;line-height:1.5;font-size:13px">Entre com Google para <b style="color:var(--txt)">sincronizar na nuvem</b> e acessar de qualquer aparelho. Seus dados são <b style="color:#4ade80">privados e criptografados</b>.</p>
     <div style="display:flex;gap:8px;justify-content:center;margin:12px 0 16px;flex-wrap:wrap">
@@ -339,7 +339,7 @@ setTimeout(()=>{
 <div class="container">
   <header class="hdr">
     <div class="hdr-top">
-      <h1 style="display:flex;align-items:center;gap:10px"><span style="width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#10b981 0%,#0d9488 100%);display:inline-flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:18px;flex-shrink:0;box-shadow:0 4px 12px rgba(16,185,129,.3)" aria-hidden="true">$</span> Controle de Gastos</h1>
+      <h1 style="display:flex;align-items:center;gap:10px"><img src="icon-192.png" alt="" class="rounded-full" style="width:34px;height:34px;box-shadow:0 4px 12px rgba(16,185,129,.3);object-fit:cover" width="34" height="34" decoding="async"> Controle de Gastos</h1>
       <div style="display:flex;gap:8px;align-items:center">
         <button id="btnEntrarTop" class="btn btn-primary" style="display:none;padding:10px 14px;min-height:44px;font-size:13px;border-radius:99px" onclick="abrirLogin()" aria-label="Entrar com Google">Entrar</button>
         <button id="btnAvatarTop" style="display:none;align-items:center;gap:8px;padding:4px 8px 4px 4px;border-radius:99px;border:1px solid var(--line);background:var(--card);cursor:pointer" onclick="abrirMenuPerfil()" aria-label="Abrir perfil">
