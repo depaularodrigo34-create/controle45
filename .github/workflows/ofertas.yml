@@ -1,6 +1,12 @@
 name: Atualiza Ofertas a cada 2h
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - 'app-gastos/**'
+      - 'site-ofertas/**'
+      - 'meu-hosting/**'
   schedule:
     - cron: '0 */2 * * *'  # a cada 2 horas UTC
   workflow_dispatch: # permite rodar manualmente no GitHub
