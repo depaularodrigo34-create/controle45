@@ -1,37 +1,31 @@
 {
-  "name": "Controle de Gastos Familiar",
-  "short_name": "Gastos",
+  "name": "Controle 45 - Gastos Familiar",
+  "short_name": "Controle45",
   "id": "/",
-  "description": "Controle despesas e receitas da familia por pessoa, com fechamento mensal e exportacao de planilhas Excel. Seus dados ficam apenas no seu aparelho.",
+  "description": "PWA offline-first, privado no navegador. Controle de gastos, importação de extratos, calculadora CDI/CDB com IR pro-rata, juros compostos e planilhas.",
   "start_url": "/index.html",
   "scope": "/",
   "display": "standalone",
-  "display_override": ["standalone", "minimal-ui"],
+  "display_override": ["standalone", "minimal-ui", "browser"],
   "orientation": "portrait-primary",
   "background_color": "#0f172a",
   "theme_color": "#0f172a",
   "lang": "pt-BR",
   "dir": "ltr",
   "categories": ["finance", "productivity"],
+  "screenshots": [
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "form_factor": "narrow" }
+  ],
+  "shortcuts": [
+    { "name": "Novo lançamento", "url": "/index.html#novo", "description": "Adicionar gasto ou receita", "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Ferramentas CDI", "url": "/index.html#ferramentas", "description": "Calculadora CDI/CDB", "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }] }
+  ],
   "prefer_related_applications": false,
+  "launch_handler": { "client_mode": "navigate-existing" },
+  "handle_links": "preferred",
   "icons": [
-    {
-      "src": "/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable"
-    }
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ]
 }

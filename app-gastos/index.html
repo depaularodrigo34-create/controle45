@@ -4,23 +4,59 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#0f172a">
-<meta name="description" content="Controle de gastos online para registrar receitas, despesas, importar extratos e gerar planilhas financeiras.">
-<link rel="canonical" href="https://controle45.netlify.app/">
+<meta name="description" content="Controle de gastos completo: registre receitas e despesas, importe extratos, simule investimentos CDI/CDB, calcule juros compostos e gere planilhas financeiras.">
+<meta name="keywords" content="controle de gastos, finanças pessoais, calculadora CDI, juros compostos, orçamento familiar, planilha financeira">
+<link rel="canonical" href="https://controle45-2025.surge.sh/">
+<meta name="robots" content="index, follow, max-image-preview:large">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Controle de Gastos | Organize sua vida financeira">
-<meta property="og:description" content="Controle de gastos online para registrar receitas, despesas, importar extratos e gerar planilhas financeiras.">
-<meta property="og:url" content="https://controle45.netlify.app/">
-<meta property="og:image" content="https://controle45.netlify.app/icon-512.png">
+<meta property="og:title" content="Controle de Gastos | Finanças + Calculadoras CDI, Juros e Orçamento">
+<meta property="og:description" content="App financeiro completo: controle de gastos, importação de extratos, calculadora CDI/CDB com IR, juros compostos, reserva de emergência e planilhas.">
+<meta property="og:url" content="https://controle45-2025.surge.sh/">
+<meta property="og:image" content="https://controle45-2025.surge.sh/icon-512.png">
+<meta property="og:image:width" content="512">
+<meta property="og:image:height" content="512">
+<meta property="og:image:alt" content="Controle 45 - ícone verde com cifrão">
 <meta property="og:locale" content="pt_BR">
-<meta name="twitter:card" content="summary">
+<meta property="og:site_name" content="Controle 45">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Controle de Gastos | Finanças + Calculadora CDI">
+<meta name="twitter:description" content="PWA offline-first, privado no navegador, com calculadora CDI/CDB e juros compostos.">
+<meta name="twitter:image" content="https://controle45-2025.surge.sh/icon-512.png">
+<link rel="preconnect" href="https://unpkg.com" crossorigin>
+<link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<script>window.__ENV__={VITE_SUPABASE_URL:'https://abvkleuealvbpbcmcsmq.supabase.co',VITE_SUPABASE_PUBLISHABLE_KEY:'sb_publishable_fg8iI7g1kfp3fginUAcnVA_uUeTSxRk'}</script>
 <link rel="manifest" href="manifest.json">
-<link rel="icon" href="icon-192.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
 <link rel="apple-touch-icon" href="icon-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Controle de Gastos | Organize sua vida financeira</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<meta name="apple-mobile-web-app-title" content="Controle 45">
+<title>Controle de Gastos | Finanças + Calculadora CDI e Juros</title>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Controle 45","applicationCategory":"FinanceApplication","operatingSystem":"Web, Android, iOS","offers":{"@type":"Offer","price":"0","priceCurrency":"BRL"},"description":"Controle de gastos PWA offline-first, privado no navegador, com calculadora CDI/CDB, juros compostos e planilhas.","inLanguage":"pt-BR","author":{"@type":"Organization","name":"Controle 45"}}</script>
+<script defer src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={darkMode:'class',theme:{extend:{colors:{brand:'#7c3aed',surface:'#0f172a'}}}}</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+// TRAVA AGRESSIVA TUTORIAL - Early return (regra 1) - cobre ambas as chaves v2 e v3
+(function(){
+  try{
+    if(localStorage.getItem("controle45_tutorial_concluido")==="true" || localStorage.getItem("controle45_tutorial_v3")==="true"){
+      var s=document.createElement('style');
+      s.textContent='#tutorialOverlay{display:none !important} #dicaOverlay{display:none !important} .modal-tutorial{display:none !important}';
+      document.head.appendChild(s);
+      document.addEventListener('DOMContentLoaded', function(){
+        var a=document.getElementById('tutorialOverlay');
+        var b=document.getElementById('dicaOverlay');
+        if(a){ a.hidden=true; a.style.display='none'; a.setAttribute('aria-hidden','true'); }
+        if(b){ b.hidden=true; b.style.display='none'; b.setAttribute('aria-hidden','true'); }
+      });
+    }
+  }catch(e){}
+})();
+</script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif}
 :root{--bg:#0f172a;--card:#1e293b;--card2:#0f172a;--line:rgba(255,255,255,.08);--txt:#f1f5f9;--muted:#cbd5e1;--muted2:#94a3b8;--pri:#7c3aed;--brand:#7c3aed;--brand-strong:#5b21b6;--brand-soft:rgba(124,58,237,.14);--surface:#1e293b;--on-brand:#ffffff;--grad:linear-gradient(135deg,var(--brand) 0%,#6d28d9 45%,#4f46e5 100%);--grad-green:linear-gradient(135deg,#10b981 0%,#06b6d4 100%)}
@@ -44,7 +80,7 @@ a{color:#a78bfa}
 @media(prefers-reduced-motion:reduce){.tab-panel{transition:none}}
 .card{background:var(--card);border-radius:20px;padding:20px;box-shadow:0 2px 16px rgba(0,0,0,.12);margin-bottom:16px;border:1px solid var(--line);position:relative;overflow:hidden}
 .card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad);opacity:.15}
-.card h2{color:#f1f5f9;font-size:16px;font-weight:800;margin-bottom:14px;padding-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:8px;border-bottom:1px solid rgba(255,255,255,.06);flex-wrap:wrap}
+.card h2{color:var(--txt);font-size:16px;font-weight:800;margin-bottom:14px;padding-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:8px;border-bottom:1px solid var(--line);flex-wrap:wrap}
 .shortcuts{display:flex;gap:12px;overflow-x:auto;padding:8px 0 4px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none}
 .shortcuts::-webkit-scrollbar{display:none}
 .shortcut{flex:0 0 72px;display:flex;flex-direction:column;align-items:center;gap:8px;background:transparent;border:none;cursor:pointer;min-width:72px;min-height:88px;scroll-snap-align:start;padding:4px}
@@ -59,14 +95,16 @@ a{color:#a78bfa}
 @media(prefers-reduced-motion:reduce){.screen{transition:none !important}.tab-panel{transition:none !important;transform:none !important;opacity:1 !important}}
 .card h3{font-size:13px;font-weight:700;color:#cbd5e1;margin:16px 0 8px;letter-spacing:.02em;text-transform:uppercase}
 label{display:block;font-size:13px;font-weight:600;color:var(--muted2);margin:12px 0 6px}
-input,select,textarea{width:100%;padding:14px 14px;border-radius:14px;border:1px solid rgba(255,255,255,.08);background:#0f172a;color:var(--txt);font-size:16px;transition:.15s}
+input,select,textarea{width:100%;padding:14px 14px;border-radius:14px;border:1px solid var(--line);background:var(--card2);color:var(--txt);font-size:16px;transition:.15s}
 input:focus,select:focus,textarea:focus{outline:none;border-color:#7c3aed;box-shadow:0 0 0 3px rgba(124,58,237,.25)}
 .btn{width:100%;padding:16px;margin-top:14px;border:none;border-radius:16px;font-size:16px;font-weight:800;cursor:pointer;transition:.15s;min-height:54px;letter-spacing:.01em}
 .btn:focus-visible{outline:2px solid #fff;outline-offset:2px}
 .btn:active{transform:scale(.98)}
 .btn-primary{background:var(--grad);color:#fff;box-shadow:0 8px 20px rgba(124,58,237,.35)}
 .btn-green{background:var(--grad-green);color:#fff;box-shadow:0 8px 20px rgba(16,185,129,.3)}
-.btn-ghost{background:rgba(255,255,255,.06);color:#f1f5f9;border:1px solid rgba(255,255,255,.1)}
+.btn-ghost{background:rgba(255,255,255,.06);color:var(--txt);border:1px solid var(--line)}
+:root[data-theme="light"] .btn-ghost{background:#fff;color:#0f172a;border:1px solid rgba(15,23,42,.12)}
+:root[data-theme="light"] .btn-icon{background:#fff;color:#0f172a;border:1px solid rgba(15,23,42,.1)}
 .btn-red{background:rgba(239,68,68,.08);color:#f87171;border:1px solid rgba(239,68,68,.2);padding:8px 12px;font-size:13px;border-radius:10px;cursor:pointer;font-weight:700}
 .btn-mini{padding:12px 18px;border-radius:14px;border:none;font-size:14px;font-weight:700;cursor:pointer;min-height:44px;min-width:44px;transition:.15s}
 .resumo{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px}
@@ -79,7 +117,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#7c3aed;box-sh
 .verde{color:#4ade80}.verm{color:#f87171}.azul{color:#38bdf8}
 .grid2{display:grid;grid-template-columns:340px 1fr;gap:16px}
 table{width:100%;border-collapse:collapse;font-size:13px}
-th{background:#0f172a;color:var(--muted2);padding:10px 8px;text-align:left;font-weight:700}
+th{background:var(--card2);color:var(--muted2);padding:10px 8px;text-align:left;font-weight:700}
 td{padding:10px 8px;border-bottom:1px solid rgba(255,255,255,.06)}
 .valor{text-align:right;font-weight:700}
 .cat-badge{padding:4px 10px;border-radius:99px;font-size:11px;font-weight:700;display:inline-block}
@@ -98,9 +136,13 @@ td{padding:10px 8px;border-bottom:1px solid rgba(255,255,255,.06)}
 .muted{color:var(--muted2);font-size:12px}
 .kpi{display:flex;gap:10px;flex-wrap:wrap}
 .kpi .res-box{flex:1;min-width:140px}
-.bar{height:10px;background:#0f172a;border-radius:99px;overflow:hidden;border:1px solid rgba(255,255,255,.06)}
+.bar{height:10px;background:var(--card2);border-radius:99px;overflow:hidden;border:1px solid var(--line)}
 .bar>span{display:block;height:100%;background:var(--grad)}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+/* Modo privacidade - blur */
+body.privacidade .valor-blur, body.privacidade .v{filter:blur(7px); opacity:.85; user-select:none; transition:filter .2s, opacity .2s}
+body.privacidade .valor-blur:hover, body.privacidade .v:hover{filter:blur(4px); opacity:1}
+.blur-ativo{filter:blur(6px); backdrop-filter:blur(8px); opacity:.7; user-select:none}
 /* Navegação inferior */
 .bottom-nav{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom));width:min(640px, calc(100% - 16px));background:rgba(15,23,42,.94);backdrop-filter:blur(20px) saturate(1.4);border:1px solid rgba(255,255,255,.1);z-index:999;border-radius:28px;padding:6px;box-shadow:0 16px 40px rgba(0,0,0,.55);display:none}
 .bottom-nav .wrap{display:grid;gap:2px}
@@ -119,6 +161,9 @@ td{padding:10px 8px;border-bottom:1px solid rgba(255,255,255,.06)}
 .btn .ico-lucide, .btn-mini .ico-lucide{width:16px;height:16px;margin-right:6px;vertical-align:middle}
 .bottom-nav button[aria-selected="true"]::after{content:'';position:absolute;top:5px;left:50%;transform:translateX(-50%);width:18px;height:3px;background:var(--grad);border-radius:99px}
 .bottom-nav button:focus-visible{outline:2px solid #a78bfa;outline-offset:2px}
+.bottom-nav .fab{width:56px;height:56px;border-radius:50%;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;box-shadow:0 8px 20px rgba(124,58,237,.4), 0 2px 8px rgba(0,0,0,.3);margin:0 auto;border:2px solid rgba(255,255,255,.15);min-height:56px;min-width:56px;align-self:center;position:relative;top:-6px}
+.bottom-nav .fab:active{transform:scale(.96)}
+.bottom-nav .fab:focus-visible{outline:2px solid #fff;outline-offset:2px}
 .mais-sheet{position:fixed;inset:0;background:rgba(2,6,23,.6);backdrop-filter:blur(4px);display:none;z-index:998;align-items:flex-end;justify-content:center;padding:16px 16px calc(16px + env(safe-area-inset-bottom))}
 .mais-sheet.open{display:flex}
 .mais-sheet .sheet{background:#1e293b;border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:12px;width:min(360px,100%);box-shadow:0 20px 60px rgba(0,0,0,.5)}
@@ -156,6 +201,89 @@ td{padding:10px 8px;border-bottom:1px solid rgba(255,255,255,.06)}
 </style>
 </head>
 <body>
+<a href="#appRoot" class="sr-only" style="position:absolute;top:8px;left:8px;background:#fff;color:#0f172a;padding:10px 14px;border-radius:99px;z-index:9999;font-weight:800;transform:translateY(-150%);transition:.2s" onfocus="this.style.transform='translateY(0)'" onblur="this.style.transform='translateY(-150%)'">Pular para conteúdo</a>
+<!-- LANDING HERO (antes do login) -->
+<section id="landing" class="fixed inset-0 z-[90] flex flex-col bg-[radial-gradient(900px_520px_at_50%_-8%,rgba(124,58,237,.18)_0%,transparent_62%),var(--bg)] overflow-auto" aria-label="Apresentação">
+  <header class="w-full max-w-6xl mx-auto flex justify-between items-center p-4 md:p-6">
+    <div class="flex items-center gap-2 font-extrabold text-xl tracking-tight"><span class="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white font-black text-[18px] leading-none shadow-lg shadow-emerald-600/20" aria-hidden="true">$</span> Controle 45</div>
+    <button onclick="toggleTema()" class="w-10 h-10 rounded-xl border border-white/10 bg-white/5 flex items-center justify-center" aria-label="Tema"><i data-lucide="sun" class="w-5 h-5"></i></button>
+  </header>
+  <div class="flex-1 max-w-6xl mx-auto w-full grid md:grid-cols-2 gap-8 items-center p-6 md:p-10">
+    <div>
+      <div class="inline-flex items-center gap-2 text-xs font-bold tracking-widest text-violet-300 bg-violet-500/10 border border-violet-500/20 rounded-full px-3 py-1 mb-4">PWA • OFFLINE • PRIVADO</div>
+      <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight leading-tight">Seu dinheiro, <span class="bg-gradient-to-r from-violet-600 to-indigo-600 bg-clip-text text-transparent">100% privado</span> e no seu controle.</h1>
+      <p class="text-slate-400 mt-4 text-lg leading-relaxed">Processado no seu navegador. Funciona sem internet. Sincronize com Google só se quiser — seus dados nunca são vendidos.</p>
+      <ul class="mt-6 grid gap-3 text-sm">
+        <li class="flex gap-3 items-start"><span class="w-8 h-8 rounded-lg bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center shrink-0">🔒</span><span><b class="text-white">100% Privado (no navegador)</b><br><span class="text-slate-400">Nada vai pra nuvem sem seu consentimento. Criptografia local.</span></span></li>
+        <li class="flex gap-3 items-start"><span class="w-8 h-8 rounded-lg bg-sky-500/15 border border-sky-500/20 flex items-center justify-center shrink-0">📶</span><span><b class="text-white">Funciona Sem Internet</b><br><span class="text-slate-400">PWA offline-first. Use no avião, no mercado, onde estiver.</span></span></li>
+        <li class="flex gap-3 items-start"><span class="w-8 h-8 rounded-lg bg-amber-500/15 border border-amber-500/20 flex items-center justify-center shrink-0">🎁</span><span><b class="text-white">Grátis e Sem Pegadinhas</b><br><span class="text-slate-400">Sem assinatura, sem limite de lançamentos. Exporte Excel quando quiser.</span></span></li>
+      </ul>
+      <div class="mt-8 flex flex-col sm:flex-row gap-3">
+        <button id="ctaComecar" class="flex-1 bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-extrabold rounded-2xl px-6 py-4 shadow-xl shadow-violet-600/20 hover:scale-[1.02] transition" aria-label="Começar sem cadastro">Começar Agora (Sem Cadastro) →</button>
+        <button id="ctaGoogleLanding" class="flex-1 bg-white text-slate-900 font-bold rounded-2xl px-6 py-4 flex items-center justify-center gap-2 hover:bg-slate-100 transition" aria-label="Sincronizar com Google"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg> Sincronizar com Google</button>
+      </div>
+      <p class="text-xs text-slate-500 mt-3 text-center sm:text-left">Sem cartão. Seus dados ficam no aparelho até você decidir sincronizar.</p>
+    </div>
+    <div class="relative hidden md:block">
+      <div class="absolute -inset-4 bg-gradient-to-br from-violet-600/20 to-indigo-600/20 blur-2xl rounded-[2rem]"></div>
+      <div class="relative bg-slate-900 border border-white/10 rounded-[2rem] p-4 shadow-2xl">
+        <div class="bg-slate-800 rounded-2xl p-4">
+          <div class="h-3 w-20 bg-white/10 rounded-full mb-4"></div>
+          <div class="grid grid-cols-3 gap-3 mb-4"><div class="bg-emerald-500/20 rounded-xl p-3 text-center"><div class="text-xs text-slate-400">RECEITAS</div><div class="font-bold text-emerald-400">R$ 4.500</div></div><div class="bg-red-500/20 rounded-xl p-3 text-center"><div class="text-xs text-slate-400">DESPESAS</div><div class="font-bold text-red-400">R$ 2.380</div></div><div class="bg-violet-500/20 rounded-xl p-3 text-center"><div class="text-xs text-slate-400">ECONOMIA</div><div class="font-bold text-violet-400">R$ 2.120</div></div></div>
+          <div class="space-y-2"><div class="h-10 bg-white/5 rounded-xl"></div><div class="h-10 bg-white/5 rounded-xl"></div><div class="h-10 bg-white/5 rounded-xl"></div></div>
+        </div>
+        <div class="text-center text-xs text-slate-500 mt-3">Prévia do app • dados fictícios</div>
+      </div>
+    </div>
+  </div>
+  <footer class="w-full max-w-6xl mx-auto p-6 text-center text-xs text-slate-500">© 2025 Controle 45 — PWA offline-first. <button onclick="document.getElementById('landing').style.display='none'; document.getElementById('landing').hidden=true; localStorage.setItem('landing_visto','1'); localStorage.setItem('skip_auth','1'); document.getElementById('authWelcome').hidden=true; document.getElementById('authWelcome').style.display='none'; document.getElementById('authLoading').hidden=true; document.getElementById('authLoading').style.display='none'; document.getElementById('appRoot').hidden=false; document.getElementById('appRoot').style.display='block';" class="underline">Pular</button></footer>
+</section>
+<script>
+// Landing logic v15: single entry, sem sobreposição com authWelcome
+(function(){
+  const landing=document.getElementById('landing');
+  const ctaComecar=document.getElementById('ctaComecar');
+  const ctaGoogle=document.getElementById('ctaGoogleLanding');
+  function esconderLanding(){ if(landing){ landing.style.display='none'; landing.setAttribute('aria-hidden','true'); landing.hidden=true; localStorage.setItem('landing_visto','1'); } }
+  function mostrarAppSemAuth(){
+    const w=document.getElementById('authWelcome'); if(w){ w.hidden=true; w.style.display='none'; }
+    const load=document.getElementById('authLoading'); if(load){ load.hidden=true; load.style.display='none'; }
+    const app=document.getElementById('appRoot'); if(app){ app.hidden=false; app.style.display='block'; }
+  }
+  try{
+    const jaViu=localStorage.getItem('landing_visto')==='1';
+    const skipAuth=localStorage.getItem('skip_auth')==='1';
+    const temSessao=localStorage.getItem('mock_user')||localStorage.getItem('supabase_user_cache')||localStorage.getItem('sb-abvkleuealvbpbcmcsmq-auth-token');
+    if(jaViu || temSessao || skipAuth){
+      if(landing) { landing.style.display='none'; landing.hidden=true; }
+      // se skipAuth e sem sessão, não mostra welcome
+      if(skipAuth && !temSessao){
+        const w=document.getElementById('authWelcome'); if(w){ w.hidden=true; w.style.display='none'; }
+        const load=document.getElementById('authLoading'); if(load){ load.hidden=true; load.style.display='none'; }
+        const app=document.getElementById('appRoot'); if(app){ app.hidden=false; app.style.display='block'; }
+      }
+    } else {
+      // landing ativa: garante que authWelcome/loading ficam ocultos até CTA
+      const w=document.getElementById('authWelcome'); if(w){ w.hidden=true; w.style.display='none'; }
+      const load=document.getElementById('authLoading'); if(load){ load.hidden=true; load.style.display='none'; }
+    }
+  }catch{}
+  ctaComecar?.addEventListener('click', ()=>{
+    esconderLanding();
+    localStorage.setItem('skip_auth','1');
+    mostrarAppSemAuth();
+    try{ history.pushState({app:true}, '', location.href); }catch{}
+    if(window.verificarTutorial) setTimeout(()=>window.verificarTutorial(), 500);
+  });
+  ctaGoogle?.addEventListener('click', ()=>{
+    esconderLanding();
+    // mostra welcome/Google
+    const w=document.getElementById('authWelcome'); if(w){ w.hidden=false; w.style.display='flex'; }
+    const load=document.getElementById('authLoading'); if(load){ load.hidden=true; load.style.display='none'; }
+    if(window.abrirLogin) setTimeout(()=>window.abrirLogin(), 100);
+  });
+})();
+</script>
 <!-- Auth: loading e welcome -->
 <div id="authLoading" style="position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:100;flex-direction:column;gap:12px">
   <div style="width:32px;height:32px;border:3px solid rgba(255,255,255,.2);border-top-color:#7c3aed;border-radius:50%;animation:spin 1s linear infinite"></div>
@@ -163,63 +291,83 @@ td{padding:10px 8px;border-bottom:1px solid rgba(255,255,255,.06)}
 </div>
 <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
 <script>
-// Fallback: se Supabase não carregar em 2.5s (sem config ou offline), libera o app no modo local
+// Fallback: só libera offline se landing não estiver visível (evita flash)
 setTimeout(()=>{
+  const landing=document.getElementById('landing');
+  const landingVisivel = landing && getComputedStyle(landing).display!=='none' && !landing.hidden;
+  if(landingVisivel) return;
+  const skipAuth = localStorage.getItem('skip_auth')==='1';
   const loading=document.getElementById('authLoading');
   const welcome=document.getElementById('authWelcome');
   const app=document.getElementById('appRoot');
-  if(loading && loading.style.display!=='none' && !loading.hidden){
-    // Verifica se o módulo Supabase já decidiu; se não, libera modo offline
-    const stillLoading = loading && getComputedStyle(loading).display!=='none';
-    if(stillLoading){
+  if(loading && !loading.hidden && getComputedStyle(loading).display!=='none'){
       console.warn('[Auth] Timeout - liberando modo offline local');
       loading.hidden=true; loading.style.display='none';
-      if(welcome){ welcome.hidden=true; welcome.style.display='none'; }
-      if(app){ app.hidden=false; app.style.display='block'; }
+      // se usuário já escolheu pular, não mostra welcome
+      if(skipAuth){ if(welcome){ welcome.hidden=true; welcome.style.display='none'; } }
+      else if(welcome && welcome.hidden){ welcome.hidden=false; welcome.style.display='flex'; }
+      if(app && app.hidden){ app.hidden=false; app.style.display='block'; }
       if(window.lucide) lucide.createIcons();
-    }
   }
 }, 2500);
 </script>
-<div id="authWelcome" hidden style="position:fixed;inset:0;background:radial-gradient(800px 400px at 50% -10%, #1e1b4b 0%, transparent 60%), var(--bg);display:flex;align-items:center;justify-content:center;padding:20px;z-index:99">
-  <div style="background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:24px;padding:28px;width:min(420px,100%);box-shadow:0 20px 60px rgba(0,0,0,.5);text-align:center">
-    <div style="font-size:28px;font-weight:800;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent">💰 Controle de Gastos</div>
-    <p class="muted" style="margin:10px 0 18px;line-height:1.5">Entre com sua conta Google para sincronizar seus dados na nuvem. Seus lançamentos ficam privados e acessíveis em qualquer dispositivo.</p>
-    <button id="btnGoogleLogin" class="btn btn-primary" style="display:flex;align-items:center;justify-content:center;gap:10px;background:#fff;color:#0f172a;box-shadow:0 4px 16px rgba(0,0,0,.2)" aria-label="Continuar com Google">
+<div id="authWelcome" hidden style="position:fixed;inset:0;background:radial-gradient(900px 500px at 50% -10%, #1e1b4b 0%, transparent 60%), rgba(2,6,23,.85);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;padding:20px;z-index:99">
+  <div style="background:var(--card);border:1px solid rgba(255,255,255,.1);border-radius:28px;padding:28px;width:min(440px,100%);box-shadow:0 24px 64px rgba(0,0,0,.6);text-align:center;position:relative">
+    <button onclick="document.getElementById('authWelcome').hidden=true;document.getElementById('authWelcome').style.display='none';document.getElementById('appRoot').hidden=false;document.getElementById('appRoot').style.display='block';localStorage.setItem('skip_auth','1')" style="position:absolute;top:12px;right:12px;width:36px;height:36px;border-radius:99px;border:1px solid var(--line);background:var(--card2);color:var(--muted2);cursor:pointer;display:flex;align-items:center;justify-content:center" aria-label="Fechar">✕</button>
+    <div style="width:56px;height:56px;margin:0 auto 12px;border-radius:16px;background:linear-gradient(135deg,#10b981 0%,#0d9488 100%);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:900;color:#fff;box-shadow:0 8px 20px rgba(16,185,129,.4)" aria-hidden="true">$</div>
+    <div style="font-size:22px;font-weight:800;letter-spacing:-.02em;color:var(--txt)">Bem-vindo ao Controle de Gastos</div>
+    <p class="muted" style="margin:8px 0 6px;line-height:1.5;font-size:13px">Entre com Google para <b style="color:var(--txt)">sincronizar na nuvem</b> e acessar de qualquer aparelho. Seus dados são <b style="color:#4ade80">privados e criptografados</b>.</p>
+    <div style="display:flex;gap:8px;justify-content:center;margin:12px 0 16px;flex-wrap:wrap">
+      <span class="cat-badge" style="background:rgba(16,185,129,.12);color:#4ade80;border:1px solid rgba(16,185,129,.2)">✓ Backup automático</span>
+      <span class="cat-badge" style="background:rgba(124,58,237,.12);color:#a78bfa;border:1px solid rgba(124,58,237,.2)">✓ Multi-dispositivo</span>
+      <span class="cat-badge" style="background:rgba(56,189,248,.12);color:#38bdf8;border:1px solid rgba(56,189,248,.2)">✓ LGPD</span>
+    </div>
+    <button id="btnGoogleLogin" class="btn btn-primary" style="display:flex;align-items:center;justify-content:center;gap:10px;background:#fff;color:#0f172a;box-shadow:0 4px 16px rgba(0,0,0,.2);border:none" aria-label="Continuar com Google">
       <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-      Continuar com Google
+      <span id="txtGoogle">Continuar com Google</span>
     </button>
-    <div id="authError" class="muted" style="display:none;margin-top:12px;color:#f87171;font-size:13px" role="alert"></div>
-    <p class="muted" style="margin-top:14px;font-size:11px">Ao continuar, você concorda que seus dados financeiros são privados e vinculados à sua conta.</p>
+    <div style="display:flex;align-items:center;gap:10px;margin:14px 0"><span style="flex:1;height:1px;background:var(--line)"></span><span class="muted" style="font-size:11px">ou</span><span style="flex:1;height:1px;background:var(--line)"></span></div>
+    <button id="btnContinuarOffline" class="btn btn-ghost" style="margin-top:0" aria-label="Continuar sem login">Continuar sem login →</button>
+    <button id="btnVerDemo" class="btn btn-ghost" style="margin-top:8px;background:rgba(124,58,237,.12);border-color:rgba(124,58,237,.3)" aria-label="Ver demonstração com dados fictícios">✨ Ver demonstração</button>
+    <button id="btnMockLogin" class="btn btn-ghost" style="margin-top:8px;border:1px dashed var(--line)" onclick="mockGoogleLogin()" aria-label="Teste login demo">🧪 Testar login (demo, sem Google)</button>
+    <div id="authError" class="muted" style="display:none;margin-top:12px;color:#f87171;font-size:13px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:10px;padding:10px" role="alert"></div>
+    <div id="authDebug" class="muted" style="display:none;margin-top:8px;font-size:11px;background:rgba(255,255,255,.06);border-radius:8px;padding:8px;text-align:left;word-break:break-all" role="status"></div>
+    <p class="muted" style="margin-top:14px;font-size:11px">Ao continuar, você concorda com o uso seguro dos dados. <a href="#" onclick="irTab('configuracoes');document.getElementById('authWelcome').hidden=true;return false" style="color:#a78bfa">Saiba mais</a></p>
   </div>
 </div>
 <div id="appRoot" hidden>
 <div class="container">
   <header class="hdr">
     <div class="hdr-top">
-      <h1>💰 Controle de Gastos</h1>
+      <h1 style="display:flex;align-items:center;gap:10px"><span style="width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#10b981 0%,#0d9488 100%);display:inline-flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:18px;flex-shrink:0;box-shadow:0 4px 12px rgba(16,185,129,.3)" aria-hidden="true">$</span> Controle de Gastos</h1>
       <div style="display:flex;gap:8px;align-items:center">
+        <button id="btnEntrarTop" class="btn btn-primary" style="display:none;padding:10px 14px;min-height:44px;font-size:13px;border-radius:99px" onclick="abrirLogin()" aria-label="Entrar com Google">Entrar</button>
+        <button id="btnAvatarTop" style="display:none;align-items:center;gap:8px;padding:4px 8px 4px 4px;border-radius:99px;border:1px solid var(--line);background:var(--card);cursor:pointer" onclick="abrirMenuPerfil()" aria-label="Abrir perfil">
+          <span id="headerAvatar" style="width:32px;height:32px;border-radius:99px;background:var(--grad);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:14px;overflow:hidden;flex-shrink:0">?</span>
+          <span id="headerNome" style="font-size:13px;font-weight:700;max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--txt)">—</span>
+        </button>
         <button class="btn-icon" aria-label="Alternar tema claro/escuro" onclick="toggleTema()" id="btnTema"><i data-lucide="sun" class="ico-lucide"></i></button>
         <button class="btn-icon" aria-label="Perfil e configurações" onclick="abrirMenuPerfil()" id="btnPerfilTop"><i data-lucide="more-vertical" class="ico-lucide"></i></button>
       </div>
     </div>
-    <p class="sub">Organize receitas e despesas — dados locais neste aparelho.</p>
+    <p class="sub">Seus dados ficam seguros — use offline ou sincronize na nuvem com Google.</p>
   </header>
 
   <nav class="tabs" id="tabsDesktop" role="tablist" aria-label="Navegação principal">
     <button class="tab-btn" role="tab" aria-selected="true" data-tab="inicio" aria-label="Início"><i data-lucide="home" class="ico-lucide"></i> Início</button>
-    <button class="tab-btn" role="tab" aria-selected="false" data-tab="financas" aria-label="Finanças"><i data-lucide="wallet" class="ico-lucide"></i> Finanças</button>
-    <button class="tab-btn" role="tab" aria-selected="false" data-tab="mercado" aria-label="Mercado"><i data-lucide="shopping-bag" class="ico-lucide"></i> Mercado</button>
-    <button class="tab-btn" role="tab" aria-selected="false" data-tab="ofertas" aria-label="Ofertas"><i data-lucide="flame" class="ico-lucide"></i> Ofertas</button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-tab="extrato" aria-label="Extrato"><i data-lucide="list" class="ico-lucide"></i> Extrato</button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-tab="ferramentas" aria-label="Ferramentas"><i data-lucide="calculator" class="ico-lucide"></i> Ferramentas</button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-tab="perfil" aria-label="Perfil"><i data-lucide="user" class="ico-lucide"></i> Perfil</button>
   </nav>
+  <button class="hidden md:flex fixed bottom-6 right-6 w-14 h-14 rounded-full bg-gradient-to-br from-violet-600 to-indigo-600 text-white items-center justify-center text-2xl font-bold shadow-xl shadow-violet-600/30 hover:scale-105 transition z-40" onclick="abrirModalLancamento()" aria-label="Novo lançamento">＋</button>
 
   <!-- MENU PERFIL (topo, 3 pontos) -->
   <div class="mais-sheet" id="menuPerfil" role="dialog" aria-modal="true" aria-label="Perfil e configurações" hidden aria-hidden="true">
     <div class="sheet">
       <div style="width:36px;height:4px;background:rgba(255,255,255,.2);border-radius:99px;margin:0 auto 12px"></div>
       <div style="display:flex;align-items:center;gap:12px;padding:12px;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:8px">
-        <div style="width:44px;height:44px;border-radius:12px;background:var(--grad);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800" id="perfilAvatar">R</div>
-        <div><div style="font-weight:800" id="perfilNomeTop">—</div><div class="muted" style="font-size:12px">Toque para gerenciar</div></div>
+        <div style="width:44px;height:44px;border-radius:12px;background:var(--grad);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800" id="perfilAvatarMenu">R</div>
+        <div><div style="font-weight:800" id="perfilNomeMenu">—</div><div class="muted" style="font-size:12px">Toque para gerenciar</div></div>
       </div>
       <button onclick="irTab('perfil'); fecharMenuPerfil()" aria-label="Abrir Perfil"><i data-lucide="user" class="ico-lucide"></i> Perfil</button>
       <button onclick="irTab('configuracoes'); fecharMenuPerfil()" aria-label="Abrir Configurações"><i data-lucide="settings" class="ico-lucide"></i> Configurações do app</button>
@@ -235,9 +383,9 @@ setTimeout(()=>{
         <div style="font-size:12px;color:var(--muted2)" id="dataHoje"></div>
       </div>
       <div style="margin-top:14px">
-        <div style="font-size:12px;color:var(--muted2);display:flex;align-items:center;gap:8px">Saldo do mês <button class="btn-red" style="padding:4px 8px;min-height:28px;min-width:44px" onclick="toggleOcultar()" id="btnOcultar" aria-label="Ocultar ou mostrar valores">👁️</button> <span class="muted" style="font-size:11px">toque no saldo para ver extrato</span></div>
+        <div style="font-size:12px;color:var(--muted2);display:flex;align-items:center;gap:8px">Saldo do mês <button class="btn-ghost" style="padding:4px 8px;min-height:28px;min-width:44px;display:flex;align-items:center;gap:4px" onclick="toggleOcultar()" id="btnOcultar" aria-label="Ocultar ou mostrar valores"><i data-lucide="eye" class="ico-lucide" id="iconeOlho" style="width:16px;height:16px"></i><span id="txtOlho" style="font-size:11px">Ocultar</span></button> <span class="muted" style="font-size:11px">toque no saldo para ver extrato</span></div>
         <button id="saldoDestaqueBtn" onclick="abrirTela('extrato')" aria-label="Abrir extrato dedicado" style="background:none;border:none;padding:0;margin-top:6px;cursor:pointer;text-align:left;width:100%">
-          <div style="font-size:32px;font-weight:800;letter-spacing:-.03em;color:var(--txt)" id="saldoDestaque">R$ 0,00</div>
+          <div style="font-size:32px;font-weight:800;letter-spacing:-.03em;color:var(--txt)" id="saldoDestaque" class="valor-blur">R$ 0,00</div>
         </button>
         <div style="margin-top:10px;max-width:220px">
           <label for="dashMes" style="font-size:11px;margin:0 0 4px">Mês</label>
@@ -254,15 +402,16 @@ setTimeout(()=>{
         <button class="shortcut" onclick="abrirTela('lancamentos')" aria-label="Ver lançamentos"><span class="icon-circle" style="background:var(--grad)"><i data-lucide="list" class="ico-lucide" style="color:#fff"></i></span><span>Lançamentos</span></button>
         <button class="shortcut" onclick="abrirTela('orcamento')" aria-label="Abrir orçamento"><span class="icon-circle" style="background:linear-gradient(135deg,#f59e0b,#ef4444)"><i data-lucide="pie-chart" class="ico-lucide" style="color:#fff"></i></span><span>Orçamento</span></button>
         <button class="shortcut" onclick="abrirTela('extrato')" aria-label="Abrir extrato"><span class="icon-circle" style="background:linear-gradient(135deg,#06b6d4,#3b82f6)"><i data-lucide="landmark" class="ico-lucide" style="color:#fff"></i></span><span>Extrato</span></button>
+        <button class="shortcut" onclick="irTab('ferramentas')" aria-label="Abrir calculadoras"><span class="icon-circle" style="background:linear-gradient(135deg,#a78bfa,#7c3aed)"><i data-lucide="calculator" class="ico-lucide" style="color:#fff"></i></span><span>Calcular</span></button>
       </div>
     </div>
 
     <div class="card" id="cardResumoMensal">
       <h2>Resumo do mês</h2>
       <div class="resumo" style="margin-top:4px">
-        <div class="res-box"><div class="l">RECEITAS</div><div class="v verde" id="dashRec">R$ 0,00</div></div>
-        <div class="res-box"><div class="l">DESPESAS</div><div class="v verm" id="dashDes">R$ 0,00</div></div>
-        <div class="res-box"><div class="l">ECONOMIA</div><div class="v azul" id="dashEco">R$ 0,00</div></div>
+        <div class="res-box"><div class="l">RECEITAS</div><div class="v verde valor-blur" id="dashRec">R$ 0,00</div></div>
+        <div class="res-box"><div class="l">DESPESAS</div><div class="v verm valor-blur" id="dashDes">R$ 0,00</div></div>
+        <div class="res-box"><div class="l">ECONOMIA</div><div class="v azul valor-blur" id="dashEco">R$ 0,00</div></div>
       </div>
       <div style="font-size:13px;color:var(--muted2);margin-top:8px">Maior categoria: <b id="maiorCat" style="color:#f1f5f9">—</b></div>
       <div id="resumoPessoas" style="margin-top:10px"></div>
@@ -283,11 +432,15 @@ setTimeout(()=>{
     </div>
   </section>
 
-  <!-- FINANÇAS HUB -->
+  <!-- CARTEIRA HUB (Finanças) -->
   <section id="tab-financas" class="tab-panel" role="tabpanel">
     <div class="card">
-      <h2><i data-lucide="wallet" class="ico-lucide"></i> Finanças</h2>
-      <p class="muted">Escolha uma função para gerenciar seu dinheiro.</p>
+      <h2><i data-lucide="wallet" class="ico-lucide"></i> Carteira</h2>
+      <p class="muted">Gerencie lançamentos, extrato e orçamento — tudo em um lugar.</p>
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <button class="btn btn-ghost" onclick="carregarDadosDemo()" style="flex:1;min-height:44px;font-size:13px" aria-label="Carregar demonstração">✨ Carregar demonstração</button>
+        <button class="btn btn-ghost" onclick="document.getElementById('dashMes').scrollIntoView({behavior:'smooth'})" style="flex:1;min-height:44px;font-size:13px">📊 Ver dashboard</button>
+      </div>
       <div style="display:grid;gap:10px;margin-top:14px">
         <button class="btn btn-ghost" onclick="irTab('lancamentos')" style="justify-content:space-between;display:flex;align-items:center;min-height:68px;padding:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:14px" aria-label="Abrir Lançamentos"><span style="display:flex;gap:12px;align-items:center;text-align:left"><span style="width:42px;height:42px;border-radius:12px;background:var(--grad);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i data-lucide="list" class="ico-lucide" style="color:#fff"></i></span><span><span style="display:block;font-weight:800">Lançamentos</span><small class="muted">Adicione e edite receitas e dívidas</small></span></span> <i data-lucide="chevron-right" class="ico-lucide"></i></button>
         <button class="btn btn-ghost" onclick="irTab('extrato')" style="justify-content:space-between;display:flex;align-items:center;min-height:68px;padding:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:14px" aria-label="Abrir Extrato"><span style="display:flex;gap:12px;align-items:center;text-align:left"><span style="width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#06b6d4,#3b82f6);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i data-lucide="landmark" class="ico-lucide" style="color:#fff"></i></span><span><span style="display:block;font-weight:800">Extrato</span><small class="muted">Movimentações e importação</small></span></span> <i data-lucide="chevron-right" class="ico-lucide"></i></button>
@@ -296,8 +449,12 @@ setTimeout(()=>{
     </div>
   </section>
 
-  <!-- MERCADO HUB -->
-  <section id="tab-mercado" class="tab-panel" role="tabpanel">
+  <!-- MERCADO HUB (sub-tela de Perfil) -->
+  <section id="tab-mercado" class="tab-panel screen" role="tabpanel">
+    <div class="screen-header">
+      <button class="btn-mini btn-ghost" onclick="voltar()" aria-label="Voltar"><i data-lucide="arrow-left" class="ico-lucide"></i> Voltar</button>
+      <h2 style="margin:0">Mercado</h2>
+    </div>
     <div class="card">
       <h2><i data-lucide="shopping-bag" class="ico-lucide"></i> Mercado</h2>
       <p class="muted">Compras e orçamento do mês.</p>
@@ -305,6 +462,101 @@ setTimeout(()=>{
         <button class="btn btn-ghost" onclick="abrirTela('compras')" style="justify-content:space-between;display:flex;align-items:center;min-height:68px;padding:14px;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:14px" aria-label="Abrir Compras"><span style="display:flex;gap:12px;align-items:center;text-align:left"><span style="width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#f59e0b,#ef4444);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i data-lucide="shopping-cart" class="ico-lucide" style="color:#fff"></i></span><span><span style="display:block;font-weight:800">Lista de Compras</span><small class="muted">Organize o que precisa comprar</small></span></span> <i data-lucide="chevron-right" class="ico-lucide"></i></button>
         <button class="btn btn-ghost" onclick="abrirTela('orcamento'); setTimeout(()=>{document.getElementById('orcCat').value='Alimentação';},100)" style="justify-content:space-between;display:flex;align-items:center;min-height:68px;padding:14px;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:14px" aria-label="Abrir Orçamento alimentação"><span style="display:flex;gap:12px;align-items:center;text-align:left"><span style="width:42px;height:42px;border-radius:12px;background:var(--grad-green);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i data-lucide="pie-chart" class="ico-lucide" style="color:#fff"></i></span><span><span style="display:block;font-weight:800">Orçamento alimentação</span><small class="muted">Controle de gastos com mercado</small></span></span> <i data-lucide="chevron-right" class="ico-lucide"></i></button>
       </div>
+    </div>
+  </section>
+
+  <!-- FERRAMENTAS HUB -->
+  <section id="tab-ferramentas" class="tab-panel" role="tabpanel">
+    <div class="card">
+      <h2><i data-lucide="calculator" class="ico-lucide"></i> Ferramentas Financeiras</h2>
+      <p class="muted">Calculadoras para investir melhor — CDI, juros compostos, reserva e metas.</p>
+      <div style="display:grid;gap:10px;margin-top:14px">
+        <button class="btn btn-ghost" onclick="document.getElementById('calcCDI').scrollIntoView({behavior:'smooth'})" style="justify-content:space-between;display:flex;align-items:center;min-height:64px;padding:14px;background:rgba(124,58,237,.08);border:1px solid rgba(124,58,237,.2);border-radius:14px"><span style="display:flex;gap:12px;align-items:center;text-align:left"><span style="width:42px;height:42px;border-radius:12px;background:var(--grad);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i data-lucide="trending-up" class="ico-lucide" style="color:#fff"></i></span><span><span style="display:block;font-weight:800">Calculadora CDI / CDB</span><small class="muted">Simule 100%, 110% CDI com IR regressivo</small></span></span> <i data-lucide="chevron-right" class="ico-lucide"></i></button>
+        <button class="btn btn-ghost" onclick="document.getElementById('calcJuros').scrollIntoView({behavior:'smooth'})" style="justify-content:space-between;display:flex;align-items:center;min-height:64px;padding:14px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);border-radius:14px"><span style="display:flex;gap:12px;align-items:center;text-align:left"><span style="width:42px;height:42px;border-radius:12px;background:var(--grad-green);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i data-lucide="piggy-bank" class="ico-lucide" style="color:#fff"></i></span><span><span style="display:block;font-weight:800">Juros Compostos</span><small class="muted">Valor inicial + aporte mensal</small></span></span> <i data-lucide="chevron-right" class="ico-lucide"></i></button>
+        <button class="btn btn-ghost" onclick="document.getElementById('calcReserva').scrollIntoView({behavior:'smooth'})" style="justify-content:space-between;display:flex;align-items:center;min-height:64px;padding:14px;background:rgba(6,182,212,.08);border:1px solid rgba(6,182,212,.2);border-radius:14px"><span style="display:flex;gap:12px;align-items:center;text-align:left"><span style="width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#06b6d4,#3b82f6);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i data-lucide="shield" class="ico-lucide" style="color:#fff"></i></span><span><span style="display:block;font-weight:800">Reserva de Emergência</span><small class="muted">Descubra quanto precisa guardar</small></span></span> <i data-lucide="chevron-right" class="ico-lucide"></i></button>
+        <button class="btn btn-ghost" onclick="document.getElementById('calcComparativo').scrollIntoView({behavior:'smooth'})" style="justify-content:space-between;display:flex;align-items:center;min-height:64px;padding:14px;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:14px"><span style="display:flex;gap:12px;align-items:center;text-align:left"><span style="width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#f59e0b,#ef4444);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i data-lucide="bar-chart-3" class="ico-lucide" style="color:#fff"></i></span><span><span style="display:block;font-weight:800">Comparador CDI x Poupança</span><small class="muted">Veja onde seu dinheiro rende mais</small></span></span> <i data-lucide="chevron-right" class="ico-lucide"></i></button>
+        <button class="btn btn-ghost" onclick="document.getElementById('calcMetas').scrollIntoView({behavior:'smooth'})" style="justify-content:space-between;display:flex;align-items:center;min-height:64px;padding:14px;background:rgba(236,72,153,.08);border:1px solid rgba(236,72,153,.2);border-radius:14px"><span style="display:flex;gap:12px;align-items:center;text-align:left"><span style="width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#ec4899,#a78bfa);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i data-lucide="target" class="ico-lucide" style="color:#fff"></i></span><span><span style="display:block;font-weight:800">Metas Financeiras</span><small class="muted">Crie objetivos e acompanhe progresso</small></span></span> <i data-lucide="chevron-right" class="ico-lucide"></i></button>
+      </div>
+    </div>
+
+    <!-- CALCULADORA CDI -->
+    <div class="card" id="calcCDI">
+      <h2><i data-lucide="trending-up" class="ico-lucide"></i> Calculadora CDI / CDB</h2>
+      <p class="muted">Simule quanto seu dinheiro rende no CDI com IR regressivo e compare com LCI/LCA isento.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div><label for="cdiValor">Valor inicial (R$)</label><input type="number" id="cdiValor" value="1000" min="0" step="100" oninput="calcCDI()"></div>
+        <div><label for="cdiAporte">Aporte mensal (R$)</label><input type="number" id="cdiAporte" value="200" min="0" step="50" oninput="calcCDI()"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+        <div><label for="cdiMeses">Prazo (meses)</label><input type="number" id="cdiMeses" value="12" min="1" max="600" oninput="calcCDI()"></div>
+        <div><label for="cdiPct">% do CDI</label><select id="cdiPct" onchange="calcCDI()"><option value="90">90%</option><option value="100" selected>100%</option><option value="102">102%</option><option value="105">105%</option><option value="110">110%</option><option value="115">115%</option><option value="120">120%</option><option value="130">130%</option></select></div>
+        <div><label for="cdiAnual">CDI anual (%)</label><input type="number" id="cdiAnual" value="11.15" min="0" max="30" step="0.05" oninput="calcCDI()"><small class="muted">Selic 2025 ~11,15%</small></div>
+      </div>
+      <label for="cdiTipo">Tributação</label><select id="cdiTipo" onchange="calcCDI()"><option value="cdb">CDB/CDI (com IR)</option><option value="lci">LCI/LCA (isento IR)</option></select>
+      <div id="cdiResultado" style="margin-top:14px" aria-live="polite" aria-atomic="true"></div>
+      <div id="cdiGrafico" style="margin-top:12px" aria-hidden="true"></div>
+      <p class="muted" style="margin-top:8px;font-size:11px">IR regressivo pro-rata: até 180d 22,5% · 181-360d 20% · 361-720d 17,5% · >720d 15%. Cada aporte tem IR pela sua permanência.</p>
+    </div>
+
+    <!-- JUROS COMPOSTOS -->
+    <div class="card" id="calcJuros">
+      <h2><i data-lucide="piggy-bank" class="ico-lucide"></i> Juros Compostos</h2>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div><label for="jcInicial">Valor inicial (R$)</label><input type="number" id="jcInicial" value="1000" min="0" step="100" oninput="calcJuros()"></div>
+        <div><label for="jcAporte">Aporte mensal (R$)</label><input type="number" id="jcAporte" value="300" min="0" step="50" oninput="calcJuros()"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div><label for="jcTaxa">Taxa (% ao mês)</label><input type="number" id="jcTaxa" value="0.8" min="0" max="10" step="0.05" oninput="calcJuros()"></div>
+        <div><label for="jcMeses">Meses</label><input type="number" id="jcMeses" value="60" min="1" max="600" oninput="calcJuros()"></div>
+      </div>
+      <label for="jcTaxaAno" class="muted" style="font-size:11px;display:block;margin-top:6px">Equivale a <span id="jcTaxaAno">10.03%</span> ao ano</label>
+      <div id="jcResultado" style="margin-top:12px" aria-live="polite"></div>
+      <div id="jcGrafico" style="margin-top:12px" aria-hidden="true"></div>
+    </div>
+
+    <!-- RESERVA -->
+    <div class="card" id="calcReserva">
+      <h2><i data-lucide="shield" class="ico-lucide"></i> Reserva de Emergência</h2>
+      <p class="muted">Calcule sua reserva ideal (3, 6 ou 12 meses de despesas).</p>
+      <label for="resGastos">Gastos mensais essenciais (R$)</label>
+      <input type="number" id="resGastos" placeholder="Ex: 3500" oninput="calcReserva()">
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <button class="btn-mini btn-ghost" style="flex:1" onclick="document.getElementById('resGastos').value=Math.round(PESSOAS.length?lancamentos.filter(l=>l.tipo==='despesa').reduce((s,l)=>s+l.valor,0)/Math.max(1,new Set(lancamentos.map(l=>l.data.slice(0,7))).size):0);calcReserva()">Usar média real</button>
+        <button class="btn-mini btn-primary" style="flex:1" onclick="calcReserva()">Calcular</button>
+      </div>
+      <div id="resResultado" style="margin-top:14px"></div>
+    </div>
+
+    <!-- COMPARATIVO -->
+    <div class="card" id="calcComparativo">
+      <h2><i data-lucide="bar-chart-3" class="ico-lucide"></i> Comparador: CDI x Poupança x Inflação</h2>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div><label for="compValor">Valor (R$)</label><input type="number" id="compValor" value="5000" min="0" step="500" oninput="calcComparativo()"></div>
+        <div><label for="compMeses">Meses</label><input type="number" id="compMeses" value="12" min="1" oninput="calcComparativo()"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+        <div><label for="compCDI">CDI aa (%)</label><input type="number" id="compCDI" value="11.15" step="0.1" oninput="calcComparativo()"></div>
+        <div><label for="compPoup">Poupança aa (%)</label><input type="number" id="compPoup" value="7.2" step="0.1" oninput="calcComparativo()"></div>
+        <div><label for="compIPCA">IPCA aa (%)</label><input type="number" id="compIPCA" value="4.5" step="0.1" oninput="calcComparativo()"></div>
+      </div>
+      <div id="compResultado" style="margin-top:14px"></div>
+    </div>
+
+    <!-- METAS -->
+    <div class="card" id="calcMetas">
+      <h2><i data-lucide="target" class="ico-lucide"></i> Metas Financeiras</h2>
+      <p class="muted">Crie objetivos (viagem, carro, reserva) e veja quanto falta.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div><label for="metaNome">Nome da meta</label><input type="text" id="metaNome" placeholder="Ex: Viagem Europa"></div>
+        <div><label for="metaAlvo">Valor alvo (R$)</label><input type="number" id="metaAlvo" placeholder="10000" min="1" step="100"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div><label for="metaAtual">Já tenho (R$)</label><input type="number" id="metaAtual" value="0" min="0" step="100"></div>
+        <div><label for="metaPrazo">Prazo (meses)</label><input type="number" id="metaPrazo" value="12" min="1"></div>
+      </div>
+      <button class="btn btn-primary" onclick="adicionarMeta()" style="min-height:44px">＋ Criar meta</button>
+      <div id="listaMetas" style="margin-top:14px"></div>
+      <div id="metaDica" class="muted" style="margin-top:8px;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:12px"></div>
     </div>
   </section>
 
@@ -348,8 +600,9 @@ setTimeout(()=>{
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
         <div><label for="recValor">Valor (R$) *</label><input type="number" id="recValor" step="0.01" min="0.01" placeholder="0,00" aria-label="Valor do recorrente"></div>
-        <div><label for="recDia">Dia do mês (1-31) *</label><input type="number" id="recDia" min="1" max="31" placeholder="Ex: 10" aria-label="Dia do mês do recorrente"></div>
+        <div><label for="recDia">Dia do mês (1-31) *</label><input type="number" id="recDia" min="1" max="31" placeholder="Ex: 10" aria-label="Dia do mês do recorrente" oninput="atualizarHintDia()"></div>
       </div>
+      <div id="recDiaHint" class="muted" style="font-size:11px;margin-top:4px;min-height:14px"></div>
       <label for="recPessoa">Pessoa *</label>
       <input type="text" id="recPessoa" list="listaPessoasDatalist" placeholder="Digite o nome" aria-label="Pessoa do recorrente" autocomplete="off">
       <label for="recPagamento">Forma de pagamento</label>
@@ -364,19 +617,15 @@ setTimeout(()=>{
     </div>
   </section>
 
-  <!-- EXTRATO -->
-  <section id="tab-extrato" class="tab-panel screen" role="tabpanel">
-    <div class="screen-header">
-      <button class="btn-mini btn-ghost" onclick="voltar()" aria-label="Voltar"><i data-lucide="arrow-left" class="ico-lucide"></i> Voltar</button>
-      <h2 style="margin:0">Extrato</h2>
-    </div>
+  <!-- EXTRATO (aba principal - 2ª aba) -->
+  <section id="tab-extrato" class="tab-panel" role="tabpanel">
     <div class="card" style="background:var(--grad);color:#fff;border:none">
       <div style="font-size:12px;opacity:.9">Saldo do mês</div>
-      <div style="font-size:28px;font-weight:800;margin-top:4px" id="extSaldoDestaque">R$ 0,00</div>
+      <div style="font-size:28px;font-weight:800;margin-top:4px" id="extSaldoDestaque" class="valor-blur">R$ 0,00</div>
       <div class="resumo" style="margin-top:14px;gap:8px">
-        <div class="res-box" style="background:rgba(255,255,255,.15);border:none"><div class="l" style="color:rgba(255,255,255,.8)">RECEITAS</div><div class="v" style="color:#fff" id="extRec">R$ 0,00</div></div>
-        <div class="res-box" style="background:rgba(255,255,255,.15);border:none"><div class="l" style="color:rgba(255,255,255,.8)">DESPESAS</div><div class="v" style="color:#fff" id="extDes">R$ 0,00</div></div>
-        <div class="res-box" style="background:rgba(255,255,255,.15);border:none"><div class="l" style="color:rgba(255,255,255,.8)">SALDO</div><div class="v" style="color:#fff" id="extSaldo">R$ 0,00</div></div>
+        <div class="res-box" style="background:rgba(255,255,255,.15);border:none"><div class="l" style="color:rgba(255,255,255,.8)">RECEITAS</div><div class="v valor-blur" style="color:#fff" id="extRec">R$ 0,00</div></div>
+        <div class="res-box" style="background:rgba(255,255,255,.15);border:none"><div class="l" style="color:rgba(255,255,255,.8)">DESPESAS</div><div class="v valor-blur" style="color:#fff" id="extDes">R$ 0,00</div></div>
+        <div class="res-box" style="background:rgba(255,255,255,.15);border:none"><div class="l" style="color:rgba(255,255,255,.8)">SALDO</div><div class="v valor-blur" style="color:#fff" id="extSaldo">R$ 0,00</div></div>
       </div>
     </div>
     <div class="card">
@@ -393,20 +642,30 @@ setTimeout(()=>{
       <h2><i data-lucide="landmark" class="ico-lucide"></i> Importar extrato</h2>
       <label for="impPessoa">Pessoa do extrato *</label>
       <input type="text" id="impPessoa" list="listaPessoasDatalist" placeholder="Digite o nome" aria-label="Pessoa do extrato" autocomplete="off">
-      <label for="impModo">Tipo de arquivo</label>
-      <select id="impModo" onchange="processarNovamente()" aria-label="Tipo de arquivo do extrato">
-        <option value="extrato"><i data-lucide="landmark" class="ico-lucide"></i> Extrato da conta (positivo = entrada)</option>
-        <option value="fatura">💳 Fatura de cartão (compra = despesa)</option>
-      </select>
-      <label for="impPagamento">Forma de pagamento padrão</label>
-      <select id="impPagamento" aria-label="Forma de pagamento padrão">
-        <option>Pix</option><option>Dinheiro</option><option>Cartão de Débito</option>
-        <option>Cartão de Crédito</option><option>Boleto</option><option>Transferência</option>
-      </select>
-      <label for="impArquivo">Arquivo (.csv, .ofx ou .xlsx)</label>
-      <input type="file" id="impArquivo" accept=".csv,.ofx,.qfx,.txt,.xlsx,.xls" aria-label="Selecionar arquivo de extrato">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div><label for="impModo">Tipo de arquivo</label>
+        <select id="impModo" onchange="processarNovamente()" aria-label="Tipo de arquivo do extrato">
+          <option value="extrato">Extrato da conta (positivo = entrada)</option>
+          <option value="fatura">💳 Fatura de cartão (compra = despesa)</option>
+        </select></div>
+        <div><label for="impPagamento">Pagamento padrão</label>
+        <select id="impPagamento" aria-label="Forma de pagamento padrão">
+          <option>Pix</option><option>Dinheiro</option><option>Cartão de Débito</option>
+          <option>Cartão de Crédito</option><option>Boleto</option><option>Transferência</option>
+        </select></div>
+      </div>
+      <div id="dropArea" style="margin-top:12px;border:2px dashed var(--line);border-radius:14px;padding:18px;text-align:center;background:var(--card2);cursor:pointer" onclick="document.getElementById('impArquivo').click()">
+        <div style="font-size:28px">📂</div>
+        <div style="font-weight:700;margin-top:6px">Arraste o arquivo ou clique para selecionar</div>
+        <div class="muted" style="font-size:11px;margin-top:4px">.csv, .ofx, .qfx, .xlsx — tudo local no seu aparelho</div>
+        <input type="file" id="impArquivo" accept=".csv,.ofx,.qfx,.txt,.xlsx,.xls" aria-label="Selecionar arquivo de extrato" style="display:none">
+      </div>
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <button class="btn-mini btn-ghost" style="flex:1;min-height:44px;font-size:12px" onclick="baixarModeloCSV()">⬇️ Baixar modelo .csv</button>
+        <button class="btn-mini btn-ghost" style="flex:1;min-height:44px;font-size:12px" onclick="document.getElementById('impArquivo').click()">📁 Escolher arquivo</button>
+      </div>
       <div id="impPreview" style="margin-top:14px"></div>
-      <p class="muted" style="margin-top:8px">Os arquivos são processados apenas no seu navegador, nada é enviado a servidores.</p>
+      <p class="muted" style="margin-top:8px">🔒 Processado 100% no navegador — nada vai para servidor.</p>
     </div>
   </section>
 
@@ -467,19 +726,29 @@ setTimeout(()=>{
     </div>
   </section>
 
-  <!-- OFERTAS -->
-  <section id="tab-ofertas" class="tab-panel" role="tabpanel">
+  <!-- OFERTAS (sub-tela de Perfil) -->
+  <section id="tab-ofertas" class="tab-panel screen" role="tabpanel">
+    <div class="screen-header">
+      <button class="btn-mini btn-ghost" onclick="voltar()" aria-label="Voltar"><i data-lucide="arrow-left" class="ico-lucide"></i> Voltar</button>
+      <h2 style="margin:0">Ofertas</h2>
+    </div>
     <div class="card" style="border-color:var(--line)">
-      <h2><i data-lucide="flame" class="ico-lucide"></i> Ofertas selecionadas</h2>
-      <p class="muted">Achados com os melhores preços — atualizados no site de ofertas.</p>
+      <h2><i data-lucide="flame" class="ico-lucide"></i> Ofertas selecionadas <span class="cat-badge" style="background:rgba(245,158,11,.15);color:#f59e0b;font-size:10px">AFILIADO</span></h2>
+      <p class="muted" style="background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:10px;font-size:12px">🔒 Suas finanças <b>não são compartilhadas</b> com lojas. Achados separados da sua carteira — só mostramos aqui, sem spam nos extratos.</p>
       <div id="ofertasApp" style="display:grid;gap:12px;margin-top:14px"></div>
-      <a href="https://ofertas.controle45.com.br" target="_blank" rel="noopener" class="btn btn-green" style="display:block;text-align:center;text-decoration:none;min-height:44px;line-height:22px;margin-top:12px" aria-label="Ver todas as ofertas"><i data-lucide="shopping-bag" class="ico-lucide"></i> Ver todas as ofertas →</a>
-      <p class="muted" style="margin-top:8px;text-align:center;font-size:11px">Links de afiliado — você não paga a mais e nos ajuda a manter o app 💚</p>
+      <a href="https://ofertas.controle45.com.br" target="_blank" rel="sponsored noopener" class="btn btn-green" style="display:block;text-align:center;text-decoration:none;min-height:44px;line-height:22px;margin-top:12px" aria-label="Ver todas as ofertas"><i data-lucide="shopping-bag" class="ico-lucide"></i> Ver todas as ofertas →</a>
+      <p class="muted" style="margin-top:8px;text-align:center;font-size:11px">Transparência: links de afiliado — você não paga a mais e nos ajuda a manter o app gratuito 💚 · <a href="#" onclick="irTab('ferramentas');return false">Prefiro focar nas finanças</a> · <a href="#" onclick="alert('Privacidade: seus gastos nunca saem do seu aparelho. Só sincronizamos se você clicar em Entrar com Google. LGPD art. 7.');return false" style="text-decoration:underline">Privacidade</a></p>
     </div>
   </section>
 
   <!-- PERFIL HUB -->
   <section id="tab-perfil" class="tab-panel" role="tabpanel">
+    <div class="card" id="cardLoginPrompt" style="border:1px solid rgba(124,58,237,.25);background:linear-gradient(135deg, rgba(124,58,237,.12), rgba(56,189,248,.08))">
+      <h2><i data-lucide="log-in" class="ico-lucide"></i> Entrar com Google</h2>
+      <p class="muted">Sincronize seus gastos na nuvem e acesse de qualquer aparelho. Seguro e privado.</p>
+      <button class="btn btn-primary" style="background:#fff;color:#0f172a;display:flex;align-items:center;justify-content:center;gap:10px" onclick="abrirLogin()" aria-label="Entrar com Google"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg> Entrar com Google</button>
+      <p class="muted" style="margin-top:8px;font-size:11px;text-align:center">Leva 5 segundos · sem spam · seus dados não são vendidos</p>
+    </div>
     <div class="card" id="cardPerfilInfo" style="display:none">
       <div style="display:flex;gap:12px;align-items:center">
         <div id="perfilAvatar" style="width:48px;height:48px;border-radius:12px;background:var(--grad);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;overflow:hidden;flex-shrink:0">?</div>
@@ -496,6 +765,8 @@ setTimeout(()=>{
       <p class="muted">Gerencie pessoas e configurações do app — toque para entrar.</p>
       <div style="display:grid;gap:10px;margin-top:14px">
         <button class="btn btn-ghost" onclick="irTab('pessoas')" style="justify-content:space-between;display:flex;align-items:center;min-height:68px;padding:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:14px" aria-label="Abrir Gerenciar pessoas"><span style="display:flex;gap:12px;align-items:center;text-align:left"><span style="width:42px;height:42px;border-radius:12px;background:var(--grad);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i data-lucide="users" class="ico-lucide" style="color:#fff"></i></span><span><span style="display:block;font-weight:800">Gerenciar pessoas</span><small class="muted">Alterne entre perfis</small></span></span> <i data-lucide="chevron-right" class="ico-lucide"></i></button>
+        <button class="btn btn-ghost" onclick="abrirTela('mercado')" style="justify-content:space-between;display:flex;align-items:center;min-height:68px;padding:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:14px" aria-label="Abrir Mercado"><span style="display:flex;gap:12px;align-items:center;text-align:left"><span style="width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#f59e0b,#ef4444);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i data-lucide="shopping-bag" class="ico-lucide" style="color:#fff"></i></span><span><span style="display:block;font-weight:800">Mercado</span><small class="muted">Lista de compras</small></span></span> <i data-lucide="chevron-right" class="ico-lucide"></i></button>
+        <button class="btn btn-ghost" onclick="abrirTela('ofertas')" style="justify-content:space-between;display:flex;align-items:center;min-height:68px;padding:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:14px" aria-label="Abrir Ofertas"><span style="display:flex;gap:12px;align-items:center;text-align:left"><span style="width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#ec4899,#f59e0b);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i data-lucide="flame" class="ico-lucide" style="color:#fff"></i></span><span><span style="display:block;font-weight:800">Ofertas</span><small class="muted">Achados com afiliado</small></span></span> <i data-lucide="chevron-right" class="ico-lucide"></i></button>
         <button class="btn btn-ghost" onclick="irTab('configuracoes')" style="justify-content:space-between;display:flex;align-items:center;min-height:68px;padding:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:14px" aria-label="Abrir Configurações"><span style="display:flex;gap:12px;align-items:center;text-align:left"><span style="width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i data-lucide="settings" class="ico-lucide" style="color:#fff"></i></span><span><span style="display:block;font-weight:800">Configurações do app</span><small class="muted">Backup, tema e dados</small></span></span> <i data-lucide="chevron-right" class="ico-lucide"></i></button>
       </div>
     </div>
@@ -533,6 +804,12 @@ setTimeout(()=>{
       <p class="muted">Esconda valores sensíveis ao abrir o app — ideal para usar em público.</p>
     </div>
     <div class="card">
+      <h2><i data-lucide="graduation-cap" class="ico-lucide"></i> Ajuda</h2>
+      <button class="btn btn-ghost" onclick="window.reverTutorial && window.reverTutorial()" style="width:100%;min-height:44px" aria-label="Rever tutorial">🎓 Rever tutorial</button>
+      <button class="btn btn-ghost" onclick="window.reativarDicas && window.reativarDicas()" style="width:100%;min-height:44px;margin-top:8px" aria-label="Reativar dicas">💡 Reativar dicas de primeiro toque</button>
+      <p class="muted" style="margin-top:8px">Tutorial geral + dicas quando tocar pela primeira vez em cada função.</p>
+    </div>
+    <div class="card">
       <h2><i data-lucide="save" class="ico-lucide"></i> Backup</h2>
       <button class="btn btn-primary" onclick="exportarBackup()" aria-label="Exportar backup JSON" style="min-height:44px">⬇️ Exportar backup (JSON)</button>
       <label for="importBackup">Importar backup</label>
@@ -551,13 +828,14 @@ setTimeout(()=>{
   </section>
 </div>
 
-<!-- Navegação mobile - 4 abas principais -->
-<nav class="bottom-nav cols-4" id="bottomNav" aria-label="Navegação principal">
+<!-- Navegação mobile - 4 abas + FAB central -->
+<nav class="bottom-nav cols-5" id="bottomNav" aria-label="Navegação principal">
   <div class="wrap" id="bottomWrap">
     <button data-tab="inicio" aria-selected="true" aria-label="Início"><span class="ico"><i data-lucide="home" class="ico-lucide"></i></span><span>Início</span></button>
-    <button data-tab="financas" aria-label="Finanças"><span class="ico"><i data-lucide="wallet" class="ico-lucide"></i></span><span>Finanças</span></button>
-    <button data-tab="mercado" aria-label="Mercado"><span class="ico"><i data-lucide="shopping-bag" class="ico-lucide"></i></span><span>Mercado</span></button>
-    <button data-tab="ofertas" aria-label="Ofertas"><span class="ico"><i data-lucide="flame" class="ico-lucide"></i></span><span>Ofertas</span></button>
+    <button data-tab="extrato" aria-label="Extrato"><span class="ico"><i data-lucide="list" class="ico-lucide"></i></span><span>Extrato</span></button>
+    <button class="fab" data-action="novo" aria-label="Novo lançamento" onclick="abrirModalLancamento()"><span aria-hidden="true">＋</span></button>
+    <button data-tab="ferramentas" aria-label="Ferramentas"><span class="ico"><i data-lucide="calculator" class="ico-lucide"></i></span><span>Ferram.</span></button>
+    <button data-tab="perfil" aria-label="Perfil"><span class="ico"><i data-lucide="user" class="ico-lucide"></i></span><span>Perfil</span></button>
   </div>
 </nav>
 <!-- Sheet Mais para 360px -->
@@ -613,6 +891,25 @@ setTimeout(()=>{
   </div>
 </div>
 
+<!-- Modal Mapeador de Colunas (importação flexível) -->
+<div id="modalMapeador" class="modal-bg" role="dialog" aria-modal="true" aria-labelledby="mapeadorTitle">
+  <div class="modal" style="width:min(640px,100%)">
+    <h3 id="mapeadorTitle">Mapear colunas do seu extrato</h3>
+    <p class="muted" style="margin:8px 0 12px">Seu arquivo não bate com o modelo padrão. Selecione qual coluna representa cada campo. Tudo continua 100% no seu navegador.</p>
+    <div id="mapeadorPreview" class="muted" style="max-height:120px;overflow:auto;border:1px solid var(--line);border-radius:12px;padding:10px;margin-bottom:12px;font-size:12px"></div>
+    <div style="display:grid;gap:10px">
+      <div><label for="mapData">Coluna de Data *</label><select id="mapData" aria-label="Coluna de Data"></select></div>
+      <div><label for="mapDesc">Coluna de Descrição *</label><select id="mapDesc" aria-label="Coluna de Descrição"></select></div>
+      <div><label for="mapValor">Coluna de Valor *</label><select id="mapValor" aria-label="Coluna de Valor"></select></div>
+      <div><label for="mapTipo">Coluna de Tipo (opcional)</label><select id="mapTipo" aria-label="Coluna de Tipo"><option value="">— sem coluna de tipo —</option></select></div>
+    </div>
+    <p class="muted" style="margin-top:8px;font-size:11px">Dica: Data deve ser reconhecível (ex: 10/08/2025 ou 2025-08-10). Valor pode ser 1.234,56 ou -500. Tipo pode conter D/C, Débito/Crédito, Entrada/Saída.</p>
+    <div style="display:flex;gap:8px;margin-top:14px">
+      <button class="btn btn-ghost" onclick="fecharMapeador(false)" style="flex:1" aria-label="Cancelar mapeamento">Cancelar</button>
+      <button class="btn btn-primary" onclick="fecharMapeador(true)" style="flex:1" aria-label="Confirmar mapeamento">Confirmar e importar</button>
+    </div>
+  </div>
+</div>
 <div id="toastWrap" class="toast-wrap" aria-live="polite" aria-atomic="true"></div>
 
 <script>
@@ -629,6 +926,14 @@ if(_needSave) salvar();
 const coresPessoa = ['#38bdf8','#f59e0b','#ec4899','#a78bfa','#4ade80','#fb923c'];
 const cores = {'Alimentação':'#f59e0b','Moradia':'#8b5cf6','Transporte':'#06b6d4','Saúde':'#ef4444','Educação':'#3b82f6','Lazer':'#ec4899','Vestuário':'#d946ef','Assinaturas':'#14b8a6','Salário':'#22c55e','Investimentos':'#84cc16','Outros':'#64748b'};
 let ocultar = !!CFG.ocultar;
+if(ocultar) document.body.classList.add('privacidade');
+document.addEventListener('DOMContentLoaded', ()=>{
+  const icone=document.getElementById('iconeOlho');
+  const txt=document.getElementById('txtOlho');
+  if(icone) icone.setAttribute('data-lucide', ocultar?'eye-off':'eye');
+  if(txt) txt.textContent=ocultar?'Mostrar':'Ocultar';
+  if(window.lucide) setTimeout(()=>lucide.createIcons(), 100);
+});
 const mesAtualISO=new Date().toISOString().slice(0,7);
 document.getElementById('data').valueAsDate = new Date();
 document.getElementById('fecMes').value = mesAtualISO;
@@ -636,18 +941,48 @@ document.getElementById('extMes').value = mesAtualISO;
 document.getElementById('dashMes').value = mesAtualISO;
 document.getElementById('dataHoje').textContent = new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long',year:'numeric'});
 function esc(s){ return (''+s).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch])); }
-function fmt(v){ if(ocultar) return '••••'; return v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'}); }
+function fmt(v){ return v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'}); }
 function salvar(){ localStorage.setItem('gastos', JSON.stringify(lancamentos)); }
 function salvarPessoas(){ localStorage.setItem('pessoas_v2', JSON.stringify(PESSOAS)); }
 function salvarSalariosLS(){ localStorage.setItem('salarios', JSON.stringify(SALARIOS)); }
 function salvarLista(){ localStorage.setItem('lista_compras', JSON.stringify(LISTA)); }
 function salvarOrcLS(){ localStorage.setItem('orcamentos', JSON.stringify(ORCAMENTOS)); }
 function salvarRecLS(){ localStorage.setItem('recorrentes', JSON.stringify(RECORRENTES)); }
-function salvarCfg(){ CFG.pessoaInicial=document.getElementById('pessoaInicial').value; CFG.ocultar=document.getElementById('cfgOcultar').checked; localStorage.setItem('cfg_app', JSON.stringify(CFG)); ocultar=!!CFG.ocultar; atualizarTudo(); toast('Configurações salvas','ok'); }
+function salvarCfg(){ CFG.pessoaInicial=document.getElementById('pessoaInicial').value; CFG.ocultar=document.getElementById('cfgOcultar').checked; localStorage.setItem('cfg_app', JSON.stringify(CFG)); ocultar=!!CFG.ocultar; document.body.classList.toggle('privacidade', ocultar); const icone=document.getElementById('iconeOlho'); const txt=document.getElementById('txtOlho'); if(icone) icone.setAttribute('data-lucide', ocultar?'eye-off':'eye'); if(txt) txt.textContent=ocultar?'Mostrar':'Ocultar'; if(window.lucide) lucide.createIcons(); atualizarTudo(); toast('Configurações salvas','ok'); }
 function toast(msg,tipo){ const w=document.getElementById('toastWrap'); const el=document.createElement('div'); el.className='toast '+(tipo||''); el.textContent=msg; el.setAttribute('role','status'); w.appendChild(el); setTimeout(()=>el.remove(),3000); }
 let confirmCb=null, ultimoFoco=null, modalAberto=null;
 function confirmar(titulo,msg,cb){ ultimoFoco=document.activeElement; document.getElementById('confirmTitle').textContent=titulo; document.getElementById('confirmMsg').textContent=msg; const m=document.getElementById('modalConfirm'); m.classList.add('open'); modalAberto=m; confirmCb=cb; setTimeout(()=>document.getElementById('confirmOkBtn').focus(),50); }
 function fecharConfirm(ok){ document.getElementById('modalConfirm').classList.remove('open'); modalAberto=null; if(confirmCb) confirmCb(ok); confirmCb=null; if(ultimoFoco){ ultimoFoco.focus(); ultimoFoco=null; } }
+// Mapeador de colunas - 100% client-side
+let mapeadorCb=null;
+function abrirMapeador(colunas, linhas, cb){
+  mapeadorCb=cb;
+  const preview=document.getElementById('mapeadorPreview');
+  preview.innerHTML=`<div class="muted" style="margin-bottom:6px">Colunas detectadas: <b>${colunas.map(c=>esc(c)).join(' • ')}</b></div><table style="width:100%;font-size:11px;border-collapse:collapse"><tr>${colunas.map(c=>`<th style="text-align:left;padding:4px;border-bottom:1px solid var(--line)">${esc(c)}</th>`).join('')}</tr>${linhas.slice(0,3).map(r=>`<tr>${r.map(v=>`<td style="padding:4px;border-bottom:1px solid var(--line);max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(v)}</td>`).join('')}</tr>`).join('')}</table>`;
+  const opts=colunas.map((c,i)=>`<option value="${i}">${esc(c)} (col ${i+1})</option>`).join('');
+  const selData=document.getElementById('mapData'), selDesc=document.getElementById('mapDesc'), selValor=document.getElementById('mapValor'), selTipo=document.getElementById('mapTipo');
+  selData.innerHTML=opts; selDesc.innerHTML=opts; selValor.innerHTML=opts;
+  selTipo.innerHTML=`<option value="">— sem coluna de tipo —</option>`+opts;
+  // tenta auto-selecionar por nome
+  const idxData=colunas.findIndex(c=>/data|date/i.test(c)), idxDesc=colunas.findIndex(c=>/desc|hist|memo|nome|detalhe/i.test(c)), idxValor=colunas.findIndex(c=>/valor|amount|value/i.test(c)), idxTipo=colunas.findIndex(c=>/tipo|type|d\/c|dc/i.test(c));
+  if(idxData>=0) selData.value=idxData;
+  if(idxDesc>=0) selDesc.value=idxDesc;
+  if(idxValor>=0) selValor.value=idxValor;
+  if(idxTipo>=0) selTipo.value=idxTipo;
+  // evita duplicatas: se duas iguais, ajusta
+  if(selDesc.value===selData.value) selDesc.value=(parseInt(selData.value)+1)%colunas.length;
+  if(selValor.value===selData.value || selValor.value===selDesc.value) selValor.value=(parseInt(selValor.value)+1)%colunas.length;
+  document.getElementById('modalMapeador').classList.add('open'); modalAberto=document.getElementById('modalMapeador');
+}
+function fecharMapeador(ok){
+  const m=document.getElementById('modalMapeador'); m.classList.remove('open'); modalAberto=null;
+  if(ok && mapeadorCb){
+    const map={data:parseInt(document.getElementById('mapData').value), desc:parseInt(document.getElementById('mapDesc').value), valor:parseInt(document.getElementById('mapValor').value), tipo:document.getElementById('mapTipo').value==='' ? -1 : parseInt(document.getElementById('mapTipo').value)};
+    if(map.data<0||map.desc<0||map.valor<0){ toast('Selecione Data, Descrição e Valor','err'); m.classList.add('open'); modalAberto=m; return; }
+    if(new Set([map.data,map.desc,map.valor].filter(v=>v>=0)).size<3){ toast('Cada campo deve ser uma coluna diferente','err'); m.classList.add('open'); modalAberto=m; return; }
+    const cb=mapeadorCb; mapeadorCb=null; cb(map);
+  } else { mapeadorCb=null; }
+}
 document.getElementById('modalConfirm').addEventListener('click',e=>{ if(e.target.id==='modalConfirm') fecharConfirm(false); });
 function trapFocus(e){
   if(e.key!=='Tab' || !modalAberto) return;
@@ -666,7 +1001,7 @@ document.addEventListener('keydown',e=>{
   }
   trapFocus(e);
 });
-function toggleOcultar(){ ocultar=!ocultar; CFG.ocultar=ocultar; localStorage.setItem('cfg_app', JSON.stringify(CFG)); document.getElementById('cfgOcultar').checked=ocultar; const chk2=document.getElementById('cfgOcultar2'); if(chk2) chk2.checked=ocultar; atualizarTudo(); }
+function toggleOcultar(){ ocultar=!ocultar; CFG.ocultar=ocultar; localStorage.setItem('cfg_app', JSON.stringify(CFG)); document.getElementById('cfgOcultar').checked=ocultar; const chk2=document.getElementById('cfgOcultar2'); if(chk2) chk2.checked=ocultar; document.body.classList.toggle('privacidade', ocultar); const icone=document.getElementById('iconeOlho'); const txt=document.getElementById('txtOlho'); if(icone){ icone.setAttribute('data-lucide', ocultar?'eye-off':'eye'); } if(txt) txt.textContent=ocultar?'Mostrar':'Ocultar'; if(window.lucide) lucide.createIcons(); atualizarTudo(); }
 let maisAberto=false;
 // estado de navegação centralizado
 let navStack = JSON.parse(sessionStorage.getItem('navStack')||'[]');
@@ -684,8 +1019,8 @@ function toggleTema(){
   document.documentElement.setAttribute('data-theme', t);
 })();
 function abrirTela(nome, param){
-  // telas dedicadas com animação slide e preservação de contexto
-  const dedicadas = ['lancamentos','extrato','orcamento','compras','pessoas','configuracoes','perfil'];
+  // telas dedicadas com animação slide (sub-telas). Principais (inicio, extrato, ferramentas, perfil) não são dedicadas
+  const dedicadas = ['lancamentos','orcamento','compras','pessoas','configuracoes','mercado','ofertas'];
   if(dedicadas.includes(nome)){
     const cur = document.querySelector('.tab-panel.ativo')?.id?.replace('tab-','') || activeTab;
     if(cur !== nome){ navStack.push(cur); salvarNavStack(); }
@@ -707,8 +1042,8 @@ function voltar(){
 function irTab(nome, pushStack=false, isBack=false){
   if(nome==='mais'){ abrirMais(); return; }
   fecharMais(); fecharMenuPerfil();
-  // parentMap: ofertas agora é aba principal, não filho de mercado
-  const parentMap={lancamentos:'financas', extrato:'financas', orcamento:'financas', compras:'mercado', pessoas:'perfil', configuracoes:'perfil'};
+  // parentMap: mapeia telas filhas para aba pai (4 abas + FAB)
+  const parentMap={lancamentos:'extrato', extrato:'extrato', orcamento:'extrato', financas:'extrato', compras:'perfil', mercado:'perfil', ofertas:'perfil', pessoas:'perfil', configuracoes:'perfil', cdi:'ferramentas', juros:'ferramentas', reserva:'ferramentas', comparativo:'ferramentas', metas:'ferramentas'};
   const navNome = parentMap[nome] || nome;
   document.querySelectorAll('.tab-btn, .bottom-nav button').forEach(b=>{ b.setAttribute('aria-selected', b.dataset.tab===navNome ? 'true':'false'); });
   // animação: se é voltar, desliza inverso (prefers-reduced-motion já desativa)
@@ -761,17 +1096,18 @@ function syncA11yNav(){
 function ajustarNav(){
   const nav=document.getElementById('bottomNav');
   const wrap=document.getElementById('bottomWrap');
-  nav.classList.remove('cols-3','cols-4','cols-5','cols-6','cols-7'); nav.classList.add('cols-4');
+  nav.classList.remove('cols-3','cols-4','cols-5','cols-6','cols-7'); nav.classList.add('cols-5');
   wrap.innerHTML=`
       <button data-tab="inicio" aria-selected="true" aria-label="Início"><span class="ico"><i data-lucide="home" class="ico-lucide"></i></span><span>Início</span></button>
-      <button data-tab="financas" aria-label="Finanças"><span class="ico"><i data-lucide="wallet" class="ico-lucide"></i></span><span>Finanças</span></button>
-      <button data-tab="mercado" aria-label="Mercado"><span class="ico"><i data-lucide="shopping-bag" class="ico-lucide"></i></span><span>Mercado</span></button>
-      <button data-tab="ofertas" aria-label="Ofertas"><span class="ico"><i data-lucide="flame" class="ico-lucide"></i></span><span>Ofertas</span></button>`;
-  wrap.querySelectorAll('button').forEach(b=> b.addEventListener('click',()=> irTab(b.dataset.tab)));
+      <button data-tab="extrato" aria-label="Extrato"><span class="ico"><i data-lucide="list" class="ico-lucide"></i></span><span>Extrato</span></button>
+      <button class="fab" data-action="novo" aria-label="Novo lançamento" onclick="abrirModalLancamento()"><span aria-hidden="true">＋</span></button>
+      <button data-tab="ferramentas" aria-label="Ferramentas"><span class="ico"><i data-lucide="calculator" class="ico-lucide"></i></span><span>Ferram.</span></button>
+      <button data-tab="perfil" aria-label="Perfil"><span class="ico"><i data-lucide="user" class="ico-lucide"></i></span><span>Perfil</span></button>`;
+  wrap.querySelectorAll('button[data-tab]').forEach(b=> b.addEventListener('click',()=> irTab(b.dataset.tab)));
   const ativo=document.querySelector('.tab-panel.ativo')?.id.replace('tab-','') || 'inicio';
-  const parentMap={lancamentos:'financas', extrato:'financas', orcamento:'financas', compras:'mercado', pessoas:'perfil', configuracoes:'perfil'};
+  const parentMap={lancamentos:'extrato', extrato:'extrato', orcamento:'extrato', financas:'extrato', compras:'perfil', mercado:'perfil', pessoas:'perfil', configuracoes:'perfil', ofertas:'perfil', cdi:'ferramentas', juros:'ferramentas', reserva:'ferramentas', comparativo:'ferramentas', metas:'ferramentas'};
   const navAtivo = parentMap[ativo] || ativo;
-  wrap.querySelectorAll('button').forEach(b=> b.setAttribute('aria-selected', b.dataset.tab===navAtivo ? 'true':'false'));
+  wrap.querySelectorAll('button[data-tab]').forEach(b=> b.setAttribute('aria-selected', b.dataset.tab===navAtivo ? 'true':'false'));
   document.querySelectorAll('.tab-btn').forEach(b=> b.setAttribute('aria-selected', b.dataset.tab===navAtivo ? 'true':'false'));
   syncA11yNav();
   if(window.lucide) lucide.createIcons();
@@ -779,7 +1115,25 @@ function ajustarNav(){
 function abrirMenuPerfil(){
   const m=document.getElementById('menuPerfil');
   m.classList.add('open'); m.hidden=false; m.removeAttribute('aria-hidden');
-  const nome=PESSOAS[0]||'—'; document.getElementById('perfilNomeTop').textContent=nome; document.getElementById('perfilAvatar').textContent=nome.charAt(0).toUpperCase();
+  // Menu mostra usuário logado se houver, senão primeira pessoa
+  const isLogado=!!currentUser;
+  let nome, avatar;
+  if(isLogado){
+    nome=currentUser.user_metadata?.full_name||currentUser.user_metadata?.name||currentUser.email?.split('@')[0]||'Usuário';
+    avatar=currentUser.user_metadata?.avatar_url||currentUser.user_metadata?.picture||'';
+  } else {
+    nome=PESSOAS[0]||'—';
+    avatar='';
+  }
+  const elNomeMenu=document.getElementById('perfilNomeMenu');
+  const elAvatarMenu=document.getElementById('perfilAvatarMenu');
+  if(elNomeMenu) elNomeMenu.textContent=nome;
+  if(elAvatarMenu){
+    if(avatar) elAvatarMenu.innerHTML=`<img src="${avatar}" alt="${nome}" style="width:100%;height:100%;object-fit:cover;border-radius:12px">`;
+    else elAvatarMenu.textContent=nome.charAt(0).toUpperCase();
+  }
+  // Também atualiza header
+  if(isLogado) atualizarUIAuth(true);
   if(window.lucide) lucide.createIcons();
 }
 function fecharMenuPerfil(){
@@ -787,6 +1141,23 @@ function fecharMenuPerfil(){
   m.classList.remove('open'); m.hidden=true; m.setAttribute('aria-hidden','true');
 }
 window.addEventListener('resize', ()=>{ ajustarNav(); syncA11yNav(); if(window.lucide) lucide.createIcons(); });
+window.addEventListener('popstate', (e)=>{
+  if(modalAberto){
+    if(modalAberto.id==='modalLanc') fecharModalLancamento();
+    else if(modalAberto.id==='modalConfirm') fecharConfirm(false);
+    else if(modalAberto.id==='modalMapeador') fecharMapeador(false);
+    else if(document.getElementById('tutorialOverlay') && !document.getElementById('tutorialOverlay').hidden) pularTutorial();
+    else if(document.getElementById('dicaOverlay') && !document.getElementById('dicaOverlay').hidden) fecharDica(true);
+    else { modalAberto.classList.remove('open'); modalAberto=null; }
+    try{ history.pushState({app:true}, '', location.href); }catch{}
+    return;
+  }
+  const telaAtiva=document.querySelector('.tab-panel.screen.ativo');
+  if(telaAtiva){ voltar(); try{ history.pushState({app:true}, '', location.href); }catch{} return; }
+  const naApp=!document.getElementById('appRoot').hidden;
+  const noLogin=!document.getElementById('authWelcome').hidden;
+  if(naApp && !noLogin){ try{ history.pushState({app:true}, '', location.href); }catch{} return; }
+});
 document.querySelectorAll('.tab-btn').forEach(b=> b.addEventListener('click',()=> irTab(b.dataset.tab)));
 function toggleMaisOpcoes(){
   const el=document.getElementById('maisOpcoes'); const btn=document.getElementById('btnMais');
@@ -930,7 +1301,7 @@ function remover(id){
  confirmar('Remover lançamento','Remover este lançamento?', ok=>{ if(!ok) return; lancamentos=lancamentos.filter(l=>l.id!==id); salvar(); atualizarTudo(); toast('Lançamento removido','ok'); });
 }
 function limparTudo(){
- confirmar('Limpar tudo','Remover TODOS os lançamentos? Esta ação não pode ser desfeita.', ok=>{ if(!ok) return; lancamentos=[]; salvar(); atualizarTudo(); toast('Dados limpos','ok'); });
+ confirmar('Limpar tudo','Remover TODOS os lançamentos? Esta ação não pode ser desfeita.', ok=>{ if(!ok) return; lancamentos=[]; salvar(); localStorage.removeItem('controle45_tutorial_concluido'); localStorage.removeItem('dicas_desativadas'); Object.keys(localStorage).forEach(k=>{if(k.startsWith('dica_')||k.startsWith('migracao_')||k.startsWith('tutorial_')) localStorage.removeItem(k)}); localStorage.removeItem('primeiro_acesso'); atualizarTudo(); toast('Dados limpos','ok'); });
 }
 function filtrados(){
  const p=document.getElementById('filtroPessoa').value, m=document.getElementById('filtroMes').value, c=document.getElementById('filtroCat').value, q=document.getElementById('busca').value.toLowerCase();
@@ -958,11 +1329,11 @@ function renderizar(){
   <td data-label="Descrição">${esc(l.descricao)}${l.obs?`<br><small style="color:var(--muted2)">${esc(l.obs)}</small>`:''}</td>
   <td data-label="Categoria"><span class="cat-badge" style="background:${cor}22;color:${cor}">${esc(l.categoria)}</span></td>
   <td data-label="Pagamento">${esc(l.pagamento)}</td>
-  <td data-label="Valor" class="valor" style="color:${l.tipo==='receita'?'#4ade80':'#f87171'}">${l.tipo==='receita'?'+':''}${fmt(l.valor)}</td>
+  <td data-label="Valor" class="valor valor-blur" style="color:${l.tipo==='receita'?'#4ade80':'#f87171'}">${l.tipo==='receita'?'+':''}${fmt(l.valor)}</td>
   <td data-label="Ações"><div style="display:flex;gap:6px;justify-content:flex-end;flex-wrap:wrap"><button class="btn-red" onclick="editar('${esc(l.id)}')" aria-label="Editar ${esc(l.descricao)}" style="min-height:44px;min-width:44px" title="Editar">✎</button><button class="btn-red" onclick="duplicar('${esc(l.id)}')" aria-label="Duplicar ${esc(l.descricao)}" style="min-height:44px;min-width:44px" title="Duplicar">⧉</button><button class="btn-red" onclick="remover('${esc(l.id)}')" aria-label="Excluir ${esc(l.descricao)}" style="min-height:44px;min-width:44px" title="Excluir">✕</button></div></td></tr>`;
  }).join('');
  const t=lista.reduce((s,l)=>s+(l.tipo==='receita'?l.valor:-l.valor),0);
- tb.innerHTML+=`<tr class="total-linha"><td colspan="5">SALDO DO FILTRO</td><td class="valor">${fmt(t)}</td><td></td></tr>`;
+ tb.innerHTML+=`<tr class="total-linha"><td colspan="5">SALDO DO FILTRO</td><td class="valor valor-blur">${fmt(t)}</td><td></td></tr>`;
 }
 function normalizaCentavos(v){ return Math.round((Number(v)||0)*100)/100; }
 function getSalarioMesTotal(mes){ return Object.entries(SALARIOS).filter(([k])=>k.startsWith(mes+'|')).reduce((s,[,v])=> s + normalizaCentavos(v),0); }
@@ -1145,30 +1516,76 @@ function renderRecorrentes(){
   </div>`;
  }).join('');
 }
+// Motor de recorrência inteligente: último dia do mês para 29/30/31 (ex: fev 28) e último dia útil se cair no fim de semana
+function getDiaInteligente(ym, diaDesejado){
+  const max=daysInMonth(ym);
+  let dia=Math.min(diaDesejado, max);
+  // Se o dia desejado foi 29-31 e o mês é menor, usa último dia do mês (ex: 31/02 -> 28/02)
+  // Se o último dia cair no fim de semana, antecipa para sexta (útil)
+  const data=new Date(ym+'-'+String(dia).padStart(2,'0')+'T00:00:00');
+  const dow=data.getDay(); // 0 dom, 6 sab
+  if(dow===0) dia=Math.max(1, dia-2); // domingo -> sexta
+  else if(dow===6) dia=Math.max(1, dia-1); // sábado -> sexta
+  // garante que ainda está dentro do mês após ajuste
+  if(dia>max) dia=max;
+  // se ajustou para dia útil e caiu em outro mês (ex: 1º seg), volta para último útil do mês original
+  // já tratado pelo Math.max
+  return String(dia).padStart(2,'0');
+}
 function gerarRecorrentesPendentes(){
  if(!RECORRENTES.length) return;
  const ymAtual=new Date().toISOString().slice(0,7);
  let gerados=0;
  RECORRENTES.filter(r=>r.ativo).forEach(r=>{
-  const diaStr=clampDia(ymAtual, r.dia);
-  const dataAlvo = `${ymAtual}-${diaStr}`;
-  const jaExiste=lancamentos.some(l=> l.recorrenteId===r.id && l.data===dataAlvo);
-  if(jaExiste) return;
-  lancamentos.push({
-    id:Date.now()+Math.random().toString(36).slice(2,7),
-    data:dataAlvo,
-    tipo:r.tipo,
-    pessoa:r.pessoa,
-    descricao:r.descricao,
-    categoria:r.categoria,
-    pagamento:r.pagamento||'Recorrente',
-    valor:r.valor,
-    obs:r.obs||'Lançamento recorrente',
-    recorrenteId:r.id
-  });
-  gerados++;
+  // Gera para todos os meses pendentes desde criação até hoje (evita omissão se app ficou fechado)
+  const inicio = (r.criadoEm||new Date().toISOString()).slice(0,7);
+  let cur = inicio;
+  // limita a 24 meses pra não explosão
+  let iter=0;
+  while(cur <= ymAtual && iter<24){
+    const diaStr=getDiaInteligente(cur, r.dia);
+    const dataAlvo = `${cur}-${diaStr}`;
+    const jaExiste=lancamentos.some(l=> l.recorrenteId===r.id && l.data===dataAlvo);
+    if(!jaExiste){
+      // só gera se dataAlvo <= hoje (não futuro)
+      if(dataAlvo <= new Date().toISOString().slice(0,10)){
+        lancamentos.push({
+          id:Date.now()+Math.random().toString(36).slice(2,7),
+          data:dataAlvo,
+          tipo:r.tipo,
+          pessoa:r.pessoa,
+          descricao:r.descricao,
+          categoria:r.categoria,
+          pagamento:r.pagamento||'Recorrente',
+          valor:r.valor,
+          obs:r.obs||`Lançamento recorrente (dia ${r.dia} → ${diaStr}/${cur.slice(5,7)})`,
+          recorrenteId:r.id
+        });
+        gerados++;
+      }
+    }
+    // próximo mês
+    const [y,m]=cur.split('-').map(Number);
+    const nextM=m===12?1:m+1;
+    const nextY=m===12?y+1:y;
+    cur=`${nextY}-${String(nextM).padStart(2,'0')}`;
+    iter++;
+  }
  });
- if(gerados>0){ salvar(); toast(`${gerados} recorrente(s) gerado(s) para ${mesNome(ymAtual)}`,'ok'); }
+ if(gerados>0){ salvar(); atualizarTudo(); toast(`${gerados} recorrente(s) gerado(s) — ajuste inteligente para 29/30/31`,'ok'); }
+}
+function atualizarHintDia(){
+  const dia=parseInt(document.getElementById('recDia')?.value,10);
+  const hint=document.getElementById('recDiaHint');
+  if(!hint) return;
+  if(!dia || dia<1 || dia>31){ hint.textContent=''; return; }
+  if(dia>=29){
+    const proxFev=new Date().getFullYear()+'-02';
+    const diaFev=getDiaInteligente(proxFev, dia);
+    hint.textContent=`💡 Dia ${dia}: em meses curtos cai no último dia (ex: 28-29/02 → ${diaFev}/02) e se cair no fim de semana, antecipa para sexta.`;
+  } else {
+    hint.textContent=`Será lançado todo dia ${dia} de cada mês.`;
+  }
 }
 function exportarExcel(){
  if(!lancamentos.length){ toast('Adicione lançamentos primeiro!','err'); return; }
@@ -1230,10 +1647,10 @@ function renderLista(){
 let impRows=[], impUltimoTexto='';
 document.getElementById('impArquivo').addEventListener('change',e=>{
  const f=e.target.files[0]; if(!f) return; const ext=(f.name.split('.').pop()||'').toLowerCase();
- if(ext==='xlsx'||ext==='xls'){ const r=new FileReader(); r.onload=()=>{ try{ const wb=XLSX.read(r.result,{type:'array'}); const t=XLSX.utils.sheet_to_csv(wb.Sheets[wb.SheetNames[0]],{FS:'\t'}); impUltimoTexto=t; processarExtrato(t); }catch(err){ toast('Erro Excel: '+err.message,'err'); } }; r.readAsArrayBuffer(f); }
- else{ const r=new FileReader(); r.onload=()=>{ impUltimoTexto=r.result; processarExtrato(r.result); }; r.readAsText(f,'utf-8'); }
+ if(ext==='xlsx'||ext==='xls'){ const r=new FileReader(); r.onload=()=>{ try{ const wb=XLSX.read(r.result,{type:'array'}); const t=XLSX.utils.sheet_to_csv(wb.Sheets[wb.SheetNames[0]],{FS:'\t'}); iniciarImport(t); }catch(err){ toast('Erro Excel: '+err.message,'err'); } }; r.readAsArrayBuffer(f); }
+ else{ const r=new FileReader(); r.onload=()=>{ iniciarImport(r.result); }; r.readAsText(f,'utf-8'); }
 });
-function processarNovamente(){ if(impUltimoTexto) processarExtrato(impUltimoTexto); }
+function processarNovamente(){ if(!impUltimoTexto) return; if(window._mapaImport) processarExtratoComMapa(impUltimoTexto, window._mapaImport); else processarExtrato(impUltimoTexto); }
 function processarExtrato(t){
  const modo=document.getElementById('impModo').value;
  let rows=/<STMTTRN>/i.test(t)?parseOFX(t):parseCSVExtrato(t);
@@ -1264,7 +1681,7 @@ function renderImportPreview(){
  const box=document.getElementById('impPreview');
  if(!impRows.length){ box.innerHTML='<div style="font-size:13px;color:#f87171;background:rgba(239,68,68,.1);border-radius:12px;padding:12px">❌ Nenhuma transação encontrada.</div>'; return; }
  const cats=Object.keys(cores); const nInc=impRows.filter(r=>r.inc).length;
- box.innerHTML=`<div style="font-size:12px;color:var(--muted2);margin-bottom:8px"><b style="color:#4ade80">${nInc}</b> de <b>${impRows.length}</b> marcadas${impRows.some(r=>r.dup)?' · duplicadas desmarcadas':''}<div style="margin-top:6px"><i data-lucide="user" class="ico-lucide"></i> Pessoa para todas: ${PESSOAS.map(p=>`<button type="button" onclick="trocarTodos('${esc(p)}')" class="btn-red" style="color:${corPessoa(p)};border-color:${corPessoa(p)};margin-left:4px;min-height:44px;min-width:44px">${esc(p)}</button>`).join('')}</div></div><div style="max-height:320px;overflow:auto;border:1px solid rgba(255,255,255,.06);border-radius:12px"><table><thead><tr><th></th><th>Data</th><th>Pessoa</th><th>Descrição</th><th>Tipo</th><th style="text-align:right">Valor</th><th>Categoria</th></tr></thead><tbody>${impRows.map((r,i)=>`<tr><td><input type="checkbox" ${r.inc?'checked':''} onchange="impRows[${i}].inc=this.checked" aria-label="Incluir ${esc(r.descricao)}" style="min-width:20px;min-height:20px"></td><td style="white-space:nowrap">${esc(new Date(r.data+'T00:00').toLocaleDateString('pt-BR'))}</td><td><select onchange="impRows[${i}].pessoa=this.value" style="padding:8px;font-size:12px" aria-label="Pessoa de ${esc(r.descricao)}">${PESSOAS.map(p=>`<option ${p===r.pessoa?'selected':''}>${esc(p)}</option>`).join('')}</select></td><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis" title="${esc(r.descricao)}">${esc(r.descricao)}</td><td><span class="cat-badge" style="background:${r.tipo==='receita'?'rgba(16,185,129,.15)':'rgba(239,68,68,.15)'};color:${r.tipo==='receita'?'#4ade80':'#f87171'}">${r.tipo==='receita'?'<i data-lucide="trending-up" class="ico-lucide"></i>':'<i data-lucide="trending-down" class="ico-lucide"></i>'}</span></td><td class="valor" style="color:${r.tipo==='receita'?'#4ade80':'#f87171'}">${fmt(r.valor)}</td><td><select onchange="impRows[${i}].categoria=this.value" style="padding:8px;font-size:12px" aria-label="Categoria de ${esc(r.descricao)}">${cats.map(c=>`<option ${c===r.categoria?'selected':''}>${esc(c)}</option>`).join('')}</select></td></tr>`).join('')}</tbody></table></div><button class="btn btn-green" onclick="confirmarImport()" aria-label="Importar lançamentos selecionados" style="min-height:44px">✅ Importar ${nInc} lançamento${nInc===1?'':'s'}</button>`;
+ box.innerHTML=`<div style="font-size:12px;color:var(--muted2);margin-bottom:8px"><b style="color:#4ade80">${nInc}</b> de <b>${impRows.length}</b> marcadas${impRows.some(r=>r.dup)?' · duplicadas desmarcadas':''}<div style="margin-top:6px"><i data-lucide="user" class="ico-lucide"></i> Pessoa para todas: ${PESSOAS.map(p=>`<button type="button" onclick="trocarTodos('${esc(p)}')" class="btn-red" style="color:${corPessoa(p)};border-color:${corPessoa(p)};margin-left:4px;min-height:44px;min-width:44px">${esc(p)}</button>`).join('')}</div></div><div style="max-height:320px;overflow:auto;border:1px solid rgba(255,255,255,.06);border-radius:12px"><table><thead><tr><th></th><th>Data</th><th>Pessoa</th><th>Descrição</th><th>Tipo</th><th style="text-align:right">Valor</th><th>Categoria</th></tr></thead><tbody>${impRows.map((r,i)=>`<tr><td><input type="checkbox" ${r.inc?'checked':''} onchange="impRows[${i}].inc=this.checked" aria-label="Incluir ${esc(r.descricao)}" style="min-width:20px;min-height:20px"></td><td style="white-space:nowrap">${esc(new Date(r.data+'T00:00').toLocaleDateString('pt-BR'))}</td><td><select onchange="impRows[${i}].pessoa=this.value" style="padding:8px;font-size:12px" aria-label="Pessoa de ${esc(r.descricao)}">${PESSOAS.map(p=>`<option ${p===r.pessoa?'selected':''}>${esc(p)}</option>`).join('')}</select></td><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis" title="${esc(r.descricao)}">${esc(r.descricao)}</td><td><span class="cat-badge" style="background:${r.tipo==='receita'?'rgba(16,185,129,.15)':'rgba(239,68,68,.15)'};color:${r.tipo==='receita'?'#4ade80':'#f87171'}">${r.tipo==='receita'?'<i data-lucide="trending-up" class="ico-lucide"></i>':'<i data-lucide="trending-down" class="ico-lucide"></i>'}</span></td><td class="valor valor-blur" style="color:${r.tipo==='receita'?'#4ade80':'#f87171'}">${fmt(r.valor)}</td><td><select onchange="impRows[${i}].categoria=this.value" style="padding:8px;font-size:12px" aria-label="Categoria de ${esc(r.descricao)}">${cats.map(c=>`<option ${c===r.categoria?'selected':''}>${esc(c)}</option>`).join('')}</select></td></tr>`).join('')}</tbody></table></div><button class="btn btn-green" onclick="confirmarImport()" aria-label="Importar lançamentos selecionados" style="min-height:44px">✅ Importar ${nInc} lançamento${nInc===1?'':'s'}</button>`;
 }
 function confirmarImport(){
  if(!PESSOAS.length){ toast('Cadastre uma pessoa!','err'); return; }
@@ -1272,6 +1689,48 @@ function confirmarImport(){
  if(!sel.length){ toast('Selecione transações!','err'); return; }
  sel.forEach(r=>lancamentos.push({id:Date.now()+Math.random().toString(36).slice(2,7),data:r.data,tipo:r.tipo,pessoa:r.pessoa,descricao:r.descricao,categoria:r.categoria,pagamento,valor:r.valor,obs:'Importado do extrato'}));
  salvar(); impRows=[]; document.getElementById('impArquivo').value=''; document.getElementById('impPreview').innerHTML='<div style="font-size:13px;color:#4ade80;background:rgba(16,185,129,.15);border-radius:12px;padding:12px">✅ '+sel.length+' lançamento(s) importado(s)!</div>'; atualizarTudo();
+}
+function baixarModeloCSV(){
+  const csv="Data;Descrição;Valor;Tipo\n2025-08-10;Mercado;350,50;despesa\n2025-08-15;Salário;4500,00;receita\n2025-08-20;Internet;120,90;despesa";
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='modelo_extrato.csv'; a.click(); URL.revokeObjectURL(url); toast('Modelo baixado','ok');
+}
+(function initDrop(){
+  const area=document.getElementById('dropArea');
+  if(!area) return;
+  ['dragenter','dragover'].forEach(ev=> area.addEventListener(ev, e=>{ e.preventDefault(); area.style.borderColor='#7c3aed'; area.style.background='rgba(124,58,237,.12)'; }));
+  ['dragleave','drop'].forEach(ev=> area.addEventListener(ev, e=>{ e.preventDefault(); area.style.borderColor='var(--line)'; area.style.background='var(--card2)'; }));
+  area.addEventListener('drop', e=>{
+    const f=e.dataTransfer.files[0]; if(!f) return;
+    document.getElementById('impArquivo').files=e.dataTransfer.files;
+    const ev=new Event('change'); document.getElementById('impArquivo').dispatchEvent(ev);
+  });
+})();
+function ensureXLSX(){
+  return new Promise((res,rej)=>{
+    if(window.XLSX) return res(window.XLSX);
+    const s=document.createElement('script');
+    s.src='https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+    s.onload=()=>res(window.XLSX);
+    s.onerror=rej;
+    document.head.appendChild(s);
+  });
+}
+// Wrap exportarExcel para lazy-load
+const _origExportarExcel = window.exportarExcel;
+window.exportarExcel = async function(){
+  try{ await ensureXLSX(); }catch(e){ toast('Falha ao carregar XLSX','err'); return; }
+  return _origExportarExcel ? _origExportarExcel() : null;
+};
+// Também lazy para import xlsx
+const _impHandler = document.getElementById('impArquivo');
+if(_impHandler){
+  _impHandler.addEventListener('change', async e=>{
+    const f=e.target.files[0]; if(!f) return;
+    const ext=(f.name.split('.').pop()||'').toLowerCase();
+    if((ext==='xlsx'||ext==='xls') && !window.XLSX){
+      try{ await ensureXLSX(); }catch{}
+    }
+  }, true);
 }
 let OFERTAS_APP = [
   {
@@ -1358,7 +1817,337 @@ function renderOfertas(){
   }).join('');
   if(window.lucide) lucide.createIcons();
 }
-function atualizarTudo(){ preencherPessoas(); renderListaPessoas(); atualizarFiltros(); renderizar(); atualizarResumo(); renderFechamento(); renderLista(); renderExtrato(); renderRecorrentes(); renderOfertas(); if(window.lucide) lucide.createIcons(); }
+// ===== FERRAMENTAS - CALCULADORAS =====
+let METAS = JSON.parse(localStorage.getItem('metas_v2')||'[]');
+function salvarMetas(){ localStorage.setItem('metas_v2', JSON.stringify(METAS)); }
+function taxaMensalCDI(aa){ return Math.pow(1+aa/100, 1/12)-1; }
+function aliquotaIR(dias, tipo){ if(tipo==='lci') return 0; if(dias<=180) return 0.225; if(dias<=360) return 0.20; if(dias<=720) return 0.175; return 0.15; }
+function calcCDI(){
+  const ini=parseFloat(document.getElementById('cdiValor').value)||0;
+  const aporte=parseFloat(document.getElementById('cdiAporte').value)||0;
+  const meses=parseInt(document.getElementById('cdiMeses').value)||1;
+  const pct=parseFloat(document.getElementById('cdiPct').value)||100;
+  const aa=parseFloat(document.getElementById('cdiAnual').value)||11.15;
+  const tipo=document.getElementById('cdiTipo').value;
+  const i = taxaMensalCDI(aa) * pct/100;
+  // Cálculo bruto total
+  let saldo=ini;
+  for(let m=0;m<meses;m++){ saldo = saldo*(1+i)+aporte; }
+  const totalInvestido = ini + aporte*meses;
+  const rendimento = saldo - totalInvestido;
+  // IR pro-rata: cada aporte tem prazo diferente (Google AI recomendação)
+  let ir = 0;
+  if(tipo!=='lci' && rendimento>0){
+    // simula cada aporte separadamente para IR regressivo
+    let saldoPorLote = [];
+    // lote inicial
+    if(ini>0) saldoPorLote.push({valor:ini, meses:meses});
+    for(let m=0;m<meses;m++){ if(aporte>0) saldoPorLote.push({valor:aporte, meses:meses-m}); }
+    let irTotal=0, rendimentoTotal=0;
+    saldoPorLote.forEach(lote=>{
+      let s=lote.valor;
+      for(let k=0;k<lote.meses;k++) s = s*(1+i);
+      const rend = s - lote.valor;
+      const dias = lote.meses*30;
+      irTotal += rend * aliquotaIR(dias, tipo);
+      rendimentoTotal += rend;
+    });
+    // normaliza para bater com rendimento total (evita erro de arredondamento em aportes sobrepostos com juros compostos)
+    ir = rendimentoTotal>0 ? irTotal * (rendimento/rendimentoTotal) : irTotal;
+  }
+  const liquido = saldo - ir;
+  const box=document.getElementById('cdiResultado');
+  const fmtB=v=>fmt(v);
+  box.innerHTML = `
+    <div class="resumo" style="margin-top:6px">
+      <div class="res-box"><div class="l">TOTAL BRUTO</div><div class="v" style="color:#a78bfa">${fmtB(saldo)}</div><small class="muted">investido ${fmtB(totalInvestido)}</small></div>
+      <div class="res-box"><div class="l">RENDIMENTO</div><div class="v verde">${fmtB(rendimento)}</div><small class="muted">IR ${fmtB(ir)} · ${(aliquotaIR(dias,tipo)*100).toFixed(1)}%</small></div>
+      <div class="res-box"><div class="l">LÍQUIDO</div><div class="v azul">${fmtB(liquido)}</div><small class="muted">ganho real ${fmtB(liquido-totalInvestido)}</small></div>
+    </div>
+    <div class="kpi" style="margin-top:10px">
+      <div class="res-box" style="flex:1"><div class="l">Taxa mensal efetiva</div><div class="v" style="font-size:16px">${(i*100).toFixed(3)}% a.m.</div><small class="muted">${aa}% a.a. × ${pct}% CDI</small></div>
+      <div class="res-box" style="flex:1"><div class="l">Rent. líquida</div><div class="v" style="font-size:16px">${totalInvestido?(((liquido-totalInvestido)/totalInvestido)*100).toFixed(2):'0'}%</div><small class="muted">em ${meses} meses</small></div>
+    </div>`;
+  // gráfico simples de evolução
+  const graf=document.getElementById('cdiGrafico');
+  let s=ini; let max=saldo||1; let html='<div class="muted" style="font-size:12px;margin-bottom:6px">Evolução</div>';
+  for(let m=1;m<=Math.min(meses,12);m++){ s=s*(1+i)+aporte; const pctW=Math.round(s/max*100); html+=`<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="width:48px;font-size:12px;color:var(--muted2)">M${m}</span><div class="bar" style="flex:1"><span style="width:${pctW}%;background:var(--grad)"></span></div><span style="font-size:12px;min-width:90px;text-align:right">${fmt(s)}</span></div>`; }
+  if(meses>12) html+='<div class="muted" style="font-size:11px">* mostrando 12 primeiros meses</div>';
+  graf.innerHTML=html;
+  if(window.lucide) lucide.createIcons();
+}
+function calcJuros(){
+  const ini=parseFloat(document.getElementById('jcInicial').value)||0;
+  const aporte=parseFloat(document.getElementById('jcAporte').value)||0;
+  const taxaM=parseFloat(document.getElementById('jcTaxa').value)||0;
+  const meses=parseInt(document.getElementById('jcMeses').value)||1;
+  const i=taxaM/100;
+  document.getElementById('jcTaxaAno').textContent = ( (Math.pow(1+i,12)-1)*100 ).toFixed(2)+'%';
+  let saldo=ini;
+  for(let m=0;m<meses;m++) saldo=saldo*(1+i)+aporte;
+  const totalInvestido=ini+aporte*meses;
+  const juros=saldo-totalInvestido;
+  const box=document.getElementById('jcResultado');
+  box.innerHTML=`
+    <div class="resumo">
+      <div class="res-box"><div class="l">MONTANTE</div><div class="v azul">${fmt(saldo)}</div></div>
+      <div class="res-box"><div class="l">JUROS</div><div class="v verde">${fmt(juros)}</div></div>
+      <div class="res-box"><div class="l">INVESTIDO</div><div class="v" style="color:var(--muted)">${fmt(totalInvestido)}</div></div>
+    </div>
+    <div class="muted" style="margin-top:8px;font-size:12px">Você terá <b style="color:#4ade80">${fmt(saldo)}</b> com <b>${fmt(juros)}</b> de juros em ${meses} meses.</div>`;
+  // grafico
+  const graf=document.getElementById('jcGrafico');
+  let s=ini; let max=saldo||1; let html='';
+  for(let m=1;m<=Math.min(meses,12);m++){ s=s*(1+i)+aporte; const pctW=Math.round(s/max*100); html+=`<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="width:48px;font-size:12px;color:var(--muted2)">M${m}</span><div class="bar" style="flex:1"><span style="width:${pctW}%;background:var(--grad-green)"></span></div><span style="font-size:12px;min-width:90px;text-align:right">${fmt(s)}</span></div>`; }
+  graf.innerHTML=html;
+}
+function calcReserva(){
+  const gastos=parseFloat(document.getElementById('resGastos').value)||0;
+  const box=document.getElementById('resResultado');
+  if(!gastos){ box.innerHTML='<div class="muted">Informe seus gastos essenciais.</div>'; return; }
+  const m3=gastos*3, m6=gastos*6, m12=gastos*12;
+  box.innerHTML=`
+    <div class="resumo">
+      <div class="res-box"><div class="l">3 MESES</div><div class="v">${fmt(m3)}</div><small class="muted">autônomo</small></div>
+      <div class="res-box"><div class="l">6 MESES</div><div class="v azul">${fmt(m6)}</div><small class="muted">CLT ideal</small></div>
+      <div class="res-box"><div class="l">12 MESES</div><div class="v verde">${fmt(m12)}</div><small class="muted">família</small></div>
+    </div>
+    <div class="muted" style="margin-top:8px;font-size:12px;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:12px">💡 Dica: guarde sua reserva em <b>CDB 100% CDI com liquidez diária</b> ou Tesouro Selic. Não deixe na poupança.</div>`;
+}
+function calcComparativo(){
+  const v=parseFloat(document.getElementById('compValor').value)||0;
+  const meses=parseInt(document.getElementById('compMeses').value)||12;
+  const cdiAA=parseFloat(document.getElementById('compCDI').value)||11.15;
+  const poupAA=parseFloat(document.getElementById('compPoup').value)||7.2;
+  const ipcaAA=parseFloat(document.getElementById('compIPCA').value)||4.5;
+  const iCdi=Math.pow(1+cdiAA/100,1/12)-1;
+  const iPoup=Math.pow(1+poupAA/100,1/12)-1;
+  const iIpca=Math.pow(1+ipcaAA/100,1/12)-1;
+  const cdiFinal=v*Math.pow(1+iCdi,meses);
+  const poupFinal=v*Math.pow(1+iPoup,meses);
+  const ipcaCorr=v*Math.pow(1+iIpca,meses);
+  const ganhoCDI=cdiFinal - v - (cdiFinal-v)*aliquotaIR(meses*30,'cdb');
+  const box=document.getElementById('compResultado');
+  const max=Math.max(cdiFinal,poupFinal,ipcaCorr, v)||1;
+  box.innerHTML=`
+    <div style="display:grid;gap:8px">
+      <div style="display:flex;align-items:center;gap:8px"><span style="width:100px;font-size:12px;font-weight:700">100% CDI</span><div class="bar" style="flex:1"><span style="width:${Math.round(cdiFinal/max*100)}%;background:#7c3aed"></span></div><span style="font-size:12px;min-width:110px;text-align:right;font-weight:800">${fmt(cdiFinal)} <small class="muted">líq ${fmt(v+ganhoCDI)}</small></span></div>
+      <div style="display:flex;align-items:center;gap:8px"><span style="width:100px;font-size:12px;font-weight:700">Poupança</span><div class="bar" style="flex:1"><span style="width:${Math.round(poupFinal/max*100)}%;background:#f59e0b"></span></div><span style="font-size:12px;min-width:110px;text-align:right;font-weight:800">${fmt(poupFinal)}</span></div>
+      <div style="display:flex;align-items:center;gap:8px"><span style="width:100px;font-size:12px;font-weight:700">IPCA (inflação)</span><div class="bar" style="flex:1"><span style="width:${Math.round(ipcaCorr/max*100)}%;background:#64748b"></span></div><span style="font-size:12px;min-width:110px;text-align:right">${fmt(ipcaCorr)}</span></div>
+    </div>
+    <div class="muted" style="margin-top:10px;font-size:12px">Em ${meses} meses, <b style="color:#4ade80">R$ ${fmt(cdiFinal - poupFinal)} a mais no CDI</b> vs poupança (líquido de IR).</div>`;
+}
+function adicionarMeta(){
+  const nome=document.getElementById('metaNome').value.trim();
+  const alvo=parseFloat(document.getElementById('metaAlvo').value);
+  const atual=parseFloat(document.getElementById('metaAtual').value)||0;
+  const prazo=parseInt(document.getElementById('metaPrazo').value)||12;
+  if(!nome||!alvo||alvo<=0){ toast('Informe nome e valor alvo','err'); return; }
+  METAS.push({id:Date.now()+Math.random().toString(36).slice(2,6), nome, alvo, atual, prazo, criadoEm:new Date().toISOString()});
+  salvarMetas(); renderMetas();
+  document.getElementById('metaNome').value=''; document.getElementById('metaAlvo').value=''; document.getElementById('metaAtual').value='0';
+  toast('Meta criada','ok');
+}
+function removerMeta(id){ METAS=METAS.filter(m=>m.id!==id); salvarMetas(); renderMetas(); }
+function atualizarMeta(id, valor){ const m=METAS.find(x=>x.id===id); if(m){ m.atual=parseFloat(valor)||0; salvarMetas(); renderMetas(); } }
+function renderMetas(){
+  const el=document.getElementById('listaMetas'); const dica=document.getElementById('metaDica');
+  if(!METAS.length){ el.innerHTML='<div class="muted">Nenhuma meta ainda. Ex: Reserva, Viagem, Carro.</div>'; dica.textContent='💡 Dica: use a calculadora de juros compostos para ver quanto precisa guardar por mês para atingir sua meta.'; return; }
+  el.innerHTML=METAS.map(m=>{
+    const pct=Math.min(100, Math.round(m.atual/m.alvo*100));
+    const falta=m.alvo - m.atual;
+    const porMes=falta>0 ? falta/m.prazo : 0;
+    const cor=pct>=100?'#4ade80':pct>=50?'#a78bfa':'#f59e0b';
+    return `<div style="border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:10px;background:var(--card2)">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><b>${esc(m.nome)}</b><button class="btn-red" onclick="removerMeta('${m.id}')" style="min-height:36px;min-width:36px">✕</button></div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted2);margin:6px 0"><span>${fmt(m.atual)} / ${fmt(m.alvo)}</span><span>${pct}%</span></div>
+      <div class="bar"><span style="width:${pct}%;background:${cor}"></span></div>
+      <div style="display:flex;gap:8px;margin-top:10px;align-items:center">
+        <input type="number" value="${m.atual}" min="0" step="50" onchange="atualizarMeta('${m.id}', this.value)" style="flex:1;padding:10px" aria-label="Atualizar ${esc(m.nome)}">
+        <span class="muted" style="font-size:11px;min-width:110px">falta ${fmt(Math.max(0,falta))}<br>${fmt(porMes)}/mês em ${m.prazo}m</span>
+      </div>
+    </div>`;
+  }).join('');
+  const totalAlvo=METAS.reduce((s,m)=>s+m.alvo,0); const totalAtual=METAS.reduce((s,m)=>s+m.atual,0);
+  dica.innerHTML=`📊 Total em metas: <b>${fmt(totalAtual)} / ${fmt(totalAlvo)}</b> · ${Math.round(totalAtual/Math.max(1,totalAlvo)*100)}% concluído. ${totalAlvo-totalAtual>0?`Falta <b>${fmt(totalAlvo-totalAtual)}</b> no total.`: '🎉 Todas batidas!'}`;
+}
+function carregarDadosDemo(){
+  if(lancamentos.length){ toast('Você já tem lançamentos — demo não carregada para não duplicar','err'); return; }
+  const hoje=new Date(); const ym=hoje.toISOString().slice(0,7);
+  const y=hoje.getFullYear(), m=String(hoje.getMonth()+1).padStart(2,'0');
+  const demo=[
+    {data:`${y}-${m}-05`, tipo:'receita', pessoa:PESSOAS[0]||'Eu', descricao:'Salário', categoria:'Salário', pagamento:'Transferência', valor:4500, obs:'Demo'},
+    {data:`${y}-${m}-06`, tipo:'despesa', pessoa:PESSOAS[0]||'Eu', descricao:'Aluguel', categoria:'Moradia', pagamento:'Pix', valor:1200, obs:'Demo'},
+    {data:`${y}-${m}-07`, tipo:'despesa', pessoa:PESSOAS[0]||'Eu', descricao:'Mercado', categoria:'Alimentação', pagamento:'Cartão de Crédito', valor:680, obs:'Demo'},
+    {data:`${y}-${m}-10`, tipo:'despesa', pessoa:PESSOAS[0]||'Eu', descricao:'Internet + Energia', categoria:'Moradia', pagamento:'Boleto', valor:320, obs:'Demo'},
+    {data:`${y}-${m}-12`, tipo:'despesa', pessoa:PESSOAS[0]||'Eu', descricao:'Academia', categoria:'Saúde', pagamento:'Pix', valor:120, obs:'Demo'},
+    {data:`${y}-${m}-15`, tipo:'despesa', pessoa:PESSOAS[0]||'Eu', descricao:'Restaurante', categoria:'Alimentação', pagamento:'Cartão de Débito', valor:180, obs:'Demo'},
+  ];
+  demo.forEach(d=> lancamentos.push({id:Date.now()+Math.random().toString(36).slice(2,7), ...d}));
+  salvar(); atualizarTudo(); toast('Dados demo carregados — explore o dashboard','ok');
+  setTimeout(()=> document.getElementById('saldoDestaque')?.scrollIntoView({behavior:'smooth'}), 400);
+}
+window.carregarDadosDemo=carregarDadosDemo; window.calcCDI=calcCDI; window.calcJuros=calcJuros; window.calcReserva=calcReserva; window.calcComparativo=calcComparativo; window.adicionarMeta=adicionarMeta; window.removerMeta=removerMeta; window.atualizarMeta=atualizarMeta;
+// === TUTORIAL ===
+let tutPasso=0;
+const tutPassos=[
+  {titulo:'Bem-vindo ao Controle 45! 👋', texto:'Na primeira vez faça login com Google. Depois você fica logado automaticamente e seus dados sincronizam na nuvem.'},
+  {titulo:'1. Ações rápidas ⚡', texto:'Na Home toque em Gasto, Receita, Lançamentos ou Calcular. Adicione um lançamento em 5 segundos.'},
+  {titulo:'2. Resumo do mês 📊', texto:'Veja Receitas, Despesas, Economia e maior categoria. Toque no saldo para ver o extrato completo.'},
+  {titulo:'3. Ferramentas 🧮', texto:'Aba Ferramentas: simule CDI/CDB com IR, juros compostos, reserva de emergência (6 meses) e metas.'},
+  {titulo:'4. Importar extrato 📂', texto:'Em Extrato → arraste seu .csv/.ofx/.xlsx. Tudo é processado no seu aparelho, nada vai pra nuvem.'},
+  {titulo:'Tudo pronto! 🎉', texto:'Seus dados ficam salvos. Volte em Perfil → Configurações → Rever tutorial quando quiser.'}
+];
+function renderTut(){
+  const t=tutPassos[tutPasso];
+  document.getElementById('tutTitulo').textContent=t.titulo;
+  document.getElementById('tutTexto').textContent=t.texto;
+  document.getElementById('tutDots').innerHTML=tutPassos.map((_,i)=>`<span style="width:8px;height:8px;border-radius:99px;background:${i===tutPasso?'#7c3aed':'rgba(255,255,255,.2)'};display:inline-block"></span>`).join('');
+  document.getElementById('btnTutProx').textContent = tutPasso===tutPassos.length-1 ? 'Começar →' : 'Próximo →';
+}
+window.proximoTutorial=function(){
+  localStorage.setItem('controle45_tutorial_concluido','true');
+  if(tutPasso < tutPassos.length-1){ tutPasso++; renderTut(); }
+  else { pularTutorial(); }
+};
+window.pularTutorial=function(){
+  document.getElementById('tutorialOverlay').hidden=true;
+  document.getElementById('tutorialOverlay').style.display='none';
+  localStorage.setItem('controle45_tutorial_concluido','true');
+  localStorage.setItem('primeiro_acesso','1');
+};
+window.mostrarTutorial=function(){
+  tutPasso=0; renderTut();
+  const el=document.getElementById('tutorialOverlay');
+  el.hidden=false; el.style.display='flex';
+  if(window.lucide) lucide.createIcons();
+};
+window.reverTutorial=function(){ localStorage.removeItem('controle45_tutorial_concluido'); mostrarTutorial(); };
+function verificarTutorial(){
+  if(localStorage.getItem('controle45_tutorial_concluido')) return;
+  if(document.getElementById('appRoot').hidden) return;
+  // se já está logado (Google ou demo), não mostra tutorial - considera como já visto
+  if(currentUser || localStorage.getItem('mock_user') || localStorage.getItem('supabase_user_cache') || localStorage.getItem('sb-abvkleuealvbpbcmcsmq-auth-token')){
+    localStorage.setItem('controle45_tutorial_concluido','true');
+    return;
+  }
+  setTimeout(()=>{ if(!document.getElementById('appRoot').hidden && !localStorage.getItem('controle45_tutorial_concluido')) mostrarTutorial(); }, 800);
+}
+window.verificarTutorial=verificarTutorial;
+// === DICAS CONTEXTUAIS (primeiro toque) ===
+const dicasMap={
+  gasto:{icon:'💸',titulo:'Adicionar Gasto',texto:'Registre despesas com categoria, valor e forma de pagamento. É o coração do controle.'},
+  receita:{icon:'💰',titulo:'Adicionar Receita',texto:'Registre salários e rendas. O app soma no saldo e no fechamento mensal automaticamente.'},
+  lancamentos:{icon:'📋',titulo:'Lançamentos',texto:'Veja, filtre e edite tudo. Toque em ✎ para editar ou ⧉ para duplicar.'},
+  orcamento:{icon:'🎯',titulo:'Orçamento',texto:'Defina limite por categoria (ex: Alimentação R$500) e acompanhe a barra de progresso.'},
+  extrato:{icon:'🏦',titulo:'Extrato',texto:'Filtre por mês/categoria, veja saldo por dia e importe extrato arrastando o arquivo.'},
+  calcular:{icon:'🧮',titulo:'Ferramentas',texto:'Simule CDI/CDB com IR, juros compostos e reserva de emergência. Ideal pra investir.'},
+  financas:{icon:'👛',titulo:'Carteira',texto:'Central da grana: Lançamentos, Extrato e Orçamento num só lugar.'},
+  mercado:{icon:'🛒',titulo:'Mercado',texto:'Lista de compras inteligente: adicione itens e vire gasto com um toque.'},
+  ofertas:{icon:'🔥',titulo:'Ofertas',texto:'Achados com afiliado — não misturam com suas finanças.'},
+  import:{icon:'📂',titulo:'Importar extrato',texto:'Arraste seu .csv/.ofx/.xlsx aqui. Detecta data/valor e evita duplicatas automaticamente.'}
+};
+let dicaPendente=null, dicaCallback=null;
+function mostrarDica(id, cb){
+  if(localStorage.getItem('dicas_desativadas')==='1' || localStorage.getItem('dica_'+id)) { if(cb) cb(); return; }
+  if(!localStorage.getItem('controle45_tutorial_concluido')) { if(cb) cb(); return; }
+  const d=dicasMap[id]; if(!d){ if(cb) cb(); return; }
+  // marca como visto imediatamente pra não repetir mesmo se fechar a aba
+  localStorage.setItem('dica_'+id,'1');
+  dicaPendente=id; dicaCallback=cb;
+  document.getElementById('dicaIcon').textContent=d.icon;
+  document.getElementById('dicaTitulo').textContent=d.titulo;
+  document.getElementById('dicaTexto').textContent=d.texto;
+  const el=document.getElementById('dicaOverlay'); el.hidden=false; el.style.display='flex';
+  if(window.lucide) lucide.createIcons();
+}
+window.mostrarDica=mostrarDica;
+window.fecharDica=function(continuar){
+  const id=dicaPendente;
+  // Trava definitiva do tutorial (BUG 1) - salva ao clicar Entendi também
+  localStorage.setItem('controle45_tutorial_concluido','true');
+  if(continuar){
+    if(id) localStorage.setItem('dica_'+id,'1');
+    const cb=dicaCallback; document.getElementById('dicaOverlay').hidden=true; document.getElementById('dicaOverlay').style.display='none'; dicaPendente=null; dicaCallback=null; if(cb) cb();
+  } else {
+    Object.keys(dicasMap).forEach(k=> localStorage.setItem('dica_'+k,'1')); localStorage.setItem('dicas_desativadas','1');
+    document.getElementById('dicaOverlay').hidden=true; document.getElementById('dicaOverlay').style.display='none'; const cb=dicaCallback; dicaPendente=null; dicaCallback=null; if(cb) cb(); toast('Dicas desativadas. Reative em Configurações → Rever dicas','ok');
+  }
+};
+window.reativarDicas=function(){ Object.keys(dicasMap).forEach(k=> localStorage.removeItem('dica_'+k)); localStorage.removeItem('dicas_desativadas'); toast('Dicas reativadas','ok'); };
+// Import mapper helpers - 100% client-side
+function iniciarImport(t){
+  if(/<STMTTRN>/i.test(t)){ impUltimoTexto=t; processarExtrato(t); return; }
+  const d=delimDe(t), linhas=t.split(/\r?\n/).filter(l=>l.trim());
+  if(!linhas.length){ processarExtrato(t); return; }
+  const colunas=dividirLinha(linhas[0],d);
+  const temHead=colunas.some(h=>/data|valor|descri|hist/i.test(h.toLowerCase()));
+  if(temHead){
+    const idxData=colunas.findIndex(c=>/data|date/i.test(c)), idxValor=colunas.findIndex(c=>/valor|amount|value/i.test(c)), idxDesc=colunas.findIndex(c=>/desc|hist|memo|nome/i.test(c));
+    const confianca=[idxData,idxValor,idxDesc].filter(i=>i>=0).length;
+    if(confianca>=2){ impUltimoTexto=t; processarExtrato(t); return; }
+  }
+  const exemplo=linhas.slice(1,4).map(l=>dividirLinha(l,d));
+  abrirMapeador(colunas, exemplo, (map)=>{
+    impUltimoTexto=t; window._mapaImport=map;
+    processarExtratoComMapa(t, map);
+  });
+}
+function processarExtratoComMapa(t, map){
+  const d=delimDe(t), linhas=t.split(/\r?\n/).filter(l=>l.trim());
+  const temHead=linhas[0].split(d).some(h=>/data|valor/i.test(h));
+  const start=temHead?1:0;
+  const rows=[];
+  for(let i=start;i<linhas.length;i++){
+    const cel=dividirLinha(linhas[i],d);
+    const data=dataDe(cel[map.data]); if(!data) continue;
+    const valor=numDe(cel[map.valor]); if(valor===null) continue;
+    let desc=cel[map.desc]||'Movimento';
+    let tipo=valor>=0?'receita':'despesa';
+    if(map.tipo>=0){
+      const raw=(cel[map.tipo]||'').toLowerCase();
+      if(/deb|saída|saida|pagamento|compra|débito|debito/i.test(raw)) tipo='despesa';
+      else if(/cred|entrada|receita|crédito|credito/i.test(raw)) tipo='receita';
+    }
+    rows.push({data, valor:Math.abs(valor), tipo, descricao:desc.slice(0,120)});
+  }
+  const modo=document.getElementById('impModo').value;
+  let filtered=rows;
+  if(modo==='fatura'){ filtered=filtered.filter(r=>!/^\s*total\b/i.test(r.descricao)); filtered.forEach(r=>r.tipo=r.tipo==='despesa'?'receita':'despesa'); }
+  impRows=filtered.sort((a,b)=>a.data.localeCompare(b.data));
+  const pPadrao=document.getElementById('impPessoa').value||PESSOAS[0]||'';
+  impRows.forEach(r=>{ const dup=lancamentos.some(l=>l.data===r.data&&Math.abs(l.valor-r.valor)<0.005&&(l.descricao||'').toLowerCase()===(r.descricao||'').toLowerCase()); r.dup=dup; r.inc=!dup; r.categoria='Outros'; r.pessoa=pPadrao; });
+  renderImportPreview();
+}
+(function(){
+  const origAbrirModal=window.abrirModalLancamento;
+  window.abrirModalLancamento=function(tipo){
+    const id=tipo==='receita'?'receita':'gasto';
+    if(!localStorage.getItem('dicas_desativadas') && !localStorage.getItem('dica_'+id) && localStorage.getItem('controle45_tutorial_concluido')){
+      mostrarDica(id, ()=> origAbrirModal(tipo)); return;
+    }
+    origAbrirModal(tipo);
+  };
+  const origAbrirTela=window.abrirTela;
+  window.abrirTela=function(nome){
+    const map={lancamentos:'lancamentos',extrato:'extrato',orcamento:'orcamento',compras:'mercado'};
+    const id=map[nome];
+    if(id && !localStorage.getItem('dicas_desativadas') && !localStorage.getItem('dica_'+id) && localStorage.getItem('controle45_tutorial_concluido')){
+      mostrarDica(id, ()=> origAbrirTela(nome)); return;
+    }
+    origAbrirTela(nome);
+  };
+  const origIrTab=window.irTab;
+  window.irTab=function(nome){
+    const map={financas:'financas',ferramentas:'calcular',mercado:'mercado',ofertas:'ofertas'};
+    const id=map[nome];
+    if(id && !localStorage.getItem('dicas_desativadas') && !localStorage.getItem('dica_'+id) && localStorage.getItem('controle45_tutorial_concluido')){
+      mostrarDica(id, ()=> origIrTab(nome)); return;
+    }
+    origIrTab(nome);
+  };
+})();
+function atualizarTudo(){ preencherPessoas(); renderListaPessoas(); atualizarFiltros(); renderizar(); atualizarResumo(); renderFechamento(); renderLista(); renderExtrato(); renderRecorrentes(); renderOfertas(); renderMetas(); calcCDI(); calcJuros(); calcComparativo(); if(window.lucide) lucide.createIcons(); }
 gerarRecorrentesPendentes();
 ajustarNav();
 atualizarTudo();
@@ -1367,6 +2156,32 @@ if(window.lucide) lucide.createIcons();
 setTimeout(()=>{ if(window.lucide) lucide.createIcons(); }, 500);
 </script>
 </div> <!-- /appRoot -->
+
+<!-- Tutorial de boas-vindas (primeiro acesso) -->
+<div id="tutorialOverlay" hidden style="position:fixed;inset:0;background:rgba(2,6,23,.78);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:20px;z-index:1000">
+  <div style="background:var(--card);border:1px solid rgba(255,255,255,.1);border-radius:24px;padding:24px;width:min(420px,100%);box-shadow:0 24px 64px rgba(0,0,0,.5)">
+    <div style="width:48px;height:48px;border-radius:14px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto 12px">👋</div>
+    <h3 id="tutTitulo" style="text-align:center;font-weight:800;color:var(--txt)">Bem-vindo!</h3>
+    <p id="tutTexto" class="muted" style="text-align:center;margin:8px 0 16px;line-height:1.5;font-size:13px"></p>
+    <div id="tutDots" style="display:flex;gap:6px;justify-content:center;margin-bottom:16px"></div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-ghost" style="flex:1" onclick="pularTutorial()" aria-label="Pular tutorial">Pular</button>
+      <button class="btn btn-primary" style="flex:1" onclick="proximoTutorial()" id="btnTutProx" aria-label="Próximo">Próximo →</button>
+    </div>
+    <p class="muted" style="text-align:center;margin-top:10px;font-size:11px">Você pode rever em Perfil → Configurações</p>
+  </div>
+</div>
+<!-- Dica contextual (primeiro toque) -->
+<div id="dicaOverlay" hidden style="position:fixed;inset:0;background:rgba(2,6,23,.72);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:20px;z-index:1001">
+  <div style="background:var(--card);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:22px;width:min(380px,100%);box-shadow:0 20px 60px rgba(0,0,0,.5);text-align:center">
+    <div id="dicaIcon" style="width:52px;height:52px;border-radius:14px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 12px;box-shadow:0 8px 20px rgba(124,58,237,.3)">💡</div>
+    <div style="font-size:11px;font-weight:800;letter-spacing:.06em;color:#a78bfa;margin-bottom:6px">PRIMEIRA VEZ AQUI</div>
+    <h3 id="dicaTitulo" style="font-weight:800;color:var(--txt);margin-bottom:8px">Título</h3>
+    <p id="dicaTexto" class="muted" style="line-height:1.5;font-size:13px;margin-bottom:16px"></p>
+    <button class="btn btn-primary" onclick="fecharDica(true)" id="btnDicaOk" style="width:100%">Entendi, continuar →</button>
+    <button class="btn btn-ghost" onclick="fecharDica(false)" style="width:100%;margin-top:8px;font-size:13px">Não mostrar mais dicas</button>
+  </div>
+</div>
 
 <!-- Migração modal -->
 <div id="migracaoModal" class="modal-bg" role="dialog" aria-modal="true" aria-labelledby="migracaoTitle" style="display:none">
@@ -1393,6 +2208,8 @@ const authLoading = document.getElementById('authLoading');
 const authWelcome = document.getElementById('authWelcome');
 const appRoot = document.getElementById('appRoot');
 const btnGoogle = document.getElementById('btnGoogleLogin');
+const btnOffline = document.getElementById('btnContinuarOffline');
+const btnDemo = document.getElementById('btnVerDemo');
 const authError = document.getElementById('authError');
 const syncStatus = document.getElementById('syncStatus');
 
@@ -1406,25 +2223,180 @@ function setSyncStatus(text, ms=2500){
   if(ms) setTimeout(()=> syncStatus.style.display='none', ms);
 }
 
+function atualizarUIAuth(logado){
+  const btnTop=document.getElementById('btnEntrarTop');
+  const btnAvatar=document.getElementById('btnAvatarTop');
+  const headerAvatar=document.getElementById('headerAvatar');
+  const headerNome=document.getElementById('headerNome');
+  const cardLogin=document.getElementById('cardLoginPrompt');
+  const cardPerfil=document.getElementById('cardPerfilInfo');
+  if(logado && currentUser){
+    if(btnTop) btnTop.style.display='none';
+    if(btnAvatar) btnAvatar.style.display='inline-flex';
+    const nome = currentUser.user_metadata?.full_name || currentUser.user_metadata?.name || currentUser.email?.split('@')[0] || 'Usuário';
+    const avatar = currentUser.user_metadata?.avatar_url || currentUser.user_metadata?.picture || '';
+    if(headerAvatar){
+      if(avatar) headerAvatar.innerHTML=`<img src="${avatar}" alt="${nome}" style="width:100%;height:100%;object-fit:cover;border-radius:99px">`;
+      else headerAvatar.textContent=nome.charAt(0).toUpperCase();
+    }
+    if(headerNome) headerNome.textContent=nome.split(' ')[0];
+  } else {
+    if(btnTop) btnTop.style.display='inline-flex';
+    if(btnAvatar) btnAvatar.style.display='none';
+  }
+  if(cardLogin) cardLogin.style.display = logado ? 'none' : 'block';
+  if(cardPerfil) {/* visibilidade controlada no onLogin */ }
+  if(window.lucide) lucide.createIcons();
+}
+window.abrirLogin = function(){
+  authError.style.display='none';
+  // reset texto do botão
+  const t=document.getElementById('txtGoogle'); if(t) t.textContent='Continuar com Google';
+  if(btnGoogle) btnGoogle.disabled=false;
+  authLoading.hidden=true; authLoading.style.display='none';
+  authWelcome.hidden=false; authWelcome.style.display='flex';
+  appRoot.hidden=true;
+  if(window.lucide) lucide.createIcons();
+};
 function mostrarTelaAuth(mostrarWelcome){
   authLoading.hidden = true; authLoading.style.display='none';
   if(mostrarWelcome){
     authWelcome.hidden=false; authWelcome.style.display='flex';
     appRoot.hidden=true;
+    atualizarUIAuth(false);
+    try{ history.replaceState({login:true}, '', location.href); }catch{}
   } else {
     authWelcome.hidden=true; authWelcome.style.display='none';
     appRoot.hidden=false;
+    // se não tem user, mostra botão Entrar
+    atualizarUIAuth(!!currentUser);
+    try{ if(!history.state || !history.state.app) history.pushState({app:true}, '', location.href); }catch{}
+    // se é primeiro acesso, mostra tutorial após login
+    setTimeout(()=> window.verificarTutorial && window.verificarTutorial(), 900);
   }
   if(window.lucide) lucide.createIcons();
 }
 
+// Mock Google login para usar sem Supabase (criado automaticamente)
+function mockGoogleLogin(){
+  const nome = prompt('Login Google (demo local)\nDigite seu nome:', 'Usuário Google');
+  if(!nome) return;
+  const email = prompt('Digite seu e-mail (demo):', nome.toLowerCase().replace(/\s+/g,'')+'@gmail.com');
+  if(!email) return;
+  const mockUser = {
+    id: 'mock_'+btoa(email).slice(0,12),
+    email: email,
+    user_metadata: { full_name: nome, name: nome, avatar_url: '', picture: '' }
+  };
+  localStorage.setItem('mock_user', JSON.stringify(mockUser));
+  localStorage.removeItem('skip_auth');
+  // simula onLogin
+  currentUser = mockUser;
+  const perfilNome = document.getElementById('perfilNomeTop');
+  const perfilAvatar = document.getElementById('perfilAvatar');
+  const perfilDetalhe = document.getElementById('perfilDetalhe');
+  if(perfilNome) perfilNome.textContent=nome;
+  if(perfilAvatar) perfilAvatar.textContent=nome.charAt(0).toUpperCase();
+  if(perfilDetalhe) perfilDetalhe.innerHTML=`<div style="font-weight:700">${nome}</div><div class="muted" style="font-size:12px">${email} <span class="cat-badge" style="background:rgba(245,158,11,.15);color:#f59e0b">DEMO</span></div>`;
+  const cardPerfil = document.getElementById('cardPerfilInfo');
+  if(cardPerfil){ cardPerfil.style.display='block'; cardPerfil.hidden=false; }
+  localStorage.setItem('supabase_user_cache', JSON.stringify(mockUser));
+  atualizarUIAuth(true);
+  mostrarTelaAuth(false);
+  try{ history.pushState({app:true}, '', location.href); }catch{}
+  setSyncStatus('Logado como '+nome+' (demo local)', 3000);
+  toast('Login Google demo realizado','ok');
+}
+window.mockGoogleLogin=mockGoogleLogin;
+// Debug: mostra status Supabase no modal
+setTimeout(()=>{
+  const dbg=document.getElementById('authDebug');
+  if(dbg){
+    const cfg=isSupabaseConfigured();
+    const hasMock=!!localStorage.getItem('mock_user');
+    const hasCache=!!localStorage.getItem('supabase_user_cache');
+    const sess=localStorage.getItem('sb-abvkleuealvbpbcmcsmq-auth-token') ? 'sessão salva' : 'sem sessão';
+    dbg.style.display='block';
+    dbg.innerHTML=`Supabase: ${cfg?'✅':'❌'} · ${sess} · ${hasMock?'mock':'no-mock'} · ${hasCache?'cache':'no-cache'} · <a href="#" onclick="localStorage.clear();location.reload()" style="color:#f87171">limpar</a> · <a href="#" onclick="localStorage.removeItem('skip_auth');localStorage.removeItem('mock_user');localStorage.removeItem('supabase_user_cache');location.reload()" style="color:#a78bfa">reset login</a>`;
+  }
+}, 600);
+// Ao carregar, restaura mock se existir
+(function restoreMock(){
+  try{
+    const raw=localStorage.getItem('mock_user');
+    if(raw && !isSupabaseConfigured()){
+      const u=JSON.parse(raw);
+      currentUser=u;
+      setTimeout(()=>{ // aguarda DOM
+        const n=u.user_metadata?.full_name||u.email;
+        const perfilNome=document.getElementById('perfilNomeTop');
+        if(perfilNome) perfilNome.textContent=n;
+        const av=document.getElementById('perfilAvatar');
+        if(av) av.textContent=n.charAt(0).toUpperCase();
+        const det=document.getElementById('perfilDetalhe');
+        if(det) det.innerHTML=`<div style="font-weight:700">${n}</div><div class="muted" style="font-size:12px">${u.email} <span class="cat-badge" style="background:rgba(245,158,11,.15);color:#f59e0b">DEMO</span></div>`;
+        const c=document.getElementById('cardPerfilInfo');
+        if(c){c.style.display='block';c.hidden=false;}
+        atualizarUIAuth(true);
+      }, 400);
+    }
+  }catch{}
+})();
+// Restaura cache real Supabase (para não piscar Entrar enquanto getSession carrega)
+(function restoreSupabaseCache(){
+  try{
+    const raw=localStorage.getItem('supabase_user_cache');
+    const hasSession=localStorage.getItem('sb-abvkleuealvbpbcmcsmq-auth-token');
+    if(raw && hasSession){
+      const u=JSON.parse(raw);
+      currentUser=u;
+      // mostra avatar imediatamente, sem esperar getSession
+      const n=u.user_metadata?.full_name||u.user_metadata?.name||u.email?.split('@')[0]||'Usuário';
+      const av=document.getElementById('headerAvatar');
+      const hn=document.getElementById('headerNome');
+      const btnA=document.getElementById('btnAvatarTop');
+      const btnE=document.getElementById('btnEntrarTop');
+      if(av){
+        const avatar=u.user_metadata?.avatar_url||u.user_metadata?.picture||'';
+        if(avatar) av.innerHTML=`<img src="${avatar}" alt="${n}" style="width:100%;height:100%;object-fit:cover;border-radius:99px">`;
+        else av.textContent=n.charAt(0).toUpperCase();
+      }
+      if(hn) hn.textContent=n.split(' ')[0];
+      if(btnA) btnA.style.display='inline-flex';
+      if(btnE) btnE.style.display='none';
+      const cardLogin=document.getElementById('cardLoginPrompt');
+      if(cardLogin) cardLogin.style.display='none';
+    }
+  }catch{}
+})();
+// Sobrescreve sairDaConta para limpar mock também
+const _origSairMock = window.sairDaConta;
+window.sairDaConta = async ()=>{
+  if(localStorage.getItem('mock_user')){
+    if(!confirm('Sair da conta demo?')) return;
+    localStorage.removeItem('mock_user');
+    localStorage.removeItem('supabase_user_cache');
+    currentUser=null;
+    atualizarUIAuth(false);
+    const c=document.getElementById('cardPerfilInfo'); if(c){c.style.display='none';c.hidden=true;}
+    setSyncStatus('Você saiu da conta demo');
+    toast('Deslogado','ok');
+    return;
+  }
+  if(_origSairMock) return _origSairMock();
+  await supabase.auth.signOut();
+};
+
 // Botão Continuar com Google
 btnGoogle?.addEventListener('click', async ()=>{
   authError.style.display='none';
+  const txt=document.getElementById('txtGoogle');
   if(!isSupabaseConfigured()){
-    authError.textContent='Supabase não configurado. Veja .env.example e README.';
-    authError.style.display='block'; return;
+    // Cria login demo automaticamente sem precisar configurar Supabase
+    mockGoogleLogin();
+    return;
   }
+  if(btnGoogle){ btnGoogle.disabled=true; if(txt) txt.textContent='Abrindo Google...'; }
   const { error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: { redirectTo: window.location.origin + window.location.pathname }
@@ -1432,22 +2404,56 @@ btnGoogle?.addEventListener('click', async ()=>{
   if(error){
     authError.textContent = error.message.includes('cancel') ? 'Login cancelado.' : 'Erro ao entrar: '+error.message;
     authError.style.display='block';
+    if(btnGoogle){ btnGoogle.disabled=false; if(txt) txt.textContent='Continuar com Google'; }
   }
+});
+btnOffline?.addEventListener('click', ()=>{
+  localStorage.setItem('skip_auth','1');
+  mostrarTelaAuth(false);
+  setSyncStatus('Modo offline — dados salvos neste aparelho', 2500);
+});
+btnDemo?.addEventListener('click', ()=>{
+  localStorage.setItem('skip_auth','1');
+  mostrarTelaAuth(false);
+  if(window.carregarDadosDemo) window.carregarDadosDemo();
+  else setTimeout(()=> window.carregarDadosDemo && window.carregarDadosDemo(), 400);
 });
 
 // Estado inicial: verifica sessão (com fallback para não travar em "Carregando")
 (async ()=>{
   try{
-    if(!isSupabaseConfigured()){
+    // Prioridade: se tem sessão Supabase real, loga direto (mesmo que skip_auth exista)
+    if(isSupabaseConfigured()){
+      try{
+        const { data: { session } } = await supabase.auth.getSession();
+        if(session?.user){
+          localStorage.removeItem('skip_auth');
+          await onLogin(session.user);
+          return;
+        }
+      }catch{}
+    }
+    // Mock demo local tem prioridade sobre skip_auth
+    if(localStorage.getItem('mock_user')){
+      // restoreMock já cuidou do currentUser, só garante UI
+      atualizarUIAuth(true);
       mostrarTelaAuth(false);
       return;
     }
-    const { data: { session } } = await supabase.auth.getSession();
-    if(session?.user){
-      await onLogin(session.user);
-    } else {
-      mostrarTelaAuth(true);
+    if(localStorage.getItem('skip_auth')==='1'){
+      mostrarTelaAuth(false);
+      atualizarUIAuth(false);
+      return;
     }
+    if(!isSupabaseConfigured()){
+      mostrarTelaAuth(false);
+      atualizarUIAuth(!!localStorage.getItem('mock_user'));
+      return;
+    }
+    // Sem sessão e sem skip: mostra login se não tem dados
+    const temDados = (JSON.parse(localStorage.getItem('gastos')||'[]').length>0);
+    if(temDados){ mostrarTelaAuth(false); atualizarUIAuth(false); }
+    else mostrarTelaAuth(true);
   }catch(e){
     console.error('[Auth] Erro ao verificar sessão', e);
     mostrarTelaAuth(false);
@@ -1465,14 +2471,19 @@ btnGoogle?.addEventListener('click', async ()=>{
 // Listener de auth
 supabase.auth.onAuthStateChange(async (event, session)=>{
   if(event==='SIGNED_IN' && session?.user){
+    localStorage.removeItem('skip_auth');
     await onLogin(session.user);
   } else if(event==='SIGNED_OUT'){
     currentUser=null;
+    localStorage.removeItem('supabase_user_cache');
+    localStorage.removeItem('mock_user');
+    atualizarUIAuth(false);
     const cardP=document.getElementById('cardPerfilInfo');
     if(cardP){ cardP.style.display='none'; cardP.hidden=true; }
     // limpar dados sensíveis da memória, mas manter localStorage como backup
-    mostrarTelaAuth(true);
     setSyncStatus('Você saiu da conta');
+    // mostra prompt de login mas não bloqueia app
+    atualizarUIAuth(false);
   } else if(event==='TOKEN_REFRESHED'){
     // silencioso
   }
@@ -1501,7 +2512,12 @@ async function onLogin(user){
   const topAvatar = document.getElementById('perfilAvatarTop');
   if(topAvatar && avatar) topAvatar.innerHTML=`<img src="${avatar}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
 
+  localStorage.setItem('supabase_user_cache', JSON.stringify(user));
+  localStorage.removeItem('mock_user');
+  localStorage.removeItem('skip_auth');
+  atualizarUIAuth(true);
   mostrarTelaAuth(false);
+  try{ history.pushState({app:true}, '', location.href); }catch{}
   setSyncStatus('Sincronizando...', 1500);
 
   // Carregar dados da nuvem
@@ -1531,6 +2547,20 @@ async function onLogin(user){
     setSyncStatus('Salvo na nuvem', 2000);
     // Verificar migração
     verificarMigracao(user);
+    // Auto-migra em background se ainda não migrou (agora que SQL foi criado)
+    if(!jaMigrou(user.id)){
+      const qtdAuto=contarLocal();
+      if(qtdAuto.total>0){
+        setTimeout(async()=>{
+          if(!jaMigrou(user.id) && contarLocal().total>0){
+            console.log('[Auto-migração]', qtdAuto);
+            try{ await window.migrarAgora(); }catch(e){ console.error('[Auto-migração] falhou',e); }
+          }
+        }, 1200);
+      } else {
+        marcarMigrou(user.id);
+      }
+    }
     // Tentar fila offline
     if(isOnline) await sincronizarFila();
   }catch(e){
@@ -1617,6 +2647,11 @@ async function sincronizarFila(){
 window.repo = repo;
 window.supabase = supabase;
 </script>
-<script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));}</script>
+<script>
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));}
+let deferredPrompt=null;
+window.addEventListener('beforeinstallprompt', e=>{ e.preventDefault(); deferredPrompt=e; const btn=document.createElement('button'); btn.textContent='📲 Instalar app'; btn.className='btn btn-ghost'; btn.style.cssText='position:fixed;bottom:100px;right:14px;z-index:997;padding:10px 14px;border-radius:99px;box-shadow:0 8px 20px rgba(0,0,0,.3)'; btn.onclick=async()=>{ if(!deferredPrompt) return; deferredPrompt.prompt(); const c=await deferredPrompt.userChoice; if(c.outcome==='accepted') btn.remove(); deferredPrompt=null; }; document.body.appendChild(btn); setTimeout(()=>btn.remove(), 15000); });
+window.addEventListener('DOMContentLoaded', ()=>{ if(window.lucide) lucide.createIcons(); setTimeout(()=>{ calcCDI(); calcJuros(); calcComparativo(); renderMetas(); }, 600); });
+</script>
 </body>
 </html>
