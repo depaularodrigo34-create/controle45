@@ -437,35 +437,38 @@ setTimeout(()=>{
     </div>
   </section>
 
-  <!-- INTELIG�NCIA (estilo Nubank Auto / Inter Intelig�ncia, mas para CONTROLE DE GASTOS) -->
+  <!-- INTELIGÊNCIA (estilo Nubank Auto / Inter Inteligência, mas para CONTROLE DE GASTOS) -->
   <section id="tab-inteligencia" class="tab-panel" role="tabpanel">
     <div class="card" style="border:1px solid rgba(124,58,237,.25);background:linear-gradient(135deg, rgba(124,58,237,.12), rgba(56,189,248,.08))">
-      <h2><i data-lucide="sparkles" class="ico-lucide"></i> Intelig�ncia de Gastos</h2>
-      <p class="muted">Insights gerados localmente para voc� gastar menos. Seus dados nunca saem do aparelho.</p>
+      <h2><i data-lucide="sparkles" class="ico-lucide"></i> Inteligência de Gastos</h2>
+      <p class="muted">Insights gerados localmente para você gastar menos. Seus dados nunca saem do aparelho.</p>
       <div id="insightsLista" style="margin-top:14px"></div>
     </div>
 
     <div class="card">
-      <h2><i data-lucide="shield-alert" class="ico-lucide"></i> Gastos at�picos</h2>
-      <p class="muted">Lan�amentos fora do comum para voc� conferir (estilo Nubank antifraude).</p>
+      <h2><i data-lucide="shield-alert" class="ico-lucide"></i> Gastos atípicos</h2>
+      <p class="muted">Lançamentos fora do comum para você conferir (estilo Nubank antifraude).</p>
       <div id="anomaliasLista" style="margin-top:12px"></div>
     </div>
 
     <div class="card">
-      <h2><i data-lucide="trending-up" class="ico-lucide"></i> Previs�o de saldo (30 dias)</h2>
-      <p class="muted">Quanto vai sobrar considerando recorrentes e lan�amentos futuros (estilo Inter Planejamento).</p>
+      <h2><i data-lucide="trending-up" class="ico-lucide"></i> Previsão de saldo (30 dias)</h2>
+      <p class="muted">Quanto vai sobrar considerando recorrentes e lançamentos futuros (estilo Inter Planejamento).</p>
       <div id="previsaoBox" style="margin-top:12px"></div>
+      <button class="btn btn-ghost" style="width:100%;margin-top:10px;min-height:44px" onclick="irTab('extrato')"><i data-lucide="list" class="ico-lucide"></i> Ver extrato completo</button>
     </div>
 
     <div class="card">
       <h2><i data-lucide="piggy-bank" class="ico-lucide"></i> Envelopes de controle + Economia</h2>
-      <p class="muted">Limites sugeridos por categoria e quanto d� para economizar (estilo Nubank Ultravioleta, mas para economizar).</p>
+      <p class="muted">Limites sugeridos por categoria e quanto dá para economizar (estilo Nubank Ultravioleta, mas para economizar).</p>
       <div id="cartaoBox" style="margin-top:12px"></div>
+      <button class="btn btn-ghost" style="width:100%;margin-top:10px;min-height:44px" onclick="irTab('orcamento')"><i data-lucide="pie-chart" class="ico-lucide"></i> Ajustar orçamentos</button>
     </div>
 
     <div class="card">
-      <h2><i data-lucide="file-text" class="ico-lucide"></i> Resumo do m�s</h2>
+      <h2><i data-lucide="file-text" class="ico-lucide"></i> Resumo do mês</h2>
       <div id="resumoMensalBox" style="margin-top:8px;font-size:14px;line-height:1.6;color:var(--txt)"></div>
+      <button class="btn btn-ghost" style="width:100%;margin-top:10px;min-height:44px" onclick="exportarResumoMes()"><i data-lucide="download" class="ico-lucide"></i> Baixar resumo (TXT)</button>
     </div>
   </section>
 
@@ -2312,8 +2315,9 @@ function renderInteligencia(){
       <div style="flex:1">
         <div style="font-weight:800;font-size:13px;color:var(--txt)">${esc(i.titulo)}</div>
         <div class="muted" style="font-size:12px;margin-top:2px;line-height:1.4">${esc(i.texto)}</div>
+        ${i.categoria?`<button class="btn-mini btn-ghost" style="margin-top:8px;padding:6px 10px;min-height:32px;font-size:11px" onclick="verCategoriaNoExtrato('${esc(i.categoria)}')"><i data-lucide="search" class="ico-lucide"></i> Ver no extrato</button>`:''}
       </div>
-    </div>`).join('') || '<div class="muted">Adicione lan�amentos para ver insights.</div>';
+    </div>`).join('') || '<div class="muted">Adicione lançamentos para ver insights.</div>';
 
   // 2. Anomalias
   const anoms=detectarCobrancasEstranhas(lancamentos);
@@ -2321,8 +2325,10 @@ function renderInteligencia(){
   if(anEl) anEl.innerHTML = anoms.length ? anoms.slice(0,5).map(a=>`
     <div style="display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:13px">
       <span style="font-size:18px">??</span>
-      <div style="flex:1"><b>${esc(a.descricao)}</b> � ${esc(a.categoria)} � <b style="color:#f87171">${fmt(a.valor)}</b><br><small class="muted">${esc(a.motivo)}</small></div>
-    </div>`).join('') : '<div class="muted" style="padding:8px 0">? Nenhum gasto at�pico detectado.</div>';
+      <div style="flex:1"><b>${esc(a.descricao)}</b> · ${esc(a.categoria)} · <b style="color:#f87171">${fmt(a.valor)}</b><br><small class="muted">${esc(a.motivo)}</small>
+        <button class="btn-mini btn-ghost" style="margin-top:6px;padding:5px 9px;min-height:30px;font-size:11px" onclick="verCategoriaNoExtrato('${esc(a.categoria)}')"><i data-lucide="search" class="ico-lucide"></i> Conferir</button>
+      </div>
+    </div>`).join('') : '<div class="muted" style="padding:8px 0">? Nenhum gasto atípico detectado.</div>';
 
   // 3. Previs�o
   const prev=preverSaldoFuturo(lancamentos, RECORRENTES||[], 30);
@@ -2357,6 +2363,24 @@ function renderInteligencia(){
   const resEl=document.getElementById('resumoMensalBox');
   if(resEl) resEl.textContent = lancamentos.length ? resumoMensalInteligente(lancamentos, mesAtual) : 'Adicione lançamentos para gerar o resumo.';
   if(window.lucide) lucide.createIcons();
+}
+// Exportar resumo do mês como TXT
+function exportarResumoMes(){
+  const mesAtual=new Date().toISOString().slice(0,7);
+  const resumo = lancamentos.length ? resumoMensalInteligente(lancamentos, mesAtual) : 'Sem lançamentos.';
+  const ins = gerarInsights(lancamentos, PESSOAS, ORCAMENTOS, SALARIOS).map(i=>`• ${i.titulo}: ${i.texto}`).join('\n');
+  const ec = calcularEconomia(lancamentos);
+  const texto = `CONTROLE DE GASTOS — RESUMO DE ${mesAtual}\n\n=== RESUMO ===\n${resumo}\n\n=== INSIGHTS ===\n${ins}\n\n=== ECONOMIA POSSÍVEL ===\n${ec.total}/mês (${fmt(ec.totalNum*12)}/ano)\n\nGerado em ${new Date().toLocaleString('pt-BR')} • Seus dados ficam no seu aparelho.`;
+  const blob=new Blob([texto],{type:'text/plain;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a'); a.href=url; a.download=`resumo-gastos-${mesAtual}.txt`; a.click();
+  URL.revokeObjectURL(url); toast('Resumo baixado','ok');
+}
+// Ver categoria específica no extrato (clicável a partir dos insights)
+function verCategoriaNoExtrato(cat){
+  document.getElementById('filtroCat').value = cat || '';
+  irTab('extrato');
+  toast('Filtrando extrato: ' + (cat||'todos'), 'ok');
 }
 // Lembretes de contas próximas do vencimento (estilo Nubank "conta vence")
 function renderLembretes(){
