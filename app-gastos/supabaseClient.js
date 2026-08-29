@@ -9,7 +9,7 @@ function getEnv(name, fallback = '') {
   try {
     // @ts-ignore
     if (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env[name]) return import.meta.env[name];
-  } catch {}
+  } catch { }
   // window fallback para HTML puro
   if (typeof window !== 'undefined' && window.__ENV__ && window.__ENV__[name]) return window.__ENV__[name];
   // meta tags <meta name="supabase-url" content="...">
@@ -21,15 +21,18 @@ function getEnv(name, fallback = '') {
 const SUPABASE_URL = getEnv('VITE_SUPABASE_URL', '').trim();
 const SUPABASE_KEY = getEnv('VITE_SUPABASE_PUBLISHABLE_KEY', '').trim() || getEnv('VITE_SUPABASE_ANON_KEY', '').trim();
 
-if (!SUPABASE_URL || !SUPABASE_KEY) {
+// Flag: true se as variaveis estao presentes (mesmo que o projeto nao responda)
+const TEM_CREDENCIA = Boolean(SUPABASE_URL && SUPABASE_KEY && SUPABASE_URL.startsWith('https://'));
+
+if (!TEM_CREDENCIA) {
   console.warn('[Supabase] Variáveis VITE_SUPABASE_URL / VITE_SUPABASE_PUBLISHABLE_KEY não configuradas. Rodando em modo offline local. Veja .env.example');
 }
 
-function createMockClient(){
+function createMockClient() {
   return {
     auth: {
       getSession: async () => ({ data: { session: null } }),
-      onAuthStateChange: () => ({ data: { subscription: { unsubscribe(){} } } }),
+      onAuthStateChange: () => ({ data: { subscription: { unsubscribe() { } } } }),
       signInWithOAuth: async () => ({ error: { message: 'Supabase não configurado' } }),
       signOut: async () => ({ error: null })
     },
@@ -37,13 +40,37 @@ function createMockClient(){
   };
 }
 
-export const supabase = (SUPABASE_URL && SUPABASE_KEY && SUPABASE_URL.startsWith('https://'))
+export const supabase = (TEM_CREDENCIA)
   ? createClient(SUPABASE_URL, SUPABASE_KEY, {
-      auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, flowType: 'pkce' }
-    })
+    auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, flowType: 'pkce' }
+  })
   : createMockClient();
 
-// Helper para verificar se está configurado
+// Helper para verificar se está configurado (credenciais presentes)
 export function isSupabaseConfigured() {
-  return Boolean(SUPABASE_URL && SUPABASE_KEY && SUPABASE_URL.startsWith('https://'));
+  return TEM_CREDENCIA;
+}
+
+// Verificação REAL de conectividade: faz um HEAD/GET leve no projeto Supabase
+// Se o projeto não existir (404/erro), retorna false -> app usa login demo (mock)
+let _supabaseOnlineCache = null;
+export async function supabaseResponde() {
+  if (!TEM_CREDENCIA) return false;
+  if (_supabaseOnlineCache !== null) return _supabaseOnlineCache;
+  try {
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), 4000);
+    const r = await fetch(SUPABASE_URL + '/rest/v1/', {
+      method: 'GET',
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY },
+      signal: ctrl.signal
+    });
+    clearTimeout(t);
+    // 200/401/4xx = projeto existe (mesmo que não autenticado). 404/erro de DNS = projeto morto
+    _supabaseOnlineCache = r.status !== 404 && r.status >= 200;
+    return _supabaseOnlineCache;
+  } catch {
+    _supabaseOnlineCache = false;
+    return false;
+  }
 }

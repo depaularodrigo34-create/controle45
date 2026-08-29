@@ -2291,7 +2291,7 @@ setTimeout(()=>{ if(window.lucide) lucide.createIcons(); }, 500);
 <div id="syncStatus" style="position:fixed;bottom:92px;left:50%;transform:translateX(-50%);background:rgba(15,23,42,.9);border:1px solid rgba(255,255,255,.1);padding:6px 12px;border-radius:99px;font-size:12px;color:#cbd5e1;display:none;z-index:997;backdrop-filter:blur(8px)" aria-live="polite"></div>
 
 <script type="module">
-import { supabase, isSupabaseConfigured } from './supabaseClient.js';
+import { supabase, isSupabaseConfigured, supabaseResponde } from './supabaseClient.js';
 import { repo } from './repo.js';
 import { getFila, limparFila, adicionarNaFila } from './offlineQueue.js';
 import { gerarInsights, preverSaldoFuturo, detectarCobrancasEstranhas, resumoMensalInteligente } from './insights.js';
@@ -2372,10 +2372,9 @@ function mostrarTelaAuth(mostrarWelcome){
 
 // Mock Google login para usar sem Supabase (criado automaticamente)
 function mockGoogleLogin(){
-  const nome = prompt('Login Google (demo local)\nDigite seu nome:', 'Usuário Google');
-  if(!nome) return;
-  const email = prompt('Digite seu e-mail (demo):', nome.toLowerCase().replace(/\s+/g,'')+'@gmail.com');
-  if(!email) return;
+  // Sem prompt() para não ser bloqueado por popup blocker
+  const nome = (localStorage.getItem('mock_nome')) || 'Você';
+  const email = (localStorage.getItem('mock_email')) || 'voce@controle45.app';
   const mockUser = {
     id: 'mock_'+btoa(email).slice(0,12),
     email: email,
@@ -2484,21 +2483,44 @@ window.sairDaConta = async ()=>{
 btnGoogle?.addEventListener('click', async ()=>{
   authError.style.display='none';
   const txt=document.getElementById('txtGoogle');
+  // Se não tem credencial configurada, vai direto pro demo
   if(!isSupabaseConfigured()){
-    // Cria login demo automaticamente sem precisar configurar Supabase
+    mockGoogleLogin();
+    return;
+  }
+  // Verifica se o projeto Supabase realmente responde (evita travamento se o projeto morreu)
+  if(btnGoogle){ btnGoogle.disabled=true; if(txt) txt.textContent='Verificando...'; }
+  let responde = false;
+  try {
+    responde = await Promise.race([
+      supabaseResponde(),
+      new Promise(res => setTimeout(() => res(false), 5000))
+    ]);
+  } catch { responde = false; }
+  if(!responde){
+    if(btnGoogle){ btnGoogle.disabled=false; if(txt) txt.textContent='Continuar com Google'; }
+    // Projeto Supabase não responde -> login demo local (não trava)
     mockGoogleLogin();
     return;
   }
   if(btnGoogle){ btnGoogle.disabled=true; if(txt) txt.textContent='Abrindo Google...'; }
+  // Watchdog: se o redirect não completar em 12s, volta com aviso
+  const watchdog = setTimeout(()=>{
+    if(btnGoogle){ btnGoogle.disabled=false; if(txt) txt.textContent='Continuar com Google'; }
+    authError.textContent = 'O login com Google não respondeu. Use "🧪 Testar login (demo)" para entrar agora.';
+    authError.style.display='block';
+  }, 12000);
   const { error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: { redirectTo: window.location.origin + window.location.pathname }
   });
+  clearTimeout(watchdog);
   if(error){
     authError.textContent = error.message.includes('cancel') ? 'Login cancelado.' : 'Erro ao entrar: '+error.message;
     authError.style.display='block';
     if(btnGoogle){ btnGoogle.disabled=false; if(txt) txt.textContent='Continuar com Google'; }
   }
+  // Se não deu erro, o redirect para o Google acontece (a página navega)
 });
 btnOffline?.addEventListener('click', ()=>{
   localStorage.setItem('skip_auth','1');
