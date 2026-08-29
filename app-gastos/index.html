@@ -355,6 +355,7 @@ setTimeout(()=>{
 
   <nav class="tabs" id="tabsDesktop" role="tablist" aria-label="Navegação principal">
     <button class="tab-btn" role="tab" aria-selected="true" data-tab="inicio" aria-label="Início"><i data-lucide="home" class="ico-lucide"></i> Início</button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-tab="inteligencia" aria-label="Inteligência"><i data-lucide="sparkles" class="ico-lucide"></i> Inteligência</button>
     <button class="tab-btn" role="tab" aria-selected="false" data-tab="extrato" aria-label="Extrato"><i data-lucide="list" class="ico-lucide"></i> Extrato</button>
     <button class="tab-btn" role="tab" aria-selected="false" data-tab="ferramentas" aria-label="Ferramentas"><i data-lucide="calculator" class="ico-lucide"></i> Ferramentas</button>
     <button class="tab-btn" role="tab" aria-selected="false" data-tab="perfil" aria-label="Perfil"><i data-lucide="user" class="ico-lucide"></i> Perfil</button>
@@ -429,6 +430,38 @@ setTimeout(()=>{
         <h3>Evolução de saldo (últimos 6 meses)</h3>
         <div id="grafEvo"></div>
       </div>
+    </div>
+  </section>
+
+  <!-- INTELIGÊNCIA (estilo Nubank Auto / Inter Inteligência, mas para CONTROLE DE GASTOS) -->
+  <section id="tab-inteligencia" class="tab-panel" role="tabpanel">
+    <div class="card" style="border:1px solid rgba(124,58,237,.25);background:linear-gradient(135deg, rgba(124,58,237,.12), rgba(56,189,248,.08))">
+      <h2><i data-lucide="sparkles" class="ico-lucide"></i> Inteligência de Gastos</h2>
+      <p class="muted">Insights gerados localmente para você gastar menos. Seus dados nunca saem do aparelho.</p>
+      <div id="insightsLista" style="margin-top:14px"></div>
+    </div>
+
+    <div class="card">
+      <h2><i data-lucide="shield-alert" class="ico-lucide"></i> Gastos atípicos</h2>
+      <p class="muted">Lançamentos fora do comum para você conferir (estilo Nubank antifraude).</p>
+      <div id="anomaliasLista" style="margin-top:12px"></div>
+    </div>
+
+    <div class="card">
+      <h2><i data-lucide="trending-up" class="ico-lucide"></i> Previsão de saldo (30 dias)</h2>
+      <p class="muted">Quanto vai sobrar considerando recorrentes e lançamentos futuros (estilo Inter Planejamento).</p>
+      <div id="previsaoBox" style="margin-top:12px"></div>
+    </div>
+
+    <div class="card">
+      <h2><i data-lucide="piggy-bank" class="ico-lucide"></i> Envelopes de controle + Economia</h2>
+      <p class="muted">Limites sugeridos por categoria e quanto dá para economizar (estilo Nubank Ultravioleta, mas para economizar).</p>
+      <div id="cartaoBox" style="margin-top:12px"></div>
+    </div>
+
+    <div class="card">
+      <h2><i data-lucide="file-text" class="ico-lucide"></i> Resumo do mês</h2>
+      <div id="resumoMensalBox" style="margin-top:8px;font-size:14px;line-height:1.6;color:var(--txt)"></div>
     </div>
   </section>
 
@@ -832,9 +865,9 @@ setTimeout(()=>{
 <nav class="bottom-nav cols-5" id="bottomNav" aria-label="Navegação principal">
   <div class="wrap" id="bottomWrap">
     <button data-tab="inicio" aria-selected="true" aria-label="Início"><span class="ico"><i data-lucide="home" class="ico-lucide"></i></span><span>Início</span></button>
+    <button data-tab="inteligencia" aria-label="Inteligência"><span class="ico"><i data-lucide="sparkles" class="ico-lucide"></i></span><span>IA</span></button>
     <button data-tab="extrato" aria-label="Extrato"><span class="ico"><i data-lucide="list" class="ico-lucide"></i></span><span>Extrato</span></button>
     <button class="fab" data-action="novo" aria-label="Novo lançamento" onclick="abrirModalLancamento()"><span aria-hidden="true">＋</span></button>
-    <button data-tab="ferramentas" aria-label="Ferramentas"><span class="ico"><i data-lucide="calculator" class="ico-lucide"></i></span><span>Ferram.</span></button>
     <button data-tab="perfil" aria-label="Perfil"><span class="ico"><i data-lucide="user" class="ico-lucide"></i></span><span>Perfil</span></button>
   </div>
 </nav>
@@ -2147,7 +2180,65 @@ function processarExtratoComMapa(t, map){
     origIrTab(nome);
   };
 })();
-function atualizarTudo(){ preencherPessoas(); renderListaPessoas(); atualizarFiltros(); renderizar(); atualizarResumo(); renderFechamento(); renderLista(); renderExtrato(); renderRecorrentes(); renderOfertas(); renderMetas(); calcCDI(); calcJuros(); calcComparativo(); if(window.lucide) lucide.createIcons(); }
+function renderInteligencia(){
+  if(typeof lancamentos==='undefined') return;
+  const mesAtual=new Date().toISOString().slice(0,7);
+  // 1. Insights
+  const ins=gerarInsights(lancamentos, PESSOAS, ORCAMENTOS, SALARIOS);
+  const insEl=document.getElementById('insightsLista');
+  if(insEl) insEl.innerHTML = ins.map(i=>`
+    <div style="display:flex;gap:12px;align-items:flex-start;padding:12px;margin-bottom:10px;background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:14px">
+      <div style="font-size:22px;line-height:1">${i.icone}</div>
+      <div style="flex:1">
+        <div style="font-weight:800;font-size:13px;color:var(--txt)">${esc(i.titulo)}</div>
+        <div class="muted" style="font-size:12px;margin-top:2px;line-height:1.4">${esc(i.texto)}</div>
+      </div>
+    </div>`).join('') || '<div class="muted">Adicione lançamentos para ver insights.</div>';
+
+  // 2. Anomalias
+  const anoms=detectarCobrancasEstranhas(lancamentos);
+  const anEl=document.getElementById('anomaliasLista');
+  if(anEl) anEl.innerHTML = anoms.length ? anoms.slice(0,5).map(a=>`
+    <div style="display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:13px">
+      <span style="font-size:18px">⚠️</span>
+      <div style="flex:1"><b>${esc(a.descricao)}</b> · ${esc(a.categoria)} · <b style="color:#f87171">${fmt(a.valor)}</b><br><small class="muted">${esc(a.motivo)}</small></div>
+    </div>`).join('') : '<div class="muted" style="padding:8px 0">✅ Nenhum gasto atípico detectado.</div>';
+
+  // 3. Previsão
+  const prev=preverSaldoFuturo(lancamentos, RECORRENTES||[], 30);
+  const prevEl=document.getElementById('previsaoBox');
+  if(prevEl) prevEl.innerHTML = `
+    <div class="resumo">
+      <div class="res-box"><div class="l">SALDO HOJE</div><div class="v" style="color:#38bdf8">${fmt(prev.saldoInicial)}</div></div>
+      <div class="res-box"><div class="l">PREVISÃO 30D</div><div class="v" style="color:${prev.saldoFinal>=0?'#4ade80':'#f87171'}">${fmt(prev.saldoFinal)}</div></div>
+    </div>
+    <p class="muted" style="font-size:12px;margin-top:8px">${prev.saldoFinal>=0?'✅ Você deve fechar o mês no azul.':'🔴 Cuidado: projeção negativa para o fim do mês.'}</p>`;
+
+  // 4. Envelopes + economia
+  const env=criarCartoesSugeridos(lancamentos);
+  const ec=calcularEconomia(lancamentos);
+  const perfil=sugerirPerfilControle(lancamentos);
+  const cartEl=document.getElementById('cartaoBox');
+  if(cartEl){
+    let html = env.length ? env.map(e=>`
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:13px">
+        <span><span class="cat-badge" style="background:${e.cor}22;color:${e.cor}">${esc(e.categoria)}</span></span>
+        <span class="muted">gasto ${e.gastoMedio}</span>
+        <span style="font-weight:700">limite ${fmt(e.limiteSugerido)}</span>
+        <span style="color:#4ade80;font-size:12px">econ. ${e.economiaPossivel}</span>
+      </div>`).join('') : '<div class="muted">Sem dados de gastos para sugerir envelopes.</div>';
+    html += `<div style="margin-top:12px;padding:12px;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.25);border-radius:12px;font-size:13px">
+      💡 Economia possível: <b style="color:#4ade80">${ec.total}</b>/mês (${fmt(ec.totalNum*12)}/ano)${perfil?` · ${esc(perfil.dica)}`:''}
+    </div>`;
+    cartEl.innerHTML=html;
+  }
+
+  // 5. Resumo
+  const resEl=document.getElementById('resumoMensalBox');
+  if(resEl) resEl.textContent = lancamentos.length ? resumoMensalInteligente(lancamentos, mesAtual) : 'Adicione lançamentos para gerar o resumo.';
+  if(window.lucide) lucide.createIcons();
+}
+function atualizarTudo(){ preencherPessoas(); renderListaPessoas(); atualizarFiltros(); renderizar(); atualizarResumo(); renderFechamento(); renderLista(); renderExtrato(); renderRecorrentes(); renderOfertas(); renderMetas(); renderInteligencia(); calcCDI(); calcJuros(); calcComparativo(); if(window.lucide) lucide.createIcons(); }
 gerarRecorrentesPendentes();
 ajustarNav();
 atualizarTudo();
@@ -2203,6 +2294,8 @@ setTimeout(()=>{ if(window.lucide) lucide.createIcons(); }, 500);
 import { supabase, isSupabaseConfigured } from './supabaseClient.js';
 import { repo } from './repo.js';
 import { getFila, limparFila, adicionarNaFila } from './offlineQueue.js';
+import { gerarInsights, preverSaldoFuturo, detectarCobrancasEstranhas, resumoMensalInteligente } from './insights.js';
+import { criarCartoesSugeridos, calcularCashback, sugerirCartao } from './cartoes.js';
 
 const authLoading = document.getElementById('authLoading');
 const authWelcome = document.getElementById('authWelcome');
